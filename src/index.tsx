@@ -1,19 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
+import SpoqaRegular from './Styles/fonts/spoqa/SpoqaHanSansNeo-Regular.otf';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const GlobalStyles = createGlobalStyle`
+  /*css-reset을 위한 GlobalStyle설정 */
+  ${reset}
+
+  /*apply local font */
+  @font-face {
+    font-family: 'Spoqa Han Sans';
+    src: local('Spoqa Han Sans'),
+    url(${SpoqaRegular}) format('otf');
+  }
+
+  body{
+    font-family: 'Spoqa Han Sans';
+  }
+`;
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+        <GlobalStyles />
+        <App />
+    </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
