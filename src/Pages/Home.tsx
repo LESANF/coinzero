@@ -11,11 +11,18 @@ const NavTitle = styled.span`
     font-size: 100px;
 `;
 
+const TestHome = styled.div`
+    position: absolute;
+    top: 68px;
+`;
+
 function Home() {
     return (
         <>
             <Nav />
-            <NavTitle>Home</NavTitle>
+            <TestHome>
+                <NavTitle>Home</NavTitle>
+            </TestHome>
             <Footer />
         </>
     );
