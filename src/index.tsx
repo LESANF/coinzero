@@ -18,6 +18,7 @@ const GlobalStyles = createGlobalStyle`
 
   body{
     font-family: 'Spoqa Han Sans';
+    background-color:peru ;
   }
 `;
 
