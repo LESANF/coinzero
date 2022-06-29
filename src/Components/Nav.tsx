@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaRegPaperPlane } from 'react-icons/fa';
+import { FaRegPaperPlane, FaAlignJustify } from 'react-icons/fa';
+import { MdOutlineFiberNew } from 'react-icons/md';
+import { useState, useRef } from 'react';
 
 const Navbar = styled.nav`
     position: fixed;
@@ -24,7 +26,6 @@ const NavInner = styled.div`
     width: inherit;
     height: inherit; */
     display: flex;
-    justify-content: space-between;
     margin: 0 auto;
     height: 100%;
     max-width: 1440px;
@@ -40,16 +41,19 @@ const NavTitle = styled.span`
     font-size: 38px;
     display: inline-block;
     cursor: pointer;
+    flex-grow: 1;
 `;
 
 //Nav Items
 const NavMenu = styled.ul`
     height: inherit;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    margin: 0 0 0 24px;
+    margin-left: 24px;
+    /* margin: 0 0 0 24px; */
     font-size: 16px;
+    flex-grow: 2;
 `;
 
 const NavItem = styled(motion.li)`
@@ -73,12 +77,14 @@ const NavItem = styled(motion.li)`
 
 //Nav Contents(AD, Notice, etc...)
 const NavContents = styled.div`
+    /* position: relative; */
     height: inherit;
     width: 360px;
-    margin: 0 0 0 500px;
+    /* margin: 0 0 0 500px; */
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-grow: 1;
 `;
 
 //Nav AD
@@ -116,34 +122,143 @@ const NavItemVari = {
 
 //Nav Notice
 const NavNotice = styled(motion.div)`
+    position: relative;
     min-width: 124px;
     height: inherit;
-    cursor: pointer;
-    /* padding: 0 24px; */
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 17px;
-    opacity: 0.7;
 `;
-const NavNoticeIcon = styled.div`
+
+const NavNoticeBox = styled(motion.div)<{ $dropMenuFlag: boolean }>`
+    opacity: ${(props) => (props.$dropMenuFlag ? '0.3' : '1')};
+    padding: 10px;
+    cursor: pointer;
+    height: inherit;
+    width: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.2s ease-in-out;
+`;
+
+const NavNoticeIcon = styled(motion.div)`
+    opacity: 0.7;
     margin-right: 6px;
 `;
 
-const NavNoticeTitle = styled.span`
+const NavNoticeTitle = styled(motion.span)`
+    opacity: 0.7;
     font-size: 15px;
     font-weight: bold;
 `;
 
-const NavNoticeVari = {
-    hover: {
-        opacity: 0.3,
-    },
+const NavNoticeDownMenu = styled(motion.div)`
+    position: absolute;
+    border-radius: 10px;
+    top: 60px;
+    right: 25px;
+    height: 400px;
+    width: 348px;
+    background-color: #fff;
+    z-index: -1000;
+    box-shadow: 0 2px 12px 0 rgba(37, 42, 49, 0.08), 0 2px 5px 0 rgba(37, 42, 49, 0.15);
+    overflow: auto;
+`;
+
+const NavNoticeDropMenuVari = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
 };
 
-console.log(process.env.MYGITHUB);
+//Nav Notice DropMenu
+const DropMenuHeader = styled.div`
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+`;
+const DropMenuTitle = styled.p`
+    font-size: 16px;
+    font-weight: 700;
+`;
+const DropMenuLink = styled.a`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #1772f8;
+    cursor: pointer;
+`;
+
+const DropMenuLinkIcon = styled.span`
+    margin-left: 3px;
+    font-size: 14px;
+`;
+const DropMenuScrollable = styled.div<{ headerHeight: number }>`
+    margin-top: 16px;
+    height: calc(400px - ${(props) => props.headerHeight}px);
+    display: flex;
+    flex-direction: column;
+`;
+const DropMenuList = styled.ul`
+    margin: 0;
+    padding: 0 24px;
+    list-style: none;
+`;
+const DropMenuItem = styled.li`
+    cursor: pointer;
+    margin-bottom: 30px;
+`;
+const DropMenuNoticeLink = styled.a``;
+
+const NoticeTagDateBox = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+`;
+const NoticeTag = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 400;
+    background-color: #f8f8f9;
+    color: #484d55;
+`;
+const NoticeDate = styled.div`
+    margin-left: 6px;
+    padding-top: 2px;
+    font-size: 14px;
+    color: #aeb3bb;
+`;
+const NoticeTitle = styled(motion.p)`
+    position: relative;
+    font-size: 15px;
+    color: #18191c;
+    line-height: 1.79;
+`;
+
+const NoticeNew = styled.span`
+    position: absolute;
+    top: -6px;
+    color: #1772f8;
+    font-size: 21px;
+`;
+
 //Nav Component
 function Nav() {
+    // NavDropMenu State
+    const [dropMenuFlag, setDropMenuFlag] = useState(false);
+    const chkMenuFlag = () => setDropMenuFlag((prev) => !prev);
+    const testRef = useRef<HTMLDivElement>(null);
+    const dropMenuHeaderH = testRef.current?.clientHeight;
+
     return (
         <Navbar>
             <NavInner>
@@ -154,12 +269,7 @@ function Nav() {
                 {/* 메뉴 */}
                 <NavMenu>
                     <AnimatePresence>
-                        <NavItem
-                            variants={NavItemVari}
-                            initial="start"
-                            whileHover="end"
-                            exit="  backgroundColor: 'none',"
-                        >
+                        <NavItem variants={NavItemVari} initial="start" whileHover="end">
                             <Link to="/">거래소</Link>
                         </NavItem>
                         {/* <NavItem>
@@ -179,11 +289,76 @@ function Nav() {
                         </NavAdLink>
                     </NavAd>
                     {/* 공지사항 */}
-                    <NavNotice variants={NavNoticeVari} whileHover="hover">
-                        <NavNoticeIcon>
-                            <FaRegPaperPlane />
-                        </NavNoticeIcon>
-                        <NavNoticeTitle>공지사항</NavNoticeTitle>
+                    <NavNotice onMouseEnter={chkMenuFlag} onMouseLeave={chkMenuFlag}>
+                        <NavNoticeBox $dropMenuFlag={dropMenuFlag}>
+                            <NavNoticeIcon>
+                                <FaRegPaperPlane />
+                            </NavNoticeIcon>
+                            <NavNoticeTitle>공지사항</NavNoticeTitle>
+                        </NavNoticeBox>
+                        {dropMenuFlag && (
+                            <NavNoticeDownMenu
+                                variants={NavNoticeDropMenuVari}
+                                initial="initial"
+                                animate="animate"
+                            >
+                                <DropMenuHeader ref={testRef}>
+                                    <DropMenuTitle>공지사항</DropMenuTitle>
+                                    <DropMenuLink href="/notice">
+                                        더보기
+                                        <DropMenuLinkIcon>
+                                            <FaAlignJustify />
+                                        </DropMenuLinkIcon>
+                                    </DropMenuLink>
+                                </DropMenuHeader>
+                                <DropMenuScrollable headerHeight={Number(dropMenuHeaderH)}>
+                                    <DropMenuList>
+                                        <DropMenuItem>
+                                            <DropMenuNoticeLink href="/notice/content1">
+                                                <NoticeTagDateBox>
+                                                    <NoticeTag>상장</NoticeTag>
+                                                    <NoticeDate>2022.06.29</NoticeDate>
+                                                </NoticeTagDateBox>
+                                                <NoticeTitle whileHover={{ opacity: 0.5 }}>
+                                                    거래지원 종료 안내: BIOT
+                                                    <NoticeNew>
+                                                        <MdOutlineFiberNew />
+                                                    </NoticeNew>
+                                                </NoticeTitle>
+                                            </DropMenuNoticeLink>
+                                        </DropMenuItem>
+                                        <DropMenuItem>
+                                            <NoticeTagDateBox>
+                                                <NoticeTag>상장</NoticeTag>
+                                                <NoticeDate>2022.06.29</NoticeDate>
+                                            </NoticeTagDateBox>
+                                            <NoticeTitle>거래지원 종료 안내: BIOT</NoticeTitle>
+                                        </DropMenuItem>
+                                        <DropMenuItem>
+                                            <NoticeTagDateBox>
+                                                <NoticeTag>상장</NoticeTag>
+                                                <NoticeDate>2022.06.29</NoticeDate>
+                                            </NoticeTagDateBox>
+                                            <NoticeTitle>거래지원 종료 안내: BIOT</NoticeTitle>
+                                        </DropMenuItem>
+                                        <DropMenuItem>
+                                            <NoticeTagDateBox>
+                                                <NoticeTag>상장</NoticeTag>
+                                                <NoticeDate>2022.06.29</NoticeDate>
+                                            </NoticeTagDateBox>
+                                            <NoticeTitle>거래지원 종료 안내: BIOT</NoticeTitle>
+                                        </DropMenuItem>
+                                        <DropMenuItem>
+                                            <NoticeTagDateBox>
+                                                <NoticeTag>상장</NoticeTag>
+                                                <NoticeDate>2022.06.29</NoticeDate>
+                                            </NoticeTagDateBox>
+                                            <NoticeTitle>거래지원 종료 안내: BIOT</NoticeTitle>
+                                        </DropMenuItem>
+                                    </DropMenuList>
+                                </DropMenuScrollable>
+                            </NavNoticeDownMenu>
+                        )}
                     </NavNotice>
                 </NavContents>
             </NavInner>
