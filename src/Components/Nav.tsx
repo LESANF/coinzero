@@ -9,6 +9,7 @@ const Navbar = styled.nav`
     left: 0;
     right: 0;
     height: 68px;
+    width: 100vw;
     background-color: #fff;
     min-width: 500px;
     z-index: 1000;
@@ -19,10 +20,14 @@ const Navbar = styled.nav`
 `;
 
 const NavInner = styled.div`
-    margin: 0 0 0 233px;
+    /* margin: 0 0 0 233px;
     width: inherit;
-    height: inherit;
+    height: inherit; */
     display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    height: 100%;
+    max-width: 1440px;
     align-items: center;
 `;
 
@@ -43,7 +48,7 @@ const NavMenu = styled.ul`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 0 0 40px;
+    margin: 0 0 0 24px;
     font-size: 16px;
 `;
 
@@ -114,7 +119,7 @@ const NavNotice = styled(motion.div)`
     min-width: 124px;
     height: inherit;
     cursor: pointer;
-    padding: 0 24px;
+    /* padding: 0 24px; */
     display: flex;
     justify-content: center;
     align-items: center;
