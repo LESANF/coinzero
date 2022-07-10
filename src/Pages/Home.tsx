@@ -1,6 +1,7 @@
 import Footer from '../Components/Footer';
 import Nav from '../Components/Nav';
 import styled from 'styled-components';
+import BannerCover from '../Components/\bBannerCover';
 
 const NavTitle = styled.span`
     background: linear-gradient(to right bottom, #4147ff, #91c4ff);
@@ -21,7 +22,7 @@ function Home() {
         <>
             <Nav />
             <TestHome>
-                <NavTitle>Home</NavTitle>
+                <BannerCover></BannerCover>
             </TestHome>
             <Footer />
         </>

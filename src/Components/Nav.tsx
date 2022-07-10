@@ -296,6 +296,7 @@ function Nav() {
                             </NavNoticeIcon>
                             <NavNoticeTitle>공지사항</NavNoticeTitle>
                         </NavNoticeBox>
+                        {/* 공지사항 Hover DropDown Menu */}
                         {dropMenuFlag && (
                             <NavNoticeDownMenu
                                 variants={NavNoticeDropMenuVari}
