@@ -28,6 +28,10 @@ const GlobalStyles = createGlobalStyle`
     text-decoration:none;
     color:#000;
   }
+
+  div{
+    box-sizing:border-box ;
+  }
 `;
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

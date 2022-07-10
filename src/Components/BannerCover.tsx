@@ -4,15 +4,68 @@ import { Swiper, SwiperSlide } from '../../node_modules/swiper/react/swiper-reac
 import '../../node_modules/swiper/swiper.scss'; // core Swiper
 import '../../node_modules/swiper/modules/navigation/navigation.scss'; // Navigation module
 import '../../node_modules/swiper/modules/pagination/pagination.scss'; // Pagination module
+import { motion } from 'framer-motion';
 import { useRef, useState } from 'react';
 
 const MainBanner = styled.div`
     background-color: gray;
     width: 100vw;
-    height: 400px;
+    height: 274px;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+`;
+
+const BannerHeader = styled.div`
+    height: 30px;
+    background-color: green;
+    display: flex;
+    justify-content: center;
     align-items: center;
 `;
+
+const KeywordList = styled.ul`
+    display: flexs;
+`;
+const Keyword = styled.li`
+    &:first-child {
+        margin: 0;
+    }
+    margin-left: 10px;
+`;
+
+const BannerBody = styled.div`
+    height: 164px;
+    background-color: yellow;
+`;
+
+const BannerContents = styled.div`
+    width: 100%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const Content = styled(motion.div)`
+    width: 589px;
+    height: 164px;
+`;
+
+const contentVari = {
+    initial: {
+        opacity: 0.2,
+    },
+    active: {
+        opacity: 1,
+        transition: {
+            delay: 1,
+        },
+    },
+    noneActive: {
+        opacity: 0.2,
+    },
+};
 
 {
     /* <Swiper
@@ -49,9 +102,9 @@ const MainBanner = styled.div`
 
 const swiperStyle = {
     // height: '100%',
-    backgroundColor: 'red',
     fontSize: '100px',
     color: 'blue',
+    margin: 0,
 };
 
 const swiperSlideStyle = {
@@ -59,26 +112,54 @@ const swiperSlideStyle = {
 };
 
 function BannerCover() {
-    const sliderRef = useRef<any>(null);
-    console.log(sliderRef.current?.className);
     return (
         <MainBanner>
-            <Swiper
-                modules={[Autoplay]}
-                loop={true}
-                slidesPerView={3}
-                spaceBetween={10}
-                autoplay={{ delay: 2000 }}
-                speed={1500}
-                centeredSlides={true}
-                style={swiperStyle}
-            >
-                {[1, 2, 3, 4, 5].map((v) => (
-                    <SwiperSlide style={swiperSlideStyle}>
-                        {({ isActive }) => <span style={{ opacity: isActive ? 1 : 0.2 }}>{v}</span>}
-                    </SwiperSlide>
-                ))}
-            </Swiper>
+            <BannerHeader>
+                <button>ㅁ</button>
+                <KeywordList>
+                    {['keyword1', 'keyword2', 'keyword3', 'keyword4', 'keyword5'].map((v) => (
+                        <Keyword>{`# ${v}`}</Keyword>
+                    ))}
+                </KeywordList>
+            </BannerHeader>
+            <BannerBody>
+                <Swiper
+                    modules={[Autoplay]}
+                    loop={true}
+                    slidesPerView={3}
+                    spaceBetween={10}
+                    autoplay={{ delay: 2500 }}
+                    speed={550}
+                    centeredSlides={true}
+                    style={swiperStyle}
+                >
+                    {[1, 2, 3, 4, 5].map((v, i) => (
+                        <SwiperSlide key={i} style={swiperSlideStyle}>
+                            {({ isActive }) => (
+                                <BannerContents>
+                                    <Content
+                                        variants={contentVari}
+                                        initial="initial"
+                                        animate={isActive ? 'active' : 'noneActive'}
+                                    >
+                                        <div style={{ display: 'flex', height: '100%' }}>
+                                            <div style={{ width: '50%' }}>text</div>
+                                            <div
+                                                style={{
+                                                    backgroundImage: `url(${'https://image-public.coinone.co.kr/_data/images/banner_web_notice_terms.png'})`,
+                                                    width: '50%',
+                                                    backgroundSize: 'cover',
+                                                    backgroundPosition: 'center center',
+                                                }}
+                                            ></div>
+                                        </div>
+                                    </Content>
+                                </BannerContents>
+                            )}
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </BannerBody>
         </MainBanner>
     );
 }
