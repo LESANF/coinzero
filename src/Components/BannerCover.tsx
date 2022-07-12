@@ -10,10 +10,15 @@ import { useRef, useState } from 'react';
 const MainBanner = styled.div`
     background-color: gray;
     width: 100vw;
+    min-width: 1920px;
     height: 274px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    @media screen and (max-width: 500px) {
+        display: none;
+    }
 `;
 
 const BannerHeader = styled.div`
@@ -128,7 +133,7 @@ function BannerCover() {
                     loop={true}
                     slidesPerView={3}
                     spaceBetween={10}
-                    autoplay={{ delay: 2500 }}
+                    autoplay={{ delay: 4000 }}
                     speed={550}
                     centeredSlides={true}
                     style={swiperStyle}
@@ -142,12 +147,13 @@ function BannerCover() {
                                         initial="initial"
                                         animate={isActive ? 'active' : 'noneActive'}
                                     >
-                                        <div style={{ display: 'flex', height: '100%' }}>
-                                            <div style={{ width: '50%' }}>text</div>
+                                        <div style={{ display: 'flex', height: '100%', minWidth: '589px' }}>
+                                            <div style={{ width: '50%', minWidth: '294px' }}>text</div>
                                             <div
                                                 style={{
                                                     backgroundImage: `url(${'https://image-public.coinone.co.kr/_data/images/banner_web_notice_terms.png'})`,
                                                     width: '50%',
+                                                    minWidth: '294px',
                                                     backgroundSize: 'cover',
                                                     backgroundPosition: 'center center',
                                                 }}
