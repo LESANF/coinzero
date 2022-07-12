@@ -1,7 +1,7 @@
 import Footer from '../Components/Footer';
 import Nav from '../Components/Nav';
 import styled from 'styled-components';
-import BannerCover from '../Components/\bBannerCover';
+import BannerCover from '../Components/BannerCover';
 
 const NavTitle = styled.span`
     background: linear-gradient(to right bottom, #4147ff, #91c4ff);
