@@ -8,9 +8,11 @@ import { motion } from 'framer-motion';
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
 import { useEffect, useRef, useState } from 'react';
 import { SwiperModule } from 'swiper/types';
+import { BannerDummyContents } from '../DummyData';
+import { url } from 'inspector';
 
 const MainBanner = styled.div`
-    background-color: gray;
+    background-color: black;
     width: 100vw;
     min-width: 1920px;
     height: 274px;
@@ -26,7 +28,8 @@ const MainBanner = styled.div`
 //Banner
 const BannerHeader = styled.div`
     height: 30px;
-    background-color: green;
+    margin-bottom: 30px;
+    /* background-color: green; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,6 +39,8 @@ const KeywordList = styled.ul`
     display: flex;
 `;
 const Keyword = styled.li`
+    cursor: pointer;
+    color: #fff;
     &:first-child {
         margin: 0;
     }
@@ -43,6 +48,7 @@ const Keyword = styled.li`
 `;
 
 const BannerBody = styled.div`
+    cursor: pointer;
     position: relative;
     height: 164px;
     background-color: yellow;
@@ -71,12 +77,31 @@ const ContentBox = styled.div`
 const ContentText = styled.div`
     width: 50%;
     min-width: 294px;
+    display: grid;
+    grid-template-rows: 1.2fr 2fr;
 `;
 
-const ContentImg = styled.div`
+const ContentTitle = styled.div`
+    color: #1772f8;
+    font-weight: 700;
+    font-size: 20px;
+    text-align: left;
+    padding-top: 18px;
+`;
+const ContentSummary = styled.div`
+    font-size: 14px;
+    color: #fff;
+    opacity: 0.85;
+    padding-right: 91px;
+    letter-spacing: 1px;
+    line-height: 19px;
+`;
+
+const ContentImg = styled.div<{ imgUrl: string }>`
     width: 50%;
     min-width: '294px';
-    background-image: url('https://image-public.coinone.co.kr/_data/images/banner_web_notice_terms.png');
+    border-radius: 10px;
+    background-image: ${(props) => `url(${props.imgUrl})`};
     background-size: cover;
     background-position: center center;
 `;
@@ -121,39 +146,6 @@ const contentVari = {
     },
 };
 
-{
-    /* <Swiper
-                modules={[Autoplay, EffectCoverflow]}
-                grabCursor={true}
-                centeredSlides={true}
-                effect="coverflow"
-                style={{ height: '360px' }}
-                coverflowEffect={{
-                    rotate: 10,
-                }}
-                loop={true}
-                spaceBetween={50}
-                slidesPerView={4}
-                autoplay={{ delay: 1000 }}
-            >
-                {[1, 2, 3, 4, 5].map((v, i) => {
-                    return (
-                        <SwiperSlide
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                fontSize: '36px',
-                            }}
-                            key={i}
-                        >
-                            {v}
-                        </SwiperSlide>
-                    );
-                })}
-            </Swiper> */
-}
-
 //swiper style obj
 const swiperStyle = {
     // height: '100%',
@@ -167,10 +159,26 @@ const swiperSlideStyle = {
 };
 
 function BannerCover() {
+    //get Dummy Data
+    const bannerContents = BannerDummyContents();
+
+    //Swiper Props, custom Navigation
     const prevRef = useRef(null);
     const nextRef = useRef(null);
 
-    //Swiper Props, custom Navigation
+    //slideTo
+    const [keyWordSwiper, setKeyWordSwiper] = useState<SwiperCore>();
+
+    const handleKeyWordClick = () => {
+        // if(keyWordSwiper) keyWordSwiper.slideTo()
+        // console.log(keyWordSwiper);
+        keyWordSwiper?.slideTo(0, 1000);
+    };
+    const handleKeyWord = (activeIdx: number) => {
+        // console.log(activeIdx);
+        console.log('sliding');
+    };
+
     const [swiperSetting, setSwiperSetting] = useState<SwiperModule | null>(null);
     useEffect(() => {
         if (!swiperSetting) {
@@ -199,17 +207,22 @@ function BannerCover() {
     return (
         <MainBanner>
             <BannerHeader>
-                <button>ㅁ</button>
+                <button style={{ marginRight: '22px' }}>ㅁ</button>
                 <KeywordList>
-                    {['keyword1', 'keyword2', 'keyword3', 'keyword4', 'keyword5'].map((v, i) => (
-                        <Keyword key={i}>{`# ${v}`}</Keyword>
+                    {bannerContents.result.map((v, i) => (
+                        <Keyword onClick={handleKeyWordClick} key={i}>{`# ${v.title}`}</Keyword>
                     ))}
                 </KeywordList>
             </BannerHeader>
             <BannerBody>
                 {swiperSetting && (
-                    <Swiper {...swiperSetting} style={swiperStyle}>
-                        {[1, 2, 3, 4, 5].map((v, i) => (
+                    <Swiper
+                        {...swiperSetting}
+                        style={swiperStyle}
+                        onSwiper={setKeyWordSwiper}
+                        onSlideChange={(swiper) => handleKeyWord(swiper.activeIndex)}
+                    >
+                        {bannerContents.result.map((v, i) => (
                             <SwiperSlide key={i} style={swiperSlideStyle}>
                                 {({ isActive }) => (
                                     <BannerContents>
@@ -219,8 +232,11 @@ function BannerCover() {
                                             animate={isActive ? 'active' : 'noneActive'}
                                         >
                                             <ContentBox>
-                                                <ContentText>text</ContentText>
-                                                <ContentImg></ContentImg>
+                                                <ContentText>
+                                                    <ContentTitle>{v.innerTitle}</ContentTitle>
+                                                    <ContentSummary>{v.innerSummary}</ContentSummary>
+                                                </ContentText>
+                                                <ContentImg imgUrl={v.urlImg} />
                                             </ContentBox>
                                         </Contents>
                                     </BannerContents>
