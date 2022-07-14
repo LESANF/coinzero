@@ -6,7 +6,8 @@ import '../../node_modules/swiper/modules/navigation/navigation.scss'; // Naviga
 import '../../node_modules/swiper/modules/pagination/pagination.scss'; // Pagination module
 import { motion } from 'framer-motion';
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
-import { useEffect, useRef, useState } from 'react';
+import { FiChevronDown } from 'react-icons/fi';
+import React, { useEffect, useRef, useState } from 'react';
 import { SwiperModule } from 'swiper/types';
 import { BannerDummyContents } from '../DummyData';
 import { url } from 'inspector';
@@ -38,13 +39,16 @@ const BannerHeader = styled.div`
 const KeywordList = styled.ul`
     display: flex;
 `;
-const Keyword = styled.li`
+const Keyword = styled.li<{ isActive: number; idx: number }>`
     cursor: pointer;
     color: #fff;
+    opacity: ${(props) => (props.isActive !== props.idx ? '0.3' : 1)};
+    border-bottom: ${(props) => (props.isActive === props.idx ? '2px solid #fff' : 'none')};
+    padding: 10px 0 5px 0;
     &:first-child {
         margin: 0;
     }
-    margin-left: 10px;
+    margin-left: 15px;
 `;
 
 const BannerBody = styled.div`
@@ -168,14 +172,12 @@ function BannerCover() {
 
     //slideTo
     const [keyWordSwiper, setKeyWordSwiper] = useState<SwiperCore>();
+    const [slideActiveIdx, setSlideActiveIdx] = useState(0);
 
-    const handleKeyWordClick = () => {
-        // if(keyWordSwiper) keyWordSwiper.slideTo()
-        // console.log(keyWordSwiper);
-        keyWordSwiper?.slideTo(0, 1000);
+    const handleKeyWordClick = (i: number) => {
+        if (keyWordSwiper) keyWordSwiper.slideTo(i + 3, 1000);
     };
     const handleKeyWord = (activeIdx: number) => {
-        // console.log(activeIdx);
         console.log('sliding');
     };
 
@@ -207,10 +209,32 @@ function BannerCover() {
     return (
         <MainBanner>
             <BannerHeader>
-                <button style={{ marginRight: '22px' }}>ㅁ</button>
+                <button
+                    style={{
+                        marginRight: '22px',
+                        backgroundColor: 'transparent',
+                        border: '1px solid #fff',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '24px',
+                        width: '24px',
+                        borderRadius: '3px',
+                        cursor: 'pointer',
+                    }}
+                >
+                    <span style={{ color: '#fff', height: '13px', width: '13px' }}>
+                        <FiChevronDown />
+                    </span>
+                </button>
                 <KeywordList>
                     {bannerContents.result.map((v, i) => (
-                        <Keyword onClick={handleKeyWordClick} key={i}>{`# ${v.title}`}</Keyword>
+                        <Keyword
+                            onClick={() => handleKeyWordClick(i)}
+                            key={i}
+                            isActive={slideActiveIdx}
+                            idx={i}
+                        >{`# ${v.title}`}</Keyword>
                     ))}
                 </KeywordList>
             </BannerHeader>
@@ -220,7 +244,7 @@ function BannerCover() {
                         {...swiperSetting}
                         style={swiperStyle}
                         onSwiper={setKeyWordSwiper}
-                        onSlideChange={(swiper) => handleKeyWord(swiper.activeIndex)}
+                        onSlideChange={(swiper) => setSlideActiveIdx(swiper.realIndex)}
                     >
                         {bannerContents.result.map((v, i) => (
                             <SwiperSlide key={i} style={swiperSlideStyle}>
