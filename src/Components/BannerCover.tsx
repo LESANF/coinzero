@@ -12,6 +12,7 @@ import { SwiperModule } from 'swiper/types';
 import { BannerDummyContents } from '../DummyData';
 import { url } from 'inspector';
 
+//BannerFrame
 const MainBanner = styled.div`
     background-color: black;
     width: 100vw;
@@ -71,6 +72,24 @@ const Contents = styled(motion.div)`
     width: 589px;
     height: 164px;
 `;
+
+const contentVari = {
+    noneActiveInit: {
+        opacity: 0.2,
+    },
+    activeInit: {
+        opacity: 1,
+    },
+    active: {
+        opacity: 1,
+        transition: {
+            delay: 1,
+        },
+    },
+    noneActive: {
+        opacity: 0.2,
+    },
+};
 
 const ContentBox = styled.div`
     display: flex;
@@ -132,25 +151,26 @@ const NextBtn = styled.span`
     z-index: 10;
 `;
 
-const contentVari = {
-    noneActiveInit: {
-        opacity: 0.2,
-    },
-    activeInit: {
-        opacity: 1,
-    },
-    active: {
-        opacity: 1,
-        transition: {
-            delay: 1,
-        },
-    },
-    noneActive: {
-        opacity: 0.2,
-    },
-};
+//Banner Keyword List Btn
 
-//swiper style obj
+const KeyWordBtn = styled.button`
+    margin-right: 22px;
+    background-color: transparent;
+    border: 1px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 24px;
+    width: 24px;
+    border-radius: 3px;
+    cursor: pointer;
+`;
+const BtnMark = styled.span`
+    color: #fff;
+    height: 13px;
+    width: 13px;
+`;
+
 const swiperStyle = {
     // height: '100%',
     fontSize: '100px',
@@ -209,24 +229,11 @@ function BannerCover() {
     return (
         <MainBanner>
             <BannerHeader>
-                <button
-                    style={{
-                        marginRight: '22px',
-                        backgroundColor: 'transparent',
-                        border: '1px solid #fff',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '24px',
-                        width: '24px',
-                        borderRadius: '3px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    <span style={{ color: '#fff', height: '13px', width: '13px' }}>
+                <KeyWordBtn>
+                    <BtnMark>
                         <FiChevronDown />
-                    </span>
-                </button>
+                    </BtnMark>
+                </KeyWordBtn>
                 <KeywordList>
                     {bannerContents.result.map((v, i) => (
                         <Keyword
