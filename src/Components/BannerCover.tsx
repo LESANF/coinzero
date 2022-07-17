@@ -6,7 +6,7 @@ import '../../node_modules/swiper/modules/navigation/navigation.scss'; // Naviga
 import '../../node_modules/swiper/modules/pagination/pagination.scss'; // Pagination module
 import { motion } from 'framer-motion';
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
-import { FiChevronDown } from 'react-icons/fi';
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import React, { useEffect, useRef, useState } from 'react';
 import { SwiperModule } from 'swiper/types';
 import { BannerDummyContents } from '../DummyData';
@@ -152,8 +152,8 @@ const NextBtn = styled.span`
 `;
 
 //Banner Keyword List Btn
-
 const KeyWordBtn = styled.button`
+    position: relative;
     margin-right: 22px;
     background-color: transparent;
     border: 1px solid #fff;
@@ -171,6 +171,23 @@ const BtnMark = styled.span`
     width: 13px;
 `;
 
+const BtnKeyWordList = styled.ul<{ visible: boolean }>`
+    display: ${(props) => (props.visible ? 'block' : 'none')};
+    display: list-item;
+    position: absolute;
+    top: 28px;
+    right: 0;
+    width: 251px;
+    max-height: 256px;
+    padding: 18px 18px 15px;
+    border-radius: 3px;
+    box-shadow: 0 2px 3px 0 rgb(0 0 0 / 16%);
+    background-color: #fff;
+    z-index: 20;
+`;
+const BtnKeyWordItem = styled.li``;
+
+//Swiper
 const swiperStyle = {
     // height: '100%',
     fontSize: '100px',
@@ -189,6 +206,12 @@ function BannerCover() {
     //Swiper Props, custom Navigation
     const prevRef = useRef(null);
     const nextRef = useRef(null);
+
+    //Keyword Btn Active
+    const [btnActive, setBtnActive] = useState(false);
+    const handleBtnClick = () => {
+        setBtnActive((prev) => !prev);
+    };
 
     //slideTo
     const [keyWordSwiper, setKeyWordSwiper] = useState<SwiperCore>();
@@ -229,10 +252,20 @@ function BannerCover() {
     return (
         <MainBanner>
             <BannerHeader>
-                <KeyWordBtn>
-                    <BtnMark>
-                        <FiChevronDown />
-                    </BtnMark>
+                <KeyWordBtn onClick={handleBtnClick}>
+                    <BtnMark>{btnActive ? <FiChevronUp /> : <FiChevronDown />}</BtnMark>
+                    <BtnKeyWordList visible={btnActive}>
+                        <KeywordList>
+                            {bannerContents.result.map((v, i) => (
+                                <Keyword
+                                    onClick={() => handleKeyWordClick(i)}
+                                    key={i}
+                                    isActive={slideActiveIdx}
+                                    idx={i}
+                                >{`# ${v.title}`}</Keyword>
+                            ))}
+                        </KeywordList>
+                    </BtnKeyWordList>
                 </KeyWordBtn>
                 <KeywordList>
                     {bannerContents.result.map((v, i) => (
