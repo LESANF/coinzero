@@ -172,12 +172,11 @@ const BtnMark = styled.span`
 `;
 
 const BtnKeyWordList = styled.ul<{ visible: boolean }>`
-    display: ${(props) => (props.visible ? 'block' : 'none')};
-    display: list-item;
+    display: ${(props) => (props.visible ? 'list-item' : 'none')};
     position: absolute;
     top: 28px;
     right: 0;
-    width: 251px;
+    width: 186px;
     max-height: 256px;
     padding: 18px 18px 15px;
     border-radius: 3px;
@@ -185,7 +184,17 @@ const BtnKeyWordList = styled.ul<{ visible: boolean }>`
     background-color: #fff;
     z-index: 20;
 `;
-const BtnKeyWordItem = styled.li``;
+const BtnKeyWordItem = styled.li<{ isActive: number; idx: number }>`
+    cursor: pointer;
+    opacity: ${(props) => (props.isActive !== props.idx ? '0.2' : 1)};
+    font-size: 14px;
+    text-align: left;
+    font-weight: 700;
+    margin-top: 9px;
+    &:first-child {
+        margin: 0;
+    }
+`;
 
 //Swiper
 const swiperStyle = {
@@ -220,9 +229,6 @@ function BannerCover() {
     const handleKeyWordClick = (i: number) => {
         if (keyWordSwiper) keyWordSwiper.slideTo(i + 3, 1000);
     };
-    const handleKeyWord = (activeIdx: number) => {
-        console.log('sliding');
-    };
 
     const [swiperSetting, setSwiperSetting] = useState<SwiperModule | null>(null);
     useEffect(() => {
@@ -255,16 +261,14 @@ function BannerCover() {
                 <KeyWordBtn onClick={handleBtnClick}>
                     <BtnMark>{btnActive ? <FiChevronUp /> : <FiChevronDown />}</BtnMark>
                     <BtnKeyWordList visible={btnActive}>
-                        <KeywordList>
-                            {bannerContents.result.map((v, i) => (
-                                <Keyword
-                                    onClick={() => handleKeyWordClick(i)}
-                                    key={i}
-                                    isActive={slideActiveIdx}
-                                    idx={i}
-                                >{`# ${v.title}`}</Keyword>
-                            ))}
-                        </KeywordList>
+                        {bannerContents.result.map((v, i) => (
+                            <BtnKeyWordItem
+                                onClick={() => handleKeyWordClick(i)}
+                                key={i}
+                                isActive={slideActiveIdx}
+                                idx={i}
+                            >{`# ${v.title}`}</BtnKeyWordItem>
+                        ))}
                     </BtnKeyWordList>
                 </KeyWordBtn>
                 <KeywordList>
