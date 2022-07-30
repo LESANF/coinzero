@@ -22,9 +22,7 @@ const Navbar = styled.nav`
 `;
 
 const NavInner = styled.div`
-    /* margin: 0 0 0 233px;
-    width: inherit;
-    height: inherit; */
+    padding: 0 20px;
     display: flex;
     margin: 0 auto;
     height: 100%;
@@ -33,13 +31,12 @@ const NavInner = styled.div`
 `;
 
 //Nav Logo
-const NavTitle = styled.span`
+const NavTitle = styled.div`
     background: linear-gradient(to right bottom, #020bff, #9ccaff);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     font-size: 38px;
-    display: inline-block;
     cursor: pointer;
     flex-grow: 1;
 `;

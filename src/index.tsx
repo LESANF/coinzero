@@ -19,7 +19,7 @@ const GlobalStyles = createGlobalStyle`
   body{
     font-family: 'Spoqa Han Sans';
     background-color: peru ;
-    width: 100vw;
+    /* width: 100vw; */
     height: 100vh;
     overflow: auto;
   }

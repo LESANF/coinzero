@@ -14,9 +14,10 @@ import { url } from 'inspector';
 
 //BannerFrame
 const MainBanner = styled.div`
+    margin-top: 68px;
     background-color: black;
-    width: 100vw;
-    min-width: 1920px;
+    //width: 100vw;
+    //min-width: 1800px;
     height: 274px;
     display: flex;
     flex-direction: column;
@@ -56,11 +57,10 @@ const BannerBody = styled.div`
     cursor: pointer;
     position: relative;
     height: 164px;
-    background-color: yellow;
 `;
 
 const BannerContents = styled.div`
-    width: 100%;
+    /* width: 100%; */
     background-color: black;
     display: flex;
     justify-content: center;
@@ -94,12 +94,14 @@ const contentVari = {
 const ContentBox = styled.div`
     display: flex;
     height: 100%;
-    min-width: 589;
+    width: 589px;
+    min-width: 589px;
 `;
 
 const ContentText = styled.div`
-    width: 50%;
-    min-width: 294px;
+    /* width: 50%; */
+    width: 295px;
+    min-width: 295px;
     display: grid;
     grid-template-rows: 1.2fr 2fr;
 `;
@@ -121,8 +123,9 @@ const ContentSummary = styled.div`
 `;
 
 const ContentImg = styled.div<{ imgUrl: string }>`
-    width: 50%;
-    min-width: '294px';
+    /* width: 50%; */
+    min-width: 294px;
+    width: 294px;
     border-radius: 10px;
     background-image: ${(props) => `url(${props.imgUrl})`};
     background-size: cover;
@@ -198,7 +201,6 @@ const BtnKeyWordItem = styled.li<{ isActive: number; idx: number }>`
 
 //Swiper
 const swiperStyle = {
-    // height: '100%',
     fontSize: '100px',
     color: 'blue',
     margin: 0,
@@ -206,6 +208,7 @@ const swiperStyle = {
 
 const swiperSlideStyle = {
     backgroundColor: 'white',
+    width: '635px',
 };
 
 function BannerCover() {
@@ -234,7 +237,7 @@ function BannerCover() {
     useEffect(() => {
         if (!swiperSetting) {
             setSwiperSetting({
-                modules: [Autoplay, Navigation],
+                modules: [Navigation],
                 navigation: { prevEl: prevRef.current, nextEl: nextRef.current },
                 onBeforeInit: (swiper: SwiperCore) => {
                     if (typeof swiper.params.navigation !== 'boolean') {
@@ -246,7 +249,7 @@ function BannerCover() {
                     swiper.navigation.update();
                 },
                 loop: true,
-                slidesPerView: 3,
+                slidesPerView: 'auto',
                 autoplay: { delay: 4000, disableOnInteraction: false },
                 speed: 550,
                 centeredSlides: true,
@@ -320,7 +323,6 @@ function BannerCover() {
                     <MdArrowForwardIos />
                 </NextBtn>
             </BannerBody>
-            {/* <BannerProtector /> */}
         </MainBanner>
     );
 }
