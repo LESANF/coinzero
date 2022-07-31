@@ -67,6 +67,7 @@ function QuickSearch() {
     const [searchValue, setSearchValue] = useState('');
     const [coinInfo, setCoinInfo] = useState([]);
 
+    //인터페이스 정해줘야함
     const coinUpdate = async () => {
         const data = await getCoinInfo();
         let filterData = data.filter((v: any) => v.city.includes(searchValue)).slice(0, 10);

@@ -12,6 +12,7 @@ const MainFrame = styled.div`
     grid-template-columns: 4fr 6fr;
     background-color: red;
 
+    //웹뷰 형식 나중에 640으로 통일
     @media screen and (max-width: 640px) {
         display: none;
     }
