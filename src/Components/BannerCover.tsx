@@ -10,7 +10,6 @@ import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import React, { useEffect, useRef, useState } from 'react';
 import { SwiperModule } from 'swiper/types';
 import { BannerDummyContents } from '../DummyData';
-import { url } from 'inspector';
 
 //BannerFrame
 const MainBanner = styled.div`
@@ -230,14 +229,14 @@ function BannerCover() {
     const [slideActiveIdx, setSlideActiveIdx] = useState(0);
 
     const handleKeyWordClick = (i: number) => {
-        if (keyWordSwiper) keyWordSwiper.slideTo(i + 3, 1000);
+        if (keyWordSwiper) keyWordSwiper.slideTo(i, 1000);
     };
 
     const [swiperSetting, setSwiperSetting] = useState<SwiperModule | null>(null);
     useEffect(() => {
         if (!swiperSetting) {
             setSwiperSetting({
-                modules: [Navigation],
+                modules: [Autoplay, Navigation],
                 navigation: { prevEl: prevRef.current, nextEl: nextRef.current },
                 onBeforeInit: (swiper: SwiperCore) => {
                     if (typeof swiper.params.navigation !== 'boolean') {
