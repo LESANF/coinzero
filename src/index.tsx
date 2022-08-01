@@ -4,6 +4,10 @@ import App from './App';
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 import SpoqaRegular from './Styles/fonts/spoqa/SpoqaHanSansNeo-Regular.otf';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+
+const queryClient = new QueryClient();
 
 const GlobalStyles = createGlobalStyle`
   /*css-reset을 위한 GlobalStyle설정 */
@@ -37,7 +41,10 @@ const GlobalStyles = createGlobalStyle`
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
     <>
-        <GlobalStyles />
-        <App />
+        <QueryClientProvider client={queryClient}>
+            <GlobalStyles />
+            <App />
+            <ReactQueryDevtools />
+        </QueryClientProvider>
     </>
 );

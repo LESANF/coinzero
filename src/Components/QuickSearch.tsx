@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { CgSearch } from 'react-icons/cg';
 import React, { useEffect, useState } from 'react';
-import { getCoinInfo } from '../Api/coinInfo';
+import { getCoinInfo, getMarketCoin, ICoin } from '../Api/coinInfo';
+import { useQuery } from 'react-query';
 
 const MainLeftFrame = styled.div`
     display: flex;
@@ -65,14 +66,22 @@ const SearchIcon = styled.span`
 function QuickSearch() {
     //input value
     const [searchValue, setSearchValue] = useState('');
-    const [coinInfo, setCoinInfo] = useState([]);
+    const [coinInfo, setCoinInfo] = useState<ICoin[]>([]);
+    const { data, isLoading } = useQuery<ICoin[]>('CoinAll', getMarketCoin);
+    let filterKrw: any;
+    if (data) {
+        filterKrw = data.filter((v: any) => v.market.includes('KRW'));
+    }
 
     //인터페이스 정해줘야함
-    const coinUpdate = async () => {
-        const data = await getCoinInfo();
-        let filterData = data.filter((v: any) => v.city.includes(searchValue)).slice(0, 10);
-        setCoinInfo(filterData);
+    const coinUpdate = () => {
+        setCoinInfo(filterKrw.filter((v: ICoin) => v.market.toLowerCase().includes(searchValue)));
     };
+
+    // const getCoinAll = async () => {
+    //     const data = await getMarketCoin();
+    //     console.log(data);
+    // };
 
     //automatic search
     useEffect(() => {
@@ -85,7 +94,7 @@ function QuickSearch() {
     }, [searchValue]);
 
     const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(e.target.value);
+        setSearchValue(e.target.value.toLowerCase());
     };
 
     return (
@@ -105,9 +114,9 @@ function QuickSearch() {
                     <CgSearch />
                 </SearchIcon>
                 <ul>
-                    {coinInfo.map((v: any) => (
-                        <li key={v.city}>
-                            <h1>{v.city}</h1>
+                    {coinInfo.map((v: ICoin) => (
+                        <li key={v.market}>
+                            <h1>{v.market.split('-')[1]}</h1>
                         </li>
                     ))}
                 </ul>
