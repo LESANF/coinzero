@@ -3,7 +3,14 @@ import CoinRank from './CoinRank';
 import QuickSearch from './QuickSearch';
 
 const MainFrame = styled.div`
-    margin: 30px 120px auto;
+    display: flex;
+    flex-direction: column;
+    margin: 120px auto 0;
+    width: 1024px;
+    background-color: gray;
+`;
+
+const Frame = styled.div`
     min-height: 600px;
     height: 600px;
     min-width: 1024px;
@@ -21,8 +28,10 @@ const MainFrame = styled.div`
 function Main() {
     return (
         <MainFrame>
-            <QuickSearch />
-            <CoinRank />
+            <Frame>
+                <QuickSearch />
+                <CoinRank />
+            </Frame>
         </MainFrame>
     );
 }

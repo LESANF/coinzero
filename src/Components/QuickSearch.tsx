@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { CgSearch } from 'react-icons/cg';
+import { VscArrowSwap } from 'react-icons/vsc';
 import React, { useEffect, useState } from 'react';
-import { getCoinInfo, getMarketCoin, ICoin } from '../Api/coinInfo';
+import { getMarketCoin, ICoin } from '../Api/coinInfo';
 import { useQuery } from 'react-query';
 
 const MainLeftFrame = styled.div`
@@ -63,25 +64,79 @@ const SearchIcon = styled.span`
     color: #484d55;
 `;
 
+//Automatic Search
+const AutoSearch = styled.div`
+    position: absolute;
+    border-radius: 3px;
+    box-shadow: 0 3px 10px 0 rgb(66 66 66 / 5%);
+    width: 400px;
+    background-color: #fff;
+`;
+const CoinList = styled.ul<{ isLoading: boolean }>`
+    display: ${(props) => (props.isLoading ? 'none' : 'block')};
+    padding: 8px 0;
+`;
+
+const Coin = styled.li`
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    height: 56px;
+    font-size: 14px;
+    color: #18191c;
+`;
+
+const CoinName = styled.span`
+    display: flex;
+    flex-direction: column;
+`;
+const TickerName = styled.span`
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+`;
+
+const CoinIcon = styled.span`
+    margin-right: 4px;
+`;
+const CoinSymbol = styled.span``;
+
+const FullName = styled.span`
+    margin-top: 4px;
+    font-size: 12px;
+    color: #79818f;
+    text-align: left;
+`;
+
+const CoinPrice = styled.span`
+    flex: 1;
+    margin-left: 24px;
+    text-align: right;
+`;
+const CoinUpDown = styled.span`
+    width: 80px;
+    text-align: right;
+`;
+const CoinTrade = styled.span`
+    margin-left: 19px;
+    margin-right: 5px;
+`;
+
 function QuickSearch() {
     //input value
     const [searchValue, setSearchValue] = useState('');
     const [coinInfo, setCoinInfo] = useState<ICoin[]>([]);
     const { data, isLoading } = useQuery<ICoin[]>('CoinAll', getMarketCoin);
-    let filterKrw: any;
+    let filterKrw: ICoin[];
     if (data) {
-        filterKrw = data.filter((v: any) => v.market.includes('KRW'));
+        filterKrw = data.filter((v: ICoin) => v.market.includes('KRW'));
     }
 
-    //인터페이스 정해줘야함
     const coinUpdate = () => {
         setCoinInfo(filterKrw.filter((v: ICoin) => v.market.toLowerCase().includes(searchValue)));
     };
-
-    // const getCoinAll = async () => {
-    //     const data = await getMarketCoin();
-    //     console.log(data);
-    // };
 
     //automatic search
     useEffect(() => {
@@ -113,13 +168,37 @@ function QuickSearch() {
                 <SearchIcon>
                     <CgSearch />
                 </SearchIcon>
-                <ul>
-                    {coinInfo.map((v: ICoin) => (
-                        <li key={v.market}>
-                            <h1>{v.market.split('-')[1]}</h1>
-                        </li>
-                    ))}
-                </ul>
+                {!isLoading && searchValue.length > 0 ? (
+                    <AutoSearch>
+                        <CoinList isLoading={isLoading}>
+                            {coinInfo.slice(0, 5).map((v: ICoin) => (
+                                <Coin key={v.market} style={{ display: 'flex' }}>
+                                    <CoinName>
+                                        <TickerName>
+                                            <CoinIcon>
+                                                <img
+                                                    src={`https://static.upbit.com/logos/${v.market
+                                                        .split('-')[1]
+                                                        .toUpperCase()}.png`}
+                                                    alt={v.market.split('-')[1]}
+                                                    title={v.market.split('-')[1]}
+                                                    style={{ height: '14px', width: '14px' }}
+                                                />
+                                            </CoinIcon>
+                                            <CoinSymbol>{v.market.split('-')[1]}</CoinSymbol>
+                                        </TickerName>
+                                        <FullName>{v.korean_name}</FullName>
+                                    </CoinName>
+                                    <CoinPrice>45,600</CoinPrice>
+                                    <CoinUpDown>-4.92%</CoinUpDown>
+                                    <CoinTrade>
+                                        <VscArrowSwap />
+                                    </CoinTrade>
+                                </Coin>
+                            ))}
+                        </CoinList>
+                    </AutoSearch>
+                ) : null}
             </SearchZone>
         </MainLeftFrame>
     );
