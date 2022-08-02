@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { CgSearch } from 'react-icons/cg';
 import { VscArrowSwap } from 'react-icons/vsc';
 import React, { useEffect, useState } from 'react';
-import { getMarketCoin, ICoin } from '../Api/coinInfo';
+import { getMarketCoins, getDetailCoin, ICoin, ICoinDetail } from '../Api/coinInfo';
 import { useQuery } from 'react-query';
 
 const MainLeftFrame = styled.div`
@@ -110,14 +110,18 @@ const FullName = styled.span`
     text-align: left;
 `;
 
-const CoinPrice = styled.span`
+const CoinPrice = styled.span<{ upDownColor: string }>`
     flex: 1;
     margin-left: 24px;
     text-align: right;
+    color: ${(props) =>
+        props.upDownColor === 'RISE' ? 'red' : props.upDownColor === 'FALL' ? 'blue' : 'black'};
 `;
-const CoinUpDown = styled.span`
+const CoinUpDown = styled.span<{ upDownColor: string }>`
     width: 80px;
     text-align: right;
+    color: ${(props) =>
+        props.upDownColor === 'RISE' ? 'red' : props.upDownColor === 'FALL' ? 'blue' : 'black'};
 `;
 const CoinTrade = styled.span`
     margin-left: 19px;
@@ -127,15 +131,27 @@ const CoinTrade = styled.span`
 function QuickSearch() {
     //input value
     const [searchValue, setSearchValue] = useState('');
+    //KRW코인만 필터링
     const [coinInfo, setCoinInfo] = useState<ICoin[]>([]);
-    const { data, isLoading } = useQuery<ICoin[]>('CoinAll', getMarketCoin);
+    //현재가정보API 인자로 던져줄 코인리스트
+    const [coinAutoList, setCoinAutoList] = useState<string[]>([]);
+
+    //전체 코인 API
+    const { data, isLoading } = useQuery<ICoin[]>('CoinAll', getMarketCoins);
+    //현재가 코인 정보 API
+    const { data: detailCoin, isLoading: isLoadingDetail } = useQuery<ICoinDetail[] | null>(
+        ['CoinDetail', coinAutoList],
+        () => getDetailCoin(coinAutoList.join(','))
+    );
+
     let filterKrw: ICoin[];
     if (data) {
         filterKrw = data.filter((v: ICoin) => v.market.includes('KRW'));
     }
 
+    //input value로 필터링된 코인
     const coinUpdate = () => {
-        setCoinInfo(filterKrw.filter((v: ICoin) => v.market.toLowerCase().includes(searchValue)));
+        setCoinInfo(filterKrw.filter((v: ICoin) => v.market.toLowerCase().includes(searchValue)).slice(0, 5));
     };
 
     //automatic search
@@ -148,6 +164,17 @@ function QuickSearch() {
         return () => clearTimeout(debounce);
     }, [searchValue]);
 
+    //automatic coin price data
+    useEffect(() => {
+        if (coinInfo.length > 0) {
+            setCoinAutoList([]);
+            coinInfo.map((v) => {
+                setCoinAutoList((prev: string[]) => [...prev, v.market]);
+            });
+        }
+    }, [coinInfo]);
+
+    //input onChange event
     const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value.toLowerCase());
     };
@@ -168,10 +195,15 @@ function QuickSearch() {
                 <SearchIcon>
                     <CgSearch />
                 </SearchIcon>
-                {!isLoading && searchValue.length > 0 ? (
+                {!isLoading &&
+                searchValue.length > 0 &&
+                coinInfo.length > 0 &&
+                !isLoadingDetail &&
+                detailCoin !== null &&
+                detailCoin !== undefined ? (
                     <AutoSearch>
                         <CoinList isLoading={isLoading}>
-                            {coinInfo.slice(0, 5).map((v: ICoin) => (
+                            {coinInfo.map((v: ICoin) => (
                                 <Coin key={v.market} style={{ display: 'flex' }}>
                                     <CoinName>
                                         <TickerName>
@@ -189,8 +221,35 @@ function QuickSearch() {
                                         </TickerName>
                                         <FullName>{v.korean_name}</FullName>
                                     </CoinName>
-                                    <CoinPrice>45,600</CoinPrice>
-                                    <CoinUpDown>-4.92%</CoinUpDown>
+                                    <CoinPrice
+                                        upDownColor={
+                                            detailCoin.filter(
+                                                (obj: ICoinDetail) => obj.market === v.market
+                                            )[0] &&
+                                            detailCoin.filter(
+                                                (obj: ICoinDetail) => obj.market === v.market
+                                            )[0].change
+                                        }
+                                    >
+                                        {detailCoin.filter(
+                                            (obj: ICoinDetail) => obj.market === v.market
+                                        )[0] &&
+                                            detailCoin.filter(
+                                                (obj: ICoinDetail) => obj.market === v.market
+                                            )[0].trade_price}
+                                    </CoinPrice>
+                                    <CoinUpDown
+                                        upDownColor={
+                                            detailCoin.filter(
+                                                (obj: ICoinDetail) => obj.market === v.market
+                                            )[0] &&
+                                            detailCoin.filter(
+                                                (obj: ICoinDetail) => obj.market === v.market
+                                            )[0].change
+                                        }
+                                    >
+                                        -4.92%
+                                    </CoinUpDown>
                                     <CoinTrade>
                                         <VscArrowSwap />
                                     </CoinTrade>
