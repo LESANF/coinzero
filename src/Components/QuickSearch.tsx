@@ -115,13 +115,19 @@ const CoinPrice = styled.span<{ upDownColor: string }>`
     margin-left: 24px;
     text-align: right;
     color: ${(props) =>
-        props.upDownColor === 'RISE' ? 'red' : props.upDownColor === 'FALL' ? 'blue' : 'black'};
+        props.upDownColor === 'RISE' ? '#e12343' : props.upDownColor === 'FALL' ? '#1763b6' : 'black'};
 `;
-const CoinUpDown = styled.span<{ upDownColor: string }>`
+const CoinUpDown = styled.span<{ upDownColor: string; positiveChk: boolean }>`
     width: 80px;
     text-align: right;
     color: ${(props) =>
-        props.upDownColor === 'RISE' ? 'red' : props.upDownColor === 'FALL' ? 'blue' : 'black'};
+        props.upDownColor === 'RISE' ? '#e12343' : props.upDownColor === 'FALL' ? '#1763b6' : 'black'};
+    &:after {
+        content: ' %';
+    }
+    &:before {
+        content: '${(props) => (props.positiveChk ? '+' : '')}';
+    }
 `;
 const CoinTrade = styled.span`
     margin-left: 19px;
@@ -178,7 +184,7 @@ function QuickSearch() {
     const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value.toLowerCase());
     };
-
+    console.log(detailCoin);
     return (
         <MainLeftFrame>
             <HeaderTitle>
@@ -234,9 +240,9 @@ function QuickSearch() {
                                         {detailCoin.filter(
                                             (obj: ICoinDetail) => obj.market === v.market
                                         )[0] &&
-                                            detailCoin.filter(
-                                                (obj: ICoinDetail) => obj.market === v.market
-                                            )[0].trade_price}
+                                            detailCoin
+                                                .filter((obj: ICoinDetail) => obj.market === v.market)[0]
+                                                .trade_price.toLocaleString('ko-KR')}
                                     </CoinPrice>
                                     <CoinUpDown
                                         upDownColor={
@@ -247,8 +253,38 @@ function QuickSearch() {
                                                 (obj: ICoinDetail) => obj.market === v.market
                                             )[0].change
                                         }
+                                        positiveChk={
+                                            detailCoin.filter(
+                                                (obj: ICoinDetail) => obj.market === v.market
+                                            )[0] &&
+                                            ((detailCoin.filter(
+                                                (obj: ICoinDetail) => obj.market === v.market
+                                            )[0].trade_price -
+                                                detailCoin.filter(
+                                                    (obj: ICoinDetail) => obj.market === v.market
+                                                )[0].prev_closing_price) /
+                                                detailCoin.filter(
+                                                    (obj: ICoinDetail) => obj.market === v.market
+                                                )[0].prev_closing_price) *
+                                                100 >
+                                                0
+                                        }
                                     >
-                                        -4.92%
+                                        {detailCoin.filter(
+                                            (obj: ICoinDetail) => obj.market === v.market
+                                        )[0] &&
+                                            (
+                                                ((detailCoin.filter(
+                                                    (obj: ICoinDetail) => obj.market === v.market
+                                                )[0].trade_price -
+                                                    detailCoin.filter(
+                                                        (obj: ICoinDetail) => obj.market === v.market
+                                                    )[0].prev_closing_price) /
+                                                    detailCoin.filter(
+                                                        (obj: ICoinDetail) => obj.market === v.market
+                                                    )[0].prev_closing_price) *
+                                                100
+                                            ).toFixed(2)}
                                     </CoinUpDown>
                                     <CoinTrade>
                                         <VscArrowSwap />
