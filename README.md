@@ -24,7 +24,7 @@
 ##### [Coin List Detail]
 
 `코인 Symbol의 경우 아래의 싸이트이용`
-https://coinicons-api.vercel.app/api/icon/(코인이름 소문자로)
+https://coinicons-api.vercel.app/api/icon/(소문자)
 
 -   [ ] Coin Summary
 -   [ ] Coin Chart
