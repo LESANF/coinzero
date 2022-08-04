@@ -172,6 +172,7 @@ function QuickSearch() {
 
     //automatic coin price data
     useEffect(() => {
+        console.log('coinInfo Change');
         if (coinInfo.length > 0) {
             setCoinAutoList([]);
             coinInfo.map((v) => {
@@ -184,7 +185,7 @@ function QuickSearch() {
     const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value.toLowerCase());
     };
-    console.log(detailCoin);
+
     return (
         <MainLeftFrame>
             <HeaderTitle>
@@ -205,8 +206,7 @@ function QuickSearch() {
                 searchValue.length > 0 &&
                 coinInfo.length > 0 &&
                 !isLoadingDetail &&
-                detailCoin !== null &&
-                detailCoin !== undefined ? (
+                detailCoin ? (
                     <AutoSearch>
                         <CoinList isLoading={isLoading}>
                             {coinInfo.map((v: ICoin) => (
