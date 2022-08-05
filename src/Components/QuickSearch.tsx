@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { CgSearch } from 'react-icons/cg';
 import { VscArrowSwap } from 'react-icons/vsc';
 import React, { useEffect, useState } from 'react';
-import { getMarketCoins, getDetailCoin, ICoin, ICoinDetail } from '../Api/coinInfo';
+import { getMarketCoins, getDetailCoin, ICoin, ICoinDetail, IAssignCoin } from '../Api/coinInfo';
 import { useQuery } from 'react-query';
 
 const MainLeftFrame = styled.div`
@@ -142,6 +142,8 @@ function QuickSearch() {
     //현재가정보API 인자로 던져줄 코인리스트
     const [coinAutoList, setCoinAutoList] = useState<string[]>([]);
 
+    const [sumObj, setSumObj] = useState<IAssignCoin[]>([]);
+
     //전체 코인 API
     const { data, isLoading } = useQuery<ICoin[]>('CoinAll', getMarketCoins);
     //현재가 코인 정보 API
@@ -172,7 +174,6 @@ function QuickSearch() {
 
     //automatic coin price data
     useEffect(() => {
-        console.log('coinInfo Change');
         if (coinInfo.length > 0) {
             setCoinAutoList([]);
             coinInfo.map((v) => {
@@ -185,6 +186,15 @@ function QuickSearch() {
     const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value.toLowerCase());
     };
+
+    //coinInfo, detailCoin
+    if (detailCoin && detailCoin?.length > 0) {
+        for (let coins of coinInfo) {
+            for (let detail of detailCoin) {
+                if (coins.market === detail.market) setSumObj(Object.assign(coinInfo, detailCoin));
+            }
+        }
+    }
 
     return (
         <MainLeftFrame>
@@ -199,7 +209,7 @@ function QuickSearch() {
             </TradeCost>
             <SearchZone>
                 <SearchInput value={searchValue} onChange={inputChange} />
-                <SearchIcon>
+                {/* <SearchIcon>
                     <CgSearch />
                 </SearchIcon>
                 {!isLoading &&
@@ -293,7 +303,7 @@ function QuickSearch() {
                             ))}
                         </CoinList>
                     </AutoSearch>
-                ) : null}
+                ) : null} */}
             </SearchZone>
         </MainLeftFrame>
     );
