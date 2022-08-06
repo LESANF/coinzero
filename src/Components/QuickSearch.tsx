@@ -142,7 +142,7 @@ function QuickSearch() {
     //현재가정보API 인자로 던져줄 코인리스트
     const [coinAutoList, setCoinAutoList] = useState<string[]>([]);
 
-    const [sumObj, setSumObj] = useState<IAssignCoin[]>([]);
+    const [sumObj, setSumObj] = useState<any>([]);
 
     //전체 코인 API
     const { data, isLoading } = useQuery<ICoin[]>('CoinAll', getMarketCoins);
@@ -191,7 +191,8 @@ function QuickSearch() {
     if (detailCoin && detailCoin?.length > 0) {
         for (let coins of coinInfo) {
             for (let detail of detailCoin) {
-                if (coins.market === detail.market) setSumObj(Object.assign(coinInfo, detailCoin));
+                if (coins.market === detail.market)
+                    setSumObj((prev: any) => [...prev, Object.assign(coins, detail)]);
             }
         }
     }
