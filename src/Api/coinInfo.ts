@@ -68,6 +68,10 @@ export function getMarketCoins() {
     return fetch('https://api.upbit.com/v1/market/all').then((res) => res.json());
 }
 
+export function getBtcAccPrice() {
+    return fetch('https://api.upbit.com/v1/ticker?markets=KRW-BTC').then((res) => res.json());
+}
+
 export function getDetailCoin(coin: string) {
     if (coin) {
         return fetch(`https://api.upbit.com/v1/ticker?markets=${coin}`).then((res) => res.json());

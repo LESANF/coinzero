@@ -2,8 +2,16 @@ import styled from 'styled-components';
 import { CgSearch } from 'react-icons/cg';
 import { VscArrowSwap } from 'react-icons/vsc';
 import React, { useEffect, useState } from 'react';
-import { getMarketCoins, getDetailCoin, ICoin, ICoinDetail, IAssignCoin } from '../Api/coinInfo';
+import {
+    getMarketCoins,
+    getDetailCoin,
+    ICoin,
+    ICoinDetail,
+    IAssignCoin,
+    getBtcAccPrice,
+} from '../Api/coinInfo';
 import { useQuery } from 'react-query';
+import { Console } from 'console';
 
 const MainLeftFrame = styled.div`
     display: flex;
@@ -72,8 +80,7 @@ const AutoSearch = styled.div`
     width: 400px;
     background-color: #fff;
 `;
-const CoinList = styled.ul<{ isLoading: boolean }>`
-    display: ${(props) => (props.isLoading ? 'none' : 'block')};
+const CoinList = styled.ul`
     padding: 8px 0;
 `;
 
@@ -142,8 +149,6 @@ function QuickSearch() {
     //현재가정보API 인자로 던져줄 코인리스트
     const [coinAutoList, setCoinAutoList] = useState<string[]>([]);
 
-    const [sumObj, setSumObj] = useState<any>([]);
-
     //전체 코인 API
     const { data, isLoading } = useQuery<ICoin[]>('CoinAll', getMarketCoins);
     //현재가 코인 정보 API
@@ -151,21 +156,32 @@ function QuickSearch() {
         ['CoinDetail', coinAutoList],
         () => getDetailCoin(coinAutoList.join(','))
     );
+    //BTC 24시간 누적거래대금
+    const { data: btcAccPrice, isLoading: isLoadingBtc } = useQuery<any>('btcAccPrice', getBtcAccPrice);
 
     let filterKrw: ICoin[];
-    if (data) {
+    if (data && !isLoading) {
         filterKrw = data.filter((v: ICoin) => v.market.includes('KRW'));
     }
 
     //input value로 필터링된 코인
-    const coinUpdate = () => {
-        setCoinInfo(filterKrw.filter((v: ICoin) => v.market.toLowerCase().includes(searchValue)).slice(0, 5));
+    const coinUpdate = (keyWord: string) => {
+        setCoinInfo(
+            filterKrw
+                .filter((v: ICoin) => {
+                    return (
+                        v.market.toLowerCase().includes(keyWord.toLowerCase()) ||
+                        v.korean_name.includes(keyWord)
+                    );
+                })
+                .slice(0, 5)
+        );
     };
 
     //automatic search
     useEffect(() => {
         const debounce = setTimeout(() => {
-            if (searchValue) coinUpdate();
+            if (searchValue && searchValue.trim().length > 0) coinUpdate(searchValue);
             else setCoinInfo([]);
         }, 200);
 
@@ -176,26 +192,30 @@ function QuickSearch() {
     useEffect(() => {
         if (coinInfo.length > 0) {
             setCoinAutoList([]);
-            coinInfo.map((v) => {
-                setCoinAutoList((prev: string[]) => [...prev, v.market]);
-            });
+            coinInfo.map((v) => setCoinAutoList((prev: string[]) => [...prev, v.market]));
         }
     }, [coinInfo]);
 
     //input onChange event
     const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchValue(e.target.value.toLowerCase());
+        setSearchValue(e.target.value);
     };
 
-    //coinInfo, detailCoin
-    if (detailCoin && detailCoin?.length > 0) {
-        for (let coins of coinInfo) {
-            for (let detail of detailCoin) {
-                if (coins.market === detail.market)
-                    setSumObj((prev: any) => [...prev, Object.assign(coins, detail)]);
+    //combine coinInfo and detailCoin
+    const getCombine = (coinInfo: ICoin[], detailCoin: ICoinDetail[]) => {
+        let data = [];
+        for (let i = 0; i < coinInfo.length; i++) {
+            for (let j = 0; j < detailCoin?.length; j++) {
+                if (coinInfo[i].market === detailCoin[j].market)
+                    data.push(Object.assign(coinInfo[i], detailCoin[j]));
             }
         }
-    }
+
+        return data;
+    };
+
+    let combineObj: IAssignCoin[] = [];
+    if (detailCoin && !isLoadingDetail && !isLoading) combineObj = getCombine(coinInfo, detailCoin);
 
     return (
         <MainLeftFrame>
@@ -205,22 +225,22 @@ function QuickSearch() {
                 <strong style={{ fontWeight: '700' }}>개인 포트폴리오</strong>
             </HeaderTitle>
             <TradeCost>
-                <Cost>228,719,841,456</Cost>
-                <span style={{ fontSize: '12px' }}>(24시간 거래대금)</span>
+                <Cost>
+                    {!isLoadingBtc &&
+                        btcAccPrice &&
+                        btcAccPrice[0].acc_trade_price_24h.toLocaleString('ko-KR')}
+                </Cost>
+                <span style={{ fontSize: '10px' }}>(24시간 누적 거래대금 / 비트코인)</span>
             </TradeCost>
             <SearchZone>
                 <SearchInput value={searchValue} onChange={inputChange} />
-                {/* <SearchIcon>
+                <SearchIcon>
                     <CgSearch />
                 </SearchIcon>
-                {!isLoading &&
-                searchValue.length > 0 &&
-                coinInfo.length > 0 &&
-                !isLoadingDetail &&
-                detailCoin ? (
+                {combineObj && combineObj.length > 0 && (
                     <AutoSearch>
-                        <CoinList isLoading={isLoading}>
-                            {coinInfo.map((v: ICoin) => (
+                        <CoinList>
+                            {combineObj.map((v: IAssignCoin) => (
                                 <Coin key={v.market} style={{ display: 'flex' }}>
                                     <CoinName>
                                         <TickerName>
@@ -238,64 +258,21 @@ function QuickSearch() {
                                         </TickerName>
                                         <FullName>{v.korean_name}</FullName>
                                     </CoinName>
-                                    <CoinPrice
-                                        upDownColor={
-                                            detailCoin.filter(
-                                                (obj: ICoinDetail) => obj.market === v.market
-                                            )[0] &&
-                                            detailCoin.filter(
-                                                (obj: ICoinDetail) => obj.market === v.market
-                                            )[0].change
-                                        }
-                                    >
-                                        {detailCoin.filter(
-                                            (obj: ICoinDetail) => obj.market === v.market
-                                        )[0] &&
-                                            detailCoin
-                                                .filter((obj: ICoinDetail) => obj.market === v.market)[0]
-                                                .trade_price.toLocaleString('ko-KR')}
+                                    <CoinPrice upDownColor={v.change}>
+                                        {v.trade_price.toLocaleString('ko-KR')}
                                     </CoinPrice>
                                     <CoinUpDown
-                                        upDownColor={
-                                            detailCoin.filter(
-                                                (obj: ICoinDetail) => obj.market === v.market
-                                            )[0] &&
-                                            detailCoin.filter(
-                                                (obj: ICoinDetail) => obj.market === v.market
-                                            )[0].change
-                                        }
+                                        upDownColor={v.change}
                                         positiveChk={
-                                            detailCoin.filter(
-                                                (obj: ICoinDetail) => obj.market === v.market
-                                            )[0] &&
-                                            ((detailCoin.filter(
-                                                (obj: ICoinDetail) => obj.market === v.market
-                                            )[0].trade_price -
-                                                detailCoin.filter(
-                                                    (obj: ICoinDetail) => obj.market === v.market
-                                                )[0].prev_closing_price) /
-                                                detailCoin.filter(
-                                                    (obj: ICoinDetail) => obj.market === v.market
-                                                )[0].prev_closing_price) *
+                                            ((v.trade_price - v.prev_closing_price) / v.prev_closing_price) *
                                                 100 >
-                                                0
+                                            0
                                         }
                                     >
-                                        {detailCoin.filter(
-                                            (obj: ICoinDetail) => obj.market === v.market
-                                        )[0] &&
-                                            (
-                                                ((detailCoin.filter(
-                                                    (obj: ICoinDetail) => obj.market === v.market
-                                                )[0].trade_price -
-                                                    detailCoin.filter(
-                                                        (obj: ICoinDetail) => obj.market === v.market
-                                                    )[0].prev_closing_price) /
-                                                    detailCoin.filter(
-                                                        (obj: ICoinDetail) => obj.market === v.market
-                                                    )[0].prev_closing_price) *
-                                                100
-                                            ).toFixed(2)}
+                                        {(
+                                            ((v.trade_price - v.prev_closing_price) / v.prev_closing_price) *
+                                            100
+                                        ).toFixed(2)}
                                     </CoinUpDown>
                                     <CoinTrade>
                                         <VscArrowSwap />
@@ -304,7 +281,7 @@ function QuickSearch() {
                             ))}
                         </CoinList>
                     </AutoSearch>
-                ) : null} */}
+                )}
             </SearchZone>
         </MainLeftFrame>
     );
