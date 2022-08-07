@@ -148,7 +148,6 @@ function QuickSearch() {
     const [coinInfo, setCoinInfo] = useState<ICoin[]>([]);
     //현재가정보API 인자로 던져줄 코인리스트
     const [coinAutoList, setCoinAutoList] = useState<string[]>([]);
-
     //전체 코인 API
     const { data, isLoading } = useQuery<ICoin[]>('CoinAll', getMarketCoins);
     //현재가 코인 정보 API
@@ -157,7 +156,13 @@ function QuickSearch() {
         () => getDetailCoin(coinAutoList.join(','))
     );
     //BTC 24시간 누적거래대금
-    const { data: btcAccPrice, isLoading: isLoadingBtc } = useQuery<any>('btcAccPrice', getBtcAccPrice);
+    const { data: btcAccPrice, isLoading: isLoadingBtc } = useQuery<ICoinDetail[]>(
+        'btcAccPrice',
+        getBtcAccPrice,
+        {
+            //refetchInterval: 2000,
+        }
+    );
 
     let filterKrw: ICoin[];
     if (data && !isLoading) {
@@ -228,7 +233,7 @@ function QuickSearch() {
                 <Cost>
                     {!isLoadingBtc &&
                         btcAccPrice &&
-                        btcAccPrice[0].acc_trade_price_24h.toLocaleString('ko-KR')}
+                        Math.floor(btcAccPrice[0].acc_trade_price_24h).toLocaleString('ko-KR')}
                 </Cost>
                 <span style={{ fontSize: '10px' }}>(24시간 누적 거래대금 / 비트코인)</span>
             </TradeCost>
@@ -287,4 +292,4 @@ function QuickSearch() {
     );
 }
 
-export default QuickSearch;
+export default React.memo(QuickSearch);
