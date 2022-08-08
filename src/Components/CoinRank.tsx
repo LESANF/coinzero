@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { getDetailCoin, getMarketCoins, ICoin, ICoinDetail } from '../Api/coinInfo';
+import { getDetailCoin, getMarketCoins, IAssignCoin, ICoin, ICoinDetail } from '../Api/coinInfo';
+import { getCombineRank } from '../Utils/CombineCoinData';
 
 const MainRightFrame = styled.div`
     background-color: skyblue;
@@ -19,7 +20,6 @@ function CoinRank() {
     const [a, setA] = useState(false);
     useEffect(() => {
         if (data && !isLoading) {
-            console.log('in');
             filterKrw = data.filter((v: ICoin) => v.market.includes('KRW'));
             filterKrw.map((v) => test.push(v.market));
             setRankArg(test);
@@ -35,27 +35,29 @@ function CoinRank() {
         }
     );
 
-    // if (data && !isLoading) console.log('ㅇㅇ');
+    let combineObj: IAssignCoin[] = [];
+    if (detailCoin && !isLoadingDetail && !isLoading)
+        combineObj = getCombineRank(
+            detailCoin.sort((a, b) => b.acc_trade_price_24h - a.acc_trade_price_24h).slice(0, 7),
+            data
+        );
 
     return (
         <MainRightFrame>
             <ul>
-                {/* {data && !isLoading ? (
-                    data.slice(0, 8).map((v: any) => <li key={v.market}>{v.market}</li>)
+                {combineObj && combineObj.length > 0 ? (
+                    combineObj.map((v, i) => (
+                        //세가지로 랭크를 매겨야하는데 (현재가격(최대, 최소)-default / 등락률(최대, 최소) / 거래대금(최대, 최소))
+                        <li key={i}>
+                            {v.market} / {Math.floor(v.trade_price).toLocaleString('ko-KR')} / {v.korean_name}{' '}
+                            / {v.acc_trade_price_24h} /{' '}
+                            {(((v.trade_price - v.prev_closing_price) / v.prev_closing_price) * 100).toFixed(
+                                2
+                            )}
+                        </li>
+                    ))
                 ) : (
-                    <h1>Loading</h1>
-                )} */}
-                {rankArg && rankArg.length > 0 && !isLoadingDetail && detailCoin ? (
-                    detailCoin
-                        .sort((a, b) => b.acc_trade_price_24h - a.acc_trade_price_24h)
-                        .slice(0, 7)
-                        .map((v: any) => (
-                            <h1 key={v.market}>
-                                {v.trade_price}/{v.market}
-                            </h1>
-                        ))
-                ) : (
-                    <h1>Loading</h1>
+                    <li>Loading</li>
                 )}
             </ul>
         </MainRightFrame>

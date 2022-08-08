@@ -11,7 +11,7 @@ import {
     getBtcAccPrice,
 } from '../Api/coinInfo';
 import { useQuery } from 'react-query';
-import { Console } from 'console';
+import { getCombine } from '../Utils/CombineCoinData';
 
 const MainLeftFrame = styled.div`
     display: flex;
@@ -204,19 +204,6 @@ function QuickSearch() {
     //input onChange event
     const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value);
-    };
-
-    //combine coinInfo and detailCoin
-    const getCombine = (coinInfo: ICoin[], detailCoin: ICoinDetail[]) => {
-        let data = [];
-        for (let i = 0; i < coinInfo.length; i++) {
-            for (let j = 0; j < detailCoin?.length; j++) {
-                if (coinInfo[i].market === detailCoin[j].market)
-                    data.push(Object.assign(coinInfo[i], detailCoin[j]));
-            }
-        }
-
-        return data;
     };
 
     let combineObj: IAssignCoin[] = [];
