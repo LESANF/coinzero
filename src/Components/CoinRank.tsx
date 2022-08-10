@@ -66,10 +66,12 @@ const ItemList = styled.ul``;
 const ListHeader = styled.li`
     color: #aeb3bb;
     display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
 `;
 
 //표시기준
-const SignStandard = styled.div`
+const SignStandardHead = styled.div`
     display: flex;
     align-items: center;
     margin-right: 100px;
@@ -77,9 +79,6 @@ const SignStandard = styled.div`
 
 const SignText = styled.span`
     font-size: 14px;
-    &:before {
-        content: '\25B2';
-    }
 `;
 const SignSymbol = styled.span`
     margin-left: 5px;
@@ -88,25 +87,76 @@ const SignSymbol = styled.span`
 const SignTooltip = styled.div``;
 
 //현재가
-const CurPrice = styled.div`
+const CurPriceHead = styled.div`
     display: flex;
     align-items: center;
+    padding: 0 10px;
+    background-color: rgba(72, 77, 85, 0.05);
 `;
 const CurText = styled.span`
     font-size: 14px;
+    margin-right: 5px;
 `;
 const CurSortSymbol = styled.div`
     font-size: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
 `;
 
-const UpDownRate = styled.div``;
+//등락률
+const UpDownRateHead = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    background-color: rgba(72, 77, 85, 0.05);
+`;
+const UpDownText = styled.span`
+    font-size: 14px;
+    margin-right: 5px;
+`;
+const UpdownSymbol = styled.div`
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+`;
 
-const TradePrice = styled.div``;
+//거래량
+const TradePrice = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    background-color: rgba(72, 77, 85, 0.05);
+`;
+const TradeText = styled.span`
+    font-size: 14px;
+    margin-right: 5px;
+`;
+const TradeSymbol = styled.div`
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+`;
 
-const List = styled.li``;
+//Coin Rank List
+const List = styled.li`
+    display: flex;
+    justify-content: space-around;
+`;
+
+//Symbol and Name(eng, kor)
+const SignStandard = styled.div`
+    display: flex;
+`;
+
+const SignMark = styled.div``;
+
+const NameBox = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 
 function CoinRank() {
     const { data, isLoading } = useQuery('coinRank', getMarketCoins, { refetchOnWindowFocus: false });
@@ -155,19 +205,45 @@ function CoinRank() {
                 <RankBox>
                     <ItemList>
                         <ListHeader>
-                            <SignStandard>
+                            <SignStandardHead>
                                 <SignText>표시기준</SignText>
                                 <SignSymbol>
                                     <BsQuestionCircle />
                                 </SignSymbol>
-                            </SignStandard>
-                            <CurPrice>
+                            </SignStandardHead>
+                            <CurPriceHead>
                                 <CurText>현재가</CurText>
                                 <CurSortSymbol>
-                                    <AiFillCaretUp />
-                                    <AiFillCaretDown />
+                                    <span>
+                                        <AiFillCaretUp />
+                                    </span>
+                                    <span>
+                                        <AiFillCaretDown />
+                                    </span>
                                 </CurSortSymbol>
-                            </CurPrice>
+                            </CurPriceHead>
+                            <UpDownRateHead>
+                                <UpDownText>등락률</UpDownText>
+                                <UpdownSymbol>
+                                    <span>
+                                        <AiFillCaretUp />
+                                    </span>
+                                    <span>
+                                        <AiFillCaretDown />
+                                    </span>
+                                </UpdownSymbol>
+                            </UpDownRateHead>
+                            <TradePrice>
+                                <TradeText>거래량</TradeText>
+                                <TradeSymbol>
+                                    <span>
+                                        <AiFillCaretUp />
+                                    </span>
+                                    <span>
+                                        <AiFillCaretDown />
+                                    </span>
+                                </TradeSymbol>
+                            </TradePrice>
                         </ListHeader>
                         {combineObj && combineObj.length > 0 ? (
                             combineObj.map((v, i) => (
