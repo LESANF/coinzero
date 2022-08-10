@@ -5,7 +5,7 @@ import QuickSearch from './QuickSearch';
 const MainFrame = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 120px auto 0;
+    margin: 30px auto 0;
     width: 1024px;
     background-color: gray;
 `;
@@ -17,7 +17,7 @@ const Frame = styled.div`
     width: 1024px;
     display: grid;
     grid-template-columns: 4fr 6fr;
-    background-color: red;
+    background-color: #fff;
 
     //웹뷰 형식 나중에 640으로 통일
     @media screen and (max-width: 640px) {

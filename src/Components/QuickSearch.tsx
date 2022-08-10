@@ -16,7 +16,7 @@ import { getCombine } from '../Utils/CombineCoinData';
 const MainLeftFrame = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: pink;
+    background-color: #fff;
     width: 361px;
     min-width: 361px;
 `;
