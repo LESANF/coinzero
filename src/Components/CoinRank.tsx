@@ -47,7 +47,7 @@ const MoreLink = styled.a`
     color: #79818f;
 `;
 const LinkText = styled.span`
-    font-size: 14px;
+    font-size: 12px;
 `;
 const LinkLogo = styled.span`
     font-size: 15px;
@@ -66,7 +66,7 @@ const ItemList = styled.ul``;
 const ListHeader = styled.li`
     color: #aeb3bb;
     display: flex;
-    justify-content: space-around;
+    //justify-content: space-around;
     margin-bottom: 15px;
 `;
 
@@ -74,11 +74,12 @@ const ListHeader = styled.li`
 const SignStandardHead = styled.div`
     display: flex;
     align-items: center;
-    margin-right: 100px;
+    //flex-grow: 3.5;
+    width: 220px;
 `;
 
 const SignText = styled.span`
-    font-size: 14px;
+    font-size: 12px;
 `;
 const SignSymbol = styled.span`
     margin-left: 5px;
@@ -87,14 +88,19 @@ const SignSymbol = styled.span`
 const SignTooltip = styled.div``;
 
 //현재가
-const CurPriceHead = styled.div`
+const CurPriceHead = styled.div``;
+
+const CurPriceBtn = styled.button`
     display: flex;
     align-items: center;
+    border: none;
+    justify-content: flex-end;
     padding: 0 10px;
     background-color: rgba(72, 77, 85, 0.05);
 `;
+
 const CurText = styled.span`
-    font-size: 14px;
+    font-size: 12px;
     margin-right: 5px;
 `;
 const CurSortSymbol = styled.div`
@@ -105,14 +111,19 @@ const CurSortSymbol = styled.div`
 `;
 
 //등락률
-const UpDownRateHead = styled.div`
+const UpDownRateHead = styled.div``;
+
+const UpDownRateBtn = styled.button`
     display: flex;
     align-items: center;
+    border: none;
+    justify-content: flex-end;
     padding: 0 10px;
     background-color: rgba(72, 77, 85, 0.05);
 `;
+
 const UpDownText = styled.span`
-    font-size: 14px;
+    font-size: 12px;
     margin-right: 5px;
 `;
 const UpdownSymbol = styled.div`
@@ -123,14 +134,19 @@ const UpdownSymbol = styled.div`
 `;
 
 //거래량
-const TradePrice = styled.div`
+const TradePrice = styled.div``;
+
+const TradePriceBtn = styled.button`
     display: flex;
     align-items: center;
+    border: none;
+    justify-content: flex-end;
     padding: 0 10px;
     background-color: rgba(72, 77, 85, 0.05);
 `;
+
 const TradeText = styled.span`
-    font-size: 14px;
+    font-size: 12px;
     margin-right: 5px;
 `;
 const TradeSymbol = styled.div`
@@ -212,37 +228,43 @@ function CoinRank() {
                                 </SignSymbol>
                             </SignStandardHead>
                             <CurPriceHead>
-                                <CurText>현재가</CurText>
-                                <CurSortSymbol>
-                                    <span>
-                                        <AiFillCaretUp />
-                                    </span>
-                                    <span>
-                                        <AiFillCaretDown />
-                                    </span>
-                                </CurSortSymbol>
+                                <CurPriceBtn>
+                                    <CurText>현재가</CurText>
+                                    <CurSortSymbol>
+                                        <span>
+                                            <AiFillCaretUp />
+                                        </span>
+                                        <span>
+                                            <AiFillCaretDown />
+                                        </span>
+                                    </CurSortSymbol>
+                                </CurPriceBtn>
                             </CurPriceHead>
                             <UpDownRateHead>
-                                <UpDownText>등락률</UpDownText>
-                                <UpdownSymbol>
-                                    <span>
-                                        <AiFillCaretUp />
-                                    </span>
-                                    <span>
-                                        <AiFillCaretDown />
-                                    </span>
-                                </UpdownSymbol>
+                                <UpDownRateBtn>
+                                    <UpDownText>등락률</UpDownText>
+                                    <UpdownSymbol>
+                                        <span>
+                                            <AiFillCaretUp />
+                                        </span>
+                                        <span>
+                                            <AiFillCaretDown />
+                                        </span>
+                                    </UpdownSymbol>
+                                </UpDownRateBtn>
                             </UpDownRateHead>
                             <TradePrice>
-                                <TradeText>거래량</TradeText>
-                                <TradeSymbol>
-                                    <span>
-                                        <AiFillCaretUp />
-                                    </span>
-                                    <span>
-                                        <AiFillCaretDown />
-                                    </span>
-                                </TradeSymbol>
+                                <TradePriceBtn>
+                                    <TradeText>거래량</TradeText>
+                                    <TradeSymbol>
+                                        <span>
+                                            <AiFillCaretUp />
+                                        </span>
+                                        <span>
+                                            <AiFillCaretDown />
+                                        </span>
+                                    </TradeSymbol>
+                                </TradePriceBtn>
                             </TradePrice>
                         </ListHeader>
                         {combineObj && combineObj.length > 0 ? (
