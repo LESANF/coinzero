@@ -37,8 +37,8 @@ const HeaderTitle = styled.h2`
         width: 20px;
         height: 23px;
         margin-right: 8px;
-        background-image: url('https://coinone.co.kr/landing/assets/images/main/coin-ranking.svg');
-        //background-image: url('image/CoinRank.png');
+        //background-image: url('https://coinone.co.kr/landing/assets/images/main/coin-ranking.svg');
+        background-image: url('image/rankSvg.svg');
     }
 `;
 
