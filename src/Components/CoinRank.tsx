@@ -3,6 +3,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { AiFillCaretUp, AiFillCaretDown } from 'react-icons/ai';
 import { BsQuestionCircle } from 'react-icons/bs';
 import { VscArrowSwap } from 'react-icons/vsc';
+import { IoTriangleSharp } from 'react-icons/io5';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { getDetailCoin, getMarketCoins, IAssignCoin, ICoin, ICoinDetail } from '../Api/coinInfo';
@@ -331,7 +332,7 @@ function CoinRank() {
                                 </SignSymbol>
                             </SignStandardHead>
                             <CurPriceHead>
-                                <CurPriceBtn>
+                                <CurPriceBtn onClick={() => console.log('click cur price')}>
                                     <CurText>현재가</CurText>
                                     <CurSortSymbol>
                                         <span>
@@ -344,7 +345,7 @@ function CoinRank() {
                                 </CurPriceBtn>
                             </CurPriceHead>
                             <UpDownRateHead>
-                                <UpDownRateBtn>
+                                <UpDownRateBtn onClick={() => console.log('click UpDown')}>
                                     <UpDownText>등락률</UpDownText>
                                     <UpdownSymbol>
                                         <span>
@@ -357,7 +358,7 @@ function CoinRank() {
                                 </UpDownRateBtn>
                             </UpDownRateHead>
                             <TradePriceHead>
-                                <TradePriceBtn>
+                                <TradePriceBtn onClick={() => console.log('click Trade Price')}>
                                     <TradeText>거래대금</TradeText>
                                     <TradeSymbol>
                                         <span>

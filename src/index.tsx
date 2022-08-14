@@ -23,9 +23,7 @@ const GlobalStyles = createGlobalStyle`
   body{
     font-family: 'Spoqa Han Sans';
     background-color: #fff ;
-    /* width: 100vw; */
-    height: 100vh;
-    overflow: auto;
+    //overflow: auto;
   }
 
   a{
