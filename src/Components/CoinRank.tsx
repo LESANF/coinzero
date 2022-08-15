@@ -281,19 +281,24 @@ const TradeAcc = styled.span`
 function CoinRank() {
     const { data, isLoading } = useQuery('coinRank', getMarketCoins, { refetchOnWindowFocus: false });
     const [rankArg, setRankArg] = useState<any>([]);
-    let filterKrw: ICoin[];
-    let test: any = [];
-    let test2: any;
+    const [combineData, setCombineData] = useState<IAssignCoin[]>([]);
 
+    const [filterKrw, setFilterKrw] = useState<ICoin[]>([]);
+    const [filterMap, setFilterMap] = useState<any>([]);
+    let test: any = [];
     const [a, setA] = useState(false);
+
     useEffect(() => {
-        if (data && !isLoading) {
-            filterKrw = data.filter((v: ICoin) => v.market.includes('KRW'));
-            filterKrw.map((v) => test.push(v.market));
-            setRankArg(test);
+        if (data && data.length > 0 && !isLoading) {
+            console.log('useEffect Data');
+            console.log(data.filter((v: ICoin) => v.market.includes('KRW')));
+            setFilterKrw(data.filter((v: ICoin) => v.market.includes('KRW')));
+            console.log(filterKrw);
+            filterKrw.map((v) => setFilterMap((prev: any) => [...prev, v.market]));
+            setRankArg(filterMap);
             setA(true);
         }
-    }, [isLoading]);
+    }, [data]);
 
     const { data: detailCoin, isLoading: isLoadingDetail } = useQuery<ICoinDetail[] | null>(
         ['CoinDetailRight'],
@@ -303,12 +308,15 @@ function CoinRank() {
         }
     );
 
-    let combineObj: IAssignCoin[] = [];
-    if (detailCoin && !isLoadingDetail && !isLoading)
-        combineObj = getCombineRank(
-            detailCoin.sort((a, b) => b.acc_trade_price_24h - a.acc_trade_price_24h).slice(0, 7),
-            data
-        );
+    useEffect(() => {
+        if (detailCoin && !isLoadingDetail && !isLoading)
+            setCombineData(
+                getCombineRank(
+                    detailCoin.sort((a, b) => b.acc_trade_price_24h - a.acc_trade_price_24h).slice(0, 7),
+                    data
+                )
+            );
+    }, [detailCoin]);
 
     return (
         <MainRightFrame>
@@ -332,7 +340,7 @@ function CoinRank() {
                                 </SignSymbol>
                             </SignStandardHead>
                             <CurPriceHead>
-                                <CurPriceBtn onClick={() => console.log('click cur price')}>
+                                <CurPriceBtn onClick={() => setCombineData([])}>
                                     <CurText>현재가</CurText>
                                     <CurSortSymbol>
                                         <span>
@@ -345,7 +353,7 @@ function CoinRank() {
                                 </CurPriceBtn>
                             </CurPriceHead>
                             <UpDownRateHead>
-                                <UpDownRateBtn onClick={() => console.log('click UpDown')}>
+                                <UpDownRateBtn onClick={() => console.log(combineData)}>
                                     <UpDownText>등락률</UpDownText>
                                     <UpdownSymbol>
                                         <span>
@@ -371,8 +379,8 @@ function CoinRank() {
                                 </TradePriceBtn>
                             </TradePriceHead>
                         </ListHeader>
-                        {combineObj && combineObj.length > 0 ? (
-                            combineObj.map((v, i) => (
+                        {combineData && combineData.length > 0 ? (
+                            combineData.map((v, i) => (
                                 //세가지로 랭크를 매겨야하는데 (현재가격(최대, 최소)-default / 등락률(최대, 최소) / 거래대금(최대, 최소))
                                 <List key={i}>
                                     <SignStandard>
