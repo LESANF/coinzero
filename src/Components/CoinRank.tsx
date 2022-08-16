@@ -278,46 +278,92 @@ const TradeAcc = styled.span`
     color: #79818f;
 `;
 
+//현재, 등락, 거래대금 화살표
+const CurValIconDESC = styled.span<{ focusFlag: string }>`
+    opacity: ${(props) => (props.focusFlag === `curValDESC` ? 1 : 0.2)};
+`;
+const CurValIconASC = styled.span<{ focusFlag: string }>`
+    opacity: ${(props) => (props.focusFlag === `curValASC` ? 1 : 0.2)};
+`;
+const UpDownIconDESC = styled.span<{ focusFlag: string }>`
+    opacity: ${(props) => (props.focusFlag === `upDownDESC` ? 1 : 0.2)};
+`;
+const UpDownIconASC = styled.span<{ focusFlag: string }>`
+    opacity: ${(props) => (props.focusFlag === `upDownASC` ? 1 : 0.2)};
+`;
+
+const AmountIconDESC = styled.span<{ focusFlag: string }>`
+    opacity: ${(props) => (props.focusFlag === `amountDESC` ? 1 : 0.2)};
+`;
+const AmountIconASC = styled.span<{ focusFlag: string }>`
+    opacity: ${(props) => (props.focusFlag === `amountASC` ? 1 : 0.2)};
+`;
+
 function CoinRank() {
-    const { data, isLoading } = useQuery('coinRank', getMarketCoins, { refetchOnWindowFocus: false });
-    const [rankArg, setRankArg] = useState<any>([]);
+    const [allCoin, setAllCoin] = useState<ICoin[]>([]);
+    const { data, isLoading } = useQuery('coinRank', getMarketCoins, {
+        onSuccess(data) {
+            //Combine을 위한 allCoin Data 할당
+            setAllCoin(data);
+        },
+        refetchOnWindowFocus: false,
+    });
+    const [queryFlag, setQueryFlag] = useState(false);
+    const [rankArg, setRankArg] = useState<string[]>([]);
     const [combineData, setCombineData] = useState<IAssignCoin[]>([]);
 
-    const [filterKrw, setFilterKrw] = useState<ICoin[]>([]);
-    const [filterMap, setFilterMap] = useState<any>([]);
-    let test: any = [];
-    const [a, setA] = useState(false);
-
-    useEffect(() => {
-        if (data && data.length > 0 && !isLoading) {
-            console.log('useEffect Data');
-            console.log(data.filter((v: ICoin) => v.market.includes('KRW')));
-            setFilterKrw(data.filter((v: ICoin) => v.market.includes('KRW')));
-            console.log(filterKrw);
-            filterKrw.map((v) => setFilterMap((prev: any) => [...prev, v.market]));
-            setRankArg(filterMap);
-            setA(true);
-        }
-    }, [data]);
+    //ASC, DESC
+    const [curVal, setCurVal] = useState<boolean>(false);
+    const [upDownVal, setUpdownVal] = useState<boolean>(false);
+    const [amountVal, setAmountVal] = useState<boolean>(false);
+    const [focusFlag, setFocusFlag] = useState<string>('amountDESC');
 
     const { data: detailCoin, isLoading: isLoadingDetail } = useQuery<ICoinDetail[] | null>(
         ['CoinDetailRight'],
         () => getDetailCoin(rankArg.join(',')),
         {
-            enabled: a,
+            onSuccess(data) {
+                if (data && data.length > 0) {
+                    //화면에 렌더되는 데이터
+                    setCombineData(
+                        getCombineRank(
+                            data.sort((a, b) => b.acc_trade_price_24h - a.acc_trade_price_24h).slice(0, 7),
+                            allCoin
+                        )
+                    );
+                }
+            },
+            enabled: queryFlag,
+            refetchOnWindowFocus: false,
         }
     );
 
     useEffect(() => {
-        if (detailCoin && !isLoadingDetail && !isLoading)
-            setCombineData(
-                getCombineRank(
-                    detailCoin.sort((a, b) => b.acc_trade_price_24h - a.acc_trade_price_24h).slice(0, 7),
-                    data
-                )
-            );
-    }, [detailCoin]);
+        if (!isLoading && data && data.length > 0) {
+            const krwAry = data.filter((v: ICoin) => v.market.includes('KRW'));
+            const rankArg = [];
+            for (let value of krwAry) rankArg.push(value.market);
+            setRankArg(rankArg);
+            setQueryFlag((prev: boolean) => !prev);
+        }
+    }, [data, isLoading]);
 
+    //현재가, 등락률, 거래대금 오름차순, 내림차순 Func
+    const priceSort = (sortType: string) => {
+        switch (sortType) {
+            case 'curValue':
+                console.log('curValue');
+                break;
+
+            case 'upDown':
+                console.log('upDown');
+                break;
+
+            case 'amount':
+                console.log('amount');
+                break;
+        }
+    };
     return (
         <MainRightFrame>
             <Test>
@@ -340,48 +386,47 @@ function CoinRank() {
                                 </SignSymbol>
                             </SignStandardHead>
                             <CurPriceHead>
-                                <CurPriceBtn onClick={() => setCombineData([])}>
+                                <CurPriceBtn onClick={() => priceSort('curValue')}>
                                     <CurText>현재가</CurText>
                                     <CurSortSymbol>
-                                        <span>
+                                        <CurValIconASC focusFlag={focusFlag}>
                                             <AiFillCaretUp />
-                                        </span>
-                                        <span>
+                                        </CurValIconASC>
+                                        <CurValIconDESC focusFlag={focusFlag}>
                                             <AiFillCaretDown />
-                                        </span>
+                                        </CurValIconDESC>
                                     </CurSortSymbol>
                                 </CurPriceBtn>
                             </CurPriceHead>
                             <UpDownRateHead>
-                                <UpDownRateBtn onClick={() => console.log(combineData)}>
+                                <UpDownRateBtn onClick={() => priceSort('upDown')}>
                                     <UpDownText>등락률</UpDownText>
                                     <UpdownSymbol>
-                                        <span>
+                                        <UpDownIconASC focusFlag={focusFlag}>
                                             <AiFillCaretUp />
-                                        </span>
-                                        <span>
+                                        </UpDownIconASC>
+                                        <UpDownIconDESC focusFlag={focusFlag}>
                                             <AiFillCaretDown />
-                                        </span>
+                                        </UpDownIconDESC>
                                     </UpdownSymbol>
                                 </UpDownRateBtn>
                             </UpDownRateHead>
                             <TradePriceHead>
-                                <TradePriceBtn onClick={() => console.log('click Trade Price')}>
+                                <TradePriceBtn onClick={() => priceSort('amount')}>
                                     <TradeText>거래대금</TradeText>
                                     <TradeSymbol>
-                                        <span>
+                                        <AmountIconASC focusFlag={focusFlag}>
                                             <AiFillCaretUp />
-                                        </span>
-                                        <span>
+                                        </AmountIconASC>
+                                        <AmountIconDESC focusFlag={focusFlag}>
                                             <AiFillCaretDown />
-                                        </span>
+                                        </AmountIconDESC>
                                     </TradeSymbol>
                                 </TradePriceBtn>
                             </TradePriceHead>
                         </ListHeader>
                         {combineData && combineData.length > 0 ? (
                             combineData.map((v, i) => (
-                                //세가지로 랭크를 매겨야하는데 (현재가격(최대, 최소)-default / 등락률(최대, 최소) / 거래대금(최대, 최소))
                                 <List key={i}>
                                     <SignStandard>
                                         <SignMark>
@@ -394,8 +439,6 @@ function CoinRank() {
                                                 style={{
                                                     height: '38px',
                                                     width: '38px',
-                                                    // boxShadow: '0 3px 10px 0 rgba(66, 66, 66, 0.05)',
-                                                    // borderRadius: '7px',
                                                 }}
                                             />
                                         </SignMark>
@@ -438,7 +481,7 @@ function CoinRank() {
                                 </List>
                             ))
                         ) : (
-                            <li>Loading</li>
+                            <li style={{ textAlign: 'center' }}>Loading ...</li>
                         )}
                     </ItemList>
                 </RankBox>
