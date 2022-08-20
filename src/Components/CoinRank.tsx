@@ -96,15 +96,15 @@ const CurPriceHead = styled.div`
     width: 120px;
 `;
 
-const CurPriceBtn = styled.button`
+const CurPriceBtn = styled.button<{ focusFlag: string }>`
     display: flex;
     cursor: pointer;
     align-items: center;
     border: none;
     justify-content: flex-end;
     padding: 0 10px;
-    background-color: transparent;
-    //background-color: rgba(72, 77, 85, 0.05);
+    background-color: ${(props) =>
+        props.focusFlag.includes('curVal') ? 'rgba(72, 77, 85, 0.05)' : 'transparent'};
 `;
 
 const CurText = styled.span`
@@ -126,15 +126,15 @@ const UpDownRateHead = styled.div`
     margin-left: 18px;
 `;
 
-const UpDownRateBtn = styled.button`
+const UpDownRateBtn = styled.button<{ focusFlag: string }>`
     cursor: pointer;
     display: flex;
     align-items: center;
     border: none;
     justify-content: flex-end;
     padding: 0 10px;
-    background-color: transparent;
-    //background-color: rgba(72, 77, 85, 0.05);
+    background-color: ${(props) =>
+        props.focusFlag.includes('upDown') ? 'rgba(72, 77, 85, 0.05)' : 'transparent'};
 `;
 
 const UpDownText = styled.span`
@@ -155,15 +155,15 @@ const TradePriceHead = styled.div`
     width: 125px;
 `;
 
-const TradePriceBtn = styled.button`
+const TradePriceBtn = styled.button<{ focusFlag: string }>`
     cursor: pointer;
     display: flex;
     align-items: center;
     border: none;
     justify-content: flex-end;
     padding: 0 10px;
-    //background-color: transparent;
-    background-color: rgba(72, 77, 85, 0.05);
+    background-color: ${(props) =>
+        props.focusFlag.includes('amount') ? 'rgba(72, 77, 85, 0.05)' : 'transparent'};
 `;
 
 const TradeText = styled.span`
@@ -352,15 +352,21 @@ function CoinRank() {
     const priceSort = (sortType: string) => {
         switch (sortType) {
             case 'curValue':
-                console.log('curValue');
+                if (focusFlag === 'curValDESC') setFocusFlag('curValASC');
+                else setFocusFlag('curValDESC');
+
                 break;
 
             case 'upDown':
-                console.log('upDown');
+                if (focusFlag === 'upDownDESC') setFocusFlag('upDownASC');
+                else setFocusFlag('upDownDESC');
+
                 break;
 
             case 'amount':
-                console.log('amount');
+                if (focusFlag === 'amountDESC') setFocusFlag('amountASC');
+                else setFocusFlag('amountDESC');
+
                 break;
         }
     };
@@ -386,7 +392,7 @@ function CoinRank() {
                                 </SignSymbol>
                             </SignStandardHead>
                             <CurPriceHead>
-                                <CurPriceBtn onClick={() => priceSort('curValue')}>
+                                <CurPriceBtn focusFlag={focusFlag} onClick={() => priceSort('curValue')}>
                                     <CurText>현재가</CurText>
                                     <CurSortSymbol>
                                         <CurValIconASC focusFlag={focusFlag}>
@@ -399,7 +405,7 @@ function CoinRank() {
                                 </CurPriceBtn>
                             </CurPriceHead>
                             <UpDownRateHead>
-                                <UpDownRateBtn onClick={() => priceSort('upDown')}>
+                                <UpDownRateBtn focusFlag={focusFlag} onClick={() => priceSort('upDown')}>
                                     <UpDownText>등락률</UpDownText>
                                     <UpdownSymbol>
                                         <UpDownIconASC focusFlag={focusFlag}>
@@ -412,7 +418,7 @@ function CoinRank() {
                                 </UpDownRateBtn>
                             </UpDownRateHead>
                             <TradePriceHead>
-                                <TradePriceBtn onClick={() => priceSort('amount')}>
+                                <TradePriceBtn focusFlag={focusFlag} onClick={() => priceSort('amount')}>
                                     <TradeText>거래대금</TradeText>
                                     <TradeSymbol>
                                         <AmountIconASC focusFlag={focusFlag}>
