@@ -105,6 +105,8 @@ const CurPriceBtn = styled.button<{ focusFlag: string }>`
     padding: 0 10px;
     background-color: ${(props) =>
         props.focusFlag.includes('curVal') ? 'rgba(72, 77, 85, 0.05)' : 'transparent'};
+    transition: background-color 0.2s;
+    border-radius: 2px;
 `;
 
 const CurText = styled.span`
@@ -135,6 +137,8 @@ const UpDownRateBtn = styled.button<{ focusFlag: string }>`
     padding: 0 10px;
     background-color: ${(props) =>
         props.focusFlag.includes('upDown') ? 'rgba(72, 77, 85, 0.05)' : 'transparent'};
+    transition: background-color 0.2s;
+    border-radius: 2px;
 `;
 
 const UpDownText = styled.span`
@@ -164,6 +168,8 @@ const TradePriceBtn = styled.button<{ focusFlag: string }>`
     padding: 0 10px;
     background-color: ${(props) =>
         props.focusFlag.includes('amount') ? 'rgba(72, 77, 85, 0.05)' : 'transparent'};
+    transition: background-color 0.2s;
+    border-radius: 2px;
 `;
 
 const TradeText = styled.span`
