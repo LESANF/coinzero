@@ -331,16 +331,103 @@ function CoinRank() {
             onSuccess(data) {
                 if (data && data.length > 0) {
                     //화면에 렌더되는 데이터
-                    setCombineData(
-                        getCombineRank(
-                            data.sort((a, b) => b.acc_trade_price_24h - a.acc_trade_price_24h).slice(0, 7),
-                            allCoin
-                        )
-                    );
+                    switch (focusFlag) {
+                        case 'curValDESC':
+                            //현재가 내림차순
+                            setCombineData(
+                                getCombineRank(
+                                    data.sort((a, b) => b.trade_price - a.trade_price).slice(0, 7),
+                                    allCoin
+                                )
+                            );
+                            break;
+
+                        case 'curValASC':
+                            //현재가 올림차순
+                            setCombineData(
+                                getCombineRank(
+                                    data.sort((a, b) => a.trade_price - b.trade_price).slice(0, 7),
+                                    allCoin
+                                )
+                            );
+                            break;
+
+                        case 'upDownDESC':
+                            //등락률 오름차순
+                            setCombineData(
+                                getCombineRank(
+                                    data
+                                        .sort(
+                                            (a, b) =>
+                                                +(
+                                                    ((b.trade_price - b.prev_closing_price) /
+                                                        b.prev_closing_price) *
+                                                    100
+                                                ).toFixed(2) -
+                                                +(
+                                                    ((a.trade_price - a.prev_closing_price) /
+                                                        a.prev_closing_price) *
+                                                    100
+                                                ).toFixed(2)
+                                        )
+                                        .slice(0, 7),
+                                    allCoin
+                                )
+                            );
+                            break;
+
+                        case 'upDownASC':
+                            //등락률 내림차순
+                            setCombineData(
+                                getCombineRank(
+                                    data
+                                        .sort(
+                                            (a, b) =>
+                                                +(
+                                                    ((a.trade_price - a.prev_closing_price) /
+                                                        a.prev_closing_price) *
+                                                    100
+                                                ).toFixed(2) -
+                                                +(
+                                                    ((b.trade_price - b.prev_closing_price) /
+                                                        b.prev_closing_price) *
+                                                    100
+                                                ).toFixed(2)
+                                        )
+                                        .slice(0, 7),
+                                    allCoin
+                                )
+                            );
+                            break;
+
+                        case 'amountDESC':
+                            //거래대금 내림차순
+                            setCombineData(
+                                getCombineRank(
+                                    data
+                                        .sort((a, b) => b.acc_trade_price_24h - a.acc_trade_price_24h)
+                                        .slice(0, 7),
+                                    allCoin
+                                )
+                            );
+                            break;
+
+                        case 'amountASC':
+                            //거래대금 오름차순
+                            setCombineData(
+                                getCombineRank(
+                                    data
+                                        .sort((a, b) => a.acc_trade_price_24h - b.acc_trade_price_24h)
+                                        .slice(0, 7),
+                                    allCoin
+                                )
+                            );
+                            break;
+                    }
                 }
             },
             enabled: queryFlag,
-            refetchOnWindowFocus: false,
+            refetchOnWindowFocus: true,
         }
     );
 
