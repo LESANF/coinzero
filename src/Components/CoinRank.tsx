@@ -358,20 +358,115 @@ function CoinRank() {
     const priceSort = (sortType: string) => {
         switch (sortType) {
             case 'curValue':
-                if (focusFlag === 'curValDESC') setFocusFlag('curValASC');
-                else setFocusFlag('curValDESC');
+                if (focusFlag === 'curValDESC') {
+                    setFocusFlag('curValASC');
+                    if (detailCoin && detailCoin.length > 0) {
+                        //현재가 오름차순
+                        setCombineData(
+                            getCombineRank(
+                                detailCoin.sort((a, b) => a.trade_price - b.trade_price).slice(0, 7),
+                                allCoin
+                            )
+                        );
+                    }
+                } else {
+                    setFocusFlag('curValDESC');
+                    if (detailCoin && detailCoin.length > 0) {
+                        //현재가 오름차순
+                        setCombineData(
+                            getCombineRank(
+                                detailCoin.sort((a, b) => b.trade_price - a.trade_price).slice(0, 7),
+                                allCoin
+                            )
+                        );
+                    }
+                }
 
                 break;
 
             case 'upDown':
-                if (focusFlag === 'upDownDESC') setFocusFlag('upDownASC');
-                else setFocusFlag('upDownDESC');
+                if (focusFlag === 'upDownDESC') {
+                    setFocusFlag('upDownASC');
+                    if (detailCoin && detailCoin.length > 0) {
+                        //등락률 오름차순
+                        setCombineData(
+                            getCombineRank(
+                                detailCoin
+                                    .sort(
+                                        (a, b) =>
+                                            +(
+                                                ((a.trade_price - a.prev_closing_price) /
+                                                    a.prev_closing_price) *
+                                                100
+                                            ).toFixed(2) -
+                                            +(
+                                                ((b.trade_price - b.prev_closing_price) /
+                                                    b.prev_closing_price) *
+                                                100
+                                            ).toFixed(2)
+                                    )
+                                    .slice(0, 7),
+                                allCoin
+                            )
+                        );
+                    }
+                } else {
+                    setFocusFlag('upDownDESC');
+                    if (detailCoin && detailCoin.length > 0) {
+                        //등락률 오름차순
+                        setCombineData(
+                            getCombineRank(
+                                detailCoin
+                                    .sort(
+                                        (a, b) =>
+                                            +(
+                                                ((b.trade_price - b.prev_closing_price) /
+                                                    b.prev_closing_price) *
+                                                100
+                                            ).toFixed(2) -
+                                            +(
+                                                ((a.trade_price - a.prev_closing_price) /
+                                                    a.prev_closing_price) *
+                                                100
+                                            ).toFixed(2)
+                                    )
+                                    .slice(0, 7),
+                                allCoin
+                            )
+                        );
+                    }
+                }
 
                 break;
 
             case 'amount':
-                if (focusFlag === 'amountDESC') setFocusFlag('amountASC');
-                else setFocusFlag('amountDESC');
+                if (focusFlag === 'amountDESC') {
+                    setFocusFlag('amountASC');
+                    if (detailCoin && detailCoin.length > 0) {
+                        //거래대금 오름차순
+                        setCombineData(
+                            getCombineRank(
+                                detailCoin
+                                    .sort((a, b) => a.acc_trade_price_24h - b.acc_trade_price_24h)
+                                    .slice(0, 7),
+                                allCoin
+                            )
+                        );
+                    }
+                } else {
+                    setFocusFlag('amountDESC');
+                    if (detailCoin && detailCoin.length > 0) {
+                        //거래대금 내림차순
+                        setCombineData(
+                            getCombineRank(
+                                detailCoin
+                                    .sort((a, b) => b.acc_trade_price_24h - a.acc_trade_price_24h)
+                                    .slice(0, 7),
+                                allCoin
+                            )
+                        );
+                    }
+                }
 
                 break;
         }
