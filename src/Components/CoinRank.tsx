@@ -3,7 +3,6 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { AiFillCaretUp, AiFillCaretDown } from 'react-icons/ai';
 import { BsQuestionCircle } from 'react-icons/bs';
 import { VscArrowSwap } from 'react-icons/vsc';
-import { IoTriangleSharp } from 'react-icons/io5';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { getDetailCoin, getMarketCoins, IAssignCoin, ICoin, ICoinDetail } from '../Api/coinInfo';
@@ -50,6 +49,7 @@ const MoreLink = styled.a`
     color: #79818f;
 `;
 const LinkText = styled.span`
+    cursor: pointer;
     font-size: 12px;
 `;
 const LinkLogo = styled.span`
@@ -87,6 +87,7 @@ const SignSymbol = styled.span`
     margin-left: 5px;
     font-size: 12px;
 `;
+
 const SignTooltip = styled.div``;
 
 //현재가
@@ -319,12 +320,9 @@ function CoinRank() {
     const [combineData, setCombineData] = useState<IAssignCoin[]>([]);
 
     //ASC, DESC
-    const [curVal, setCurVal] = useState<boolean>(false);
-    const [upDownVal, setUpdownVal] = useState<boolean>(false);
-    const [amountVal, setAmountVal] = useState<boolean>(false);
     const [focusFlag, setFocusFlag] = useState<string>('amountDESC');
 
-    const { data: detailCoin, isLoading: isLoadingDetail } = useQuery<ICoinDetail[] | null>(
+    const { data: detailCoin } = useQuery<ICoinDetail[] | null>(
         ['CoinDetailRight'],
         () => getDetailCoin(rankArg.join(',')),
         {
