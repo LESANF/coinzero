@@ -4,7 +4,7 @@ import { ICoin, ICoinDetail } from '../Api/coinInfo';
  *
  * @param detailCoin 코인 Detail Data
  * @param coinInfo 전체 코인 목록(krw, eng명 포함)
- * @returns
+ * @returns QuickSearch.tsx용
  */
 export const getCombine = (coinInfo: ICoin[], detailCoin: ICoinDetail[]) => {
     let data = [];
@@ -22,7 +22,7 @@ export const getCombine = (coinInfo: ICoin[], detailCoin: ICoinDetail[]) => {
  *
  * @param detailCoin 코인 Detail Data
  * @param coinList 전체 코인 목록(krw, eng명 포함)
- * @returns
+ * @returns CoinRank.tsx용
  */
 export const getCombineRank = (detailCoin: ICoinDetail[], coinList: ICoin[]) => {
     let data = [];
