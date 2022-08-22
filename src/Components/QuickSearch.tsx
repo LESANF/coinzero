@@ -12,6 +12,8 @@ import {
 } from '../Api/coinInfo';
 import { useQuery } from 'react-query';
 import { getCombine } from '../Utils/CombineCoinData';
+import VerticalNotice from './VerticalNotice';
+import GoReadme from './GoReadme';
 
 const MainLeftFrame = styled.div`
     display: flex;
@@ -275,6 +277,8 @@ function QuickSearch() {
                     </AutoSearch>
                 )}
             </SearchZone>
+            <GoReadme />
+            <VerticalNotice />
         </MainLeftFrame>
     );
 }
