@@ -17,7 +17,7 @@
     -   [x] Coin Simple Search(Left)
     -   [x] Simple Search의 경우 자동완성 키워드로 검색하여 개발진행
     -   [x] Coin List(Right)
-    -   [ ] 현재가, 등락률, 거래대금 최대, 최소 정렬 (6가지)
+    -   [x] 현재가, 등락률, 거래대금 최대, 최소 정렬 (6가지)
     -   [x] 코인원에서 따온 svg를 내장으로 바꾸기x
     -   [ ] Service Introduce
     -   [ ] Github Link Banner
