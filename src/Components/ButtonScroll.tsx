@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import styled from 'styled-components';
+import _ from 'lodash';
 
 const Frame = styled.div`
     background-color: skyblue;
@@ -12,16 +14,39 @@ const Header = styled.header`
     height: 41px;
 `;
 const Content = styled.div`
-    //background-color: pink;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: pink;
     padding: 0 12px;
     height: 191px;
+    overflow: scroll;
+`;
+
+const Items = styled.ul``;
+const Item = styled.li`
+    margin-bottom: 5px;
+    width: 200px;
+    height: 70px;
+    background-color: blue;
 `;
 
 function ButtonScroll() {
+    const contentScrl = useRef(null);
+    const scrollDiv = (e: React.UIEvent<HTMLElement>) => {
+        console.log(e);
+    };
+
     return (
         <Frame>
             <Header>헤더 버튼 포함</Header>
-            <Content>ddd</Content>
+            <Content onScroll={scrollDiv} ref={contentScrl}>
+                <Items>
+                    {[1, 2, 3, 4, 5].map((v, i) => (
+                        <Item key={i}>{v}</Item>
+                    ))}
+                </Items>
+            </Content>
         </Frame>
     );
 }
