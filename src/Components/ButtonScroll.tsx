@@ -32,10 +32,10 @@ const Item = styled.li`
 `;
 
 function ButtonScroll() {
-    const contentScrl = useRef(null);
-    const scrollDiv = (e: React.UIEvent<HTMLElement>) => {
-        console.log(e);
-    };
+    const contentScrl = useRef<HTMLDivElement | null>(null);
+    const scrollDiv = _.throttle((e: React.UIEvent<HTMLDivElement>) => {
+        console.log(contentScrl.current?.scrollTop);
+    }, 0);
 
     return (
         <Frame>
