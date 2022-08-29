@@ -11,8 +11,8 @@ const MainFrame = styled.div`
 `;
 
 const Frame = styled.div`
-    min-height: 600px;
-    height: 600px;
+    //min-height: 600px;
+    //height: 600px;
     min-width: 1024px;
     width: 1024px;
     display: grid;
