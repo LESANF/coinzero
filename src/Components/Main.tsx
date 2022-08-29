@@ -10,7 +10,9 @@ const MainFrame = styled.div`
         flex-direction: column;
         justify-content: space-between;
         /* margin-top: 30px; */
-        margin: 30px auto;
+        //margin-top: 30px;
+        box-sizing: border-box;
+        margin: 30px auto 0;
         width: 1024px;
         background-color: gray;
         margin-bottom: 100px;

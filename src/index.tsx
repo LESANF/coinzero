@@ -23,6 +23,8 @@ const GlobalStyles = createGlobalStyle`
   body{
     font-family: 'Spoqa Han Sans';
     background-color: #fff;
+    min-width: 1124px;
+    /* overflow: scroll; */
   }
 
   a{
@@ -31,7 +33,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   div{
-    box-sizing:border-box ;
+    box-sizing:border-box;
   }
 `;
 
