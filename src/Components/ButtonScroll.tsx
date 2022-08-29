@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import _ from 'lodash';
 
 const Frame = styled.div`
-    height: 232px;
-    margin-top: 10px;
+    /* height: 232px;
+    margin-top: 10px; */
     box-shadow: 0 3px 10px 0 rgba(66, 66, 66, 0.05);
     border: 1px solid #e4e5e8;
-    overflow: hidden;
+    grid-area: item4;
+    /* overflow: hidden; */
 `;
 const Header = styled.header`
     box-sizing: border-box;
@@ -15,7 +16,7 @@ const Header = styled.header`
     height: 41px;
 `;
 const Content = styled.div`
-    height: 191px;
+    height: 215px;
     overflow-x: hidden;
     /* 스크롤 스타일 변경 */
     ::-webkit-scrollbar {
@@ -50,7 +51,7 @@ const Item = styled.li`
     box-sizing: border-box;
     margin-bottom: 5px;
     width: 100%;
-    height: 70px;
+    height: 66px;
     background-color: red;
     //background-color: #f8f8f9;
     border-radius: 8px;

@@ -4,8 +4,8 @@ import { SwiperModule } from 'swiper/types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 const Frame = styled.div`
-    margin-top: 25px;
     height: 60px;
+    grid-area: item1;
 `;
 
 const Notice = styled.a`

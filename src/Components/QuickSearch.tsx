@@ -20,8 +20,9 @@ const MainLeftFrame = styled.div`
     display: flex;
     flex-direction: column;
     background-color: #fff;
-    width: 361px;
-    min-width: 361px;
+    grid-area: item3;
+    /* width: 361px;
+    min-width: 361px; */
 `;
 
 //Header
@@ -58,7 +59,7 @@ const SearchZone = styled.div`
 `;
 const SearchInput = styled.input.attrs({ placeholder: '가상자산 검색' })`
     width: 100%;
-    height: 100%;
+    height: 36px;
     box-sizing: border-box;
     padding: 0 48px 0 16px;
     border-radius: 6px;
@@ -279,8 +280,8 @@ function QuickSearch() {
                 )}
             </SearchZone>
             <GoReadme />
-            <VerticalNotice />
-            <ButtonScroll />
+            {/* <VerticalNotice />
+            <ButtonScroll /> */}
         </MainLeftFrame>
     );
 }

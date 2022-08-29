@@ -9,14 +9,16 @@ import { getDetailCoin, getMarketCoins, IAssignCoin, ICoin, ICoinDetail } from '
 import { getCombineRank } from '../Utils/CombineCoinData';
 
 const MainRightFrame = styled.div`
-    box-sizing: border-box;
+    /* box-sizing: border-box;
     background-color: #fff;
     min-width: 663px;
-    width: 663px;
+    width: 663px; */
+    grid-area: item2;
 `;
 
 const Test = styled.div`
-    margin-left: 58px;
+    height: 493px;
+    /* margin-left: -58px; */
 `;
 
 //Header
@@ -59,7 +61,8 @@ const LinkLogo = styled.span`
 //Rank Box
 const RankBox = styled.div`
     margin-top: 19px;
-    padding: 16px;
+    padding: 20px;
+    height: 100%;
     border-radius: 4px;
     border: 1px solid #e4e5e8;
     box-shadow: 0 3px 10px 0 rgba(66, 66, 66, 0.05);
@@ -187,7 +190,7 @@ const TradeSymbol = styled.div`
 //Coin Rank List
 const List = styled.li`
     display: flex;
-    margin-bottom: 20px;
+    margin-bottom: 23px;
     &:last-child {
         margin-bottom: 0;
     }
