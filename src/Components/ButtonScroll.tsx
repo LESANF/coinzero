@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
+import styled, { keyframes } from 'styled-components';
 import _ from 'lodash';
 import dayjs from 'dayjs';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { IVerNotice, verNoticeDummyData } from '../DummyData';
 
 const Frame = styled.div`
     /* height: 232px;
@@ -52,7 +53,7 @@ const ListBtn = styled.button<{ curPosition: number; upDownChk: boolean }>`
     height: 26px;
     border-radius: 2px;
     border: 1px solid #e4e5e8;
-    color: #aeb3bb;
+    color: ${(props) => (props.upDownChk === true ? '#000' : '#aeb3bb')};
     font-size: 14px;
 `;
 
@@ -90,13 +91,14 @@ const Items = styled.ul`
 `;
 
 const Item = styled.li`
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     justify-content: center;
-    margin-bottom: 5px;
+    margin-bottom: 12px;
     width: 100%;
-    height: 66px;
+    height: auto;
     background-color: #f8f8f9;
     border-radius: 8px;
     padding: 8px 10px;
@@ -118,12 +120,31 @@ const AddSummary = styled.p`
     height: 0;
     opacity: 0;
     transition: opacity 0.2s, height 0.2s, padding 0.2s; */
-
+    /* 
     color: #aeb3bb;
     font-size: 10px;
     height: auto;
+    padding-top: 4px; */
+    /* animation: myani;
+
+
+    } */
+    @keyframes test {
+        from {
+            max-height: 0px;
+        }
+        to {
+            max-height: 70px;
+        }
+    }
+
+    color: #aeb3bb;
+    font-size: 10px;
+    /* height: auto; */
     padding-top: 4px;
-    opacity: 1;
+
+    overflow: hidden;
+    animation: test 0.3s;
 `;
 
 //Footer Sign
@@ -138,6 +159,32 @@ const FooterSign = styled.p`
 
 function ButtonScroll() {
     const [curScrollPos, setCurScrollPos] = useState<number>(0);
+    const [foldingState, setFoldingState] = useState<boolean>(false);
+    const [newsData, setNewsData] = useState<any>(null);
+
+    //get news data
+    const resultData = verNoticeDummyData();
+    // useEffect(() => {
+    //     setNewsData(resultData);
+    // }, []);
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             setNewsData(null);
+    //             const result = await fetch('https://jsonplaceholder.typicode.com/users').then((res: any) =>
+    //                 res.json()
+    //             );
+    //             setNewsData(result);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     };
+    //     fetchData();
+    //     // const data = fetchData();
+    //     // console.log(data);
+    //     // setNewsData(result)
+    // }, []);
 
     //get Date
     const now = dayjs();
@@ -158,6 +205,11 @@ function ButtonScroll() {
         console.log(contentScrl.current?.scrollTop);
     };
 
+    //folding state
+    const changeFolding = () => {
+        setFoldingState((prev) => !prev);
+    };
+
     return (
         <Frame>
             <Header>
@@ -174,19 +226,24 @@ function ButtonScroll() {
                 </BtnBox>
             </Header>
             <Content ref={contentScrl}>
-                <Items>
-                    {[1, 2, 3, 4, 5].map((v, i) => (
-                        <Item key={i}>
-                            <ItemTitle>51분전</ItemTitle>
-                            <ItemContent>FTX CEO "후오비 인수 계획 전혀 없다"</ItemContent>
-                            <AddSummary>
-                                메타가 공식 트위터를 통해 인스타그램에 이어 페이스북의 NFT 지원 서비스를
-                                실시한다고 발표했다.
-                            </AddSummary>
-                        </Item>
-                    ))}
-                </Items>
-                <FooterSign>MADE BY LESA</FooterSign>
+                {resultData && resultData.result.length > 0 ? (
+                    <>
+                        <Items>
+                            {resultData.result.map((v: any, i: any) => (
+                                <Item key={i} onClick={changeFolding}>
+                                    <ItemTitle>
+                                        {v.time > 59 ? `${Math.floor(v.time / 60)}시간전` : `${v.time}분전`}
+                                    </ItemTitle>
+                                    <ItemContent>{v.title}</ItemContent>
+                                    {foldingState && <AddSummary>{v.summary}</AddSummary>}
+                                </Item>
+                            ))}
+                        </Items>
+                        <FooterSign>MADE BY LESA</FooterSign>
+                    </>
+                ) : (
+                    <h1>Loading</h1>
+                )}
             </Content>
         </Frame>
     );
