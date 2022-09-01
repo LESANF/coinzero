@@ -160,7 +160,6 @@ const FooterSign = styled.p`
 function ButtonScroll() {
     const [curScrollPos, setCurScrollPos] = useState<number>(0);
     const [foldingState, setFoldingState] = useState<boolean>(false);
-    const [newsData, setNewsData] = useState<any>(null);
 
     //get news data
     const resultData = verNoticeDummyData();
@@ -191,13 +190,16 @@ function ButtonScroll() {
 
     //scroll event
     const contentScrl = useRef<HTMLDivElement | null>(null);
+    const ulScrl = useRef<HTMLUListElement | null>(null);
     // const scrollDiv = _.throttle((e: React.UIEvent<HTMLDivElement>) => {
     //     console.log(contentScrl.current?.scrollTop);
     // }, 0);
 
     const listScrollUp = () => {
         // if(contentScrl.current?.scrollTop > 0);
-        console.log(contentScrl.current?.scrollTop);
+        console.log('div scr height', contentScrl.current?.scrollHeight);
+        console.log('div scr top', contentScrl.current?.scrollTop);
+        console.log('ul scr height', ulScrl.current?.scrollHeight);
         contentScrl.current?.scrollTo({ top: 100, behavior: 'smooth' });
     };
     const listScrollDown = () => {
@@ -228,7 +230,7 @@ function ButtonScroll() {
             <Content ref={contentScrl}>
                 {resultData && resultData.result.length > 0 ? (
                     <>
-                        <Items>
+                        <Items ref={ulScrl}>
                             {resultData.result.map((v: any, i: any) => (
                                 <Item key={i} onClick={changeFolding}>
                                     <ItemTitle>
