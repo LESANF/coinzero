@@ -43,7 +43,7 @@ const BtnBox = styled.div`
     }
 `;
 
-const ListBtn = styled.button<{ curPosition: number; upDownChk: boolean }>`
+const ListBtn = styled.button<{ curPosition: number | undefined; upDownChk: boolean }>`
     //upDownChk: true(Up), false(Down)
     background-color: transparent;
     display: flex;
@@ -53,7 +53,13 @@ const ListBtn = styled.button<{ curPosition: number; upDownChk: boolean }>`
     height: 26px;
     border-radius: 2px;
     border: 1px solid #e4e5e8;
-    color: ${(props) => (props.upDownChk === true ? '#000' : '#aeb3bb')};
+    color: ${(props) => {
+        if (props.curPosition === 0) {
+            return '#000';
+        } else {
+            return '#aeb3bb';
+        }
+    }};
     font-size: 14px;
 `;
 
@@ -197,13 +203,14 @@ function ButtonScroll() {
 
     const listScrollUp = () => {
         // if(contentScrl.current?.scrollTop > 0);
-        console.log('div scr height', contentScrl.current?.scrollHeight);
         console.log('div scr top', contentScrl.current?.scrollTop);
-        console.log('ul scr height', ulScrl.current?.scrollHeight);
+        //console.log('div scr height', contentScrl.current?.scrollHeight);
+        //console.log('ul scr height', ulScrl.current?.scrollHeight);
+        //console.log('ul scr top', ulScrl.current?.scrollTop);
         contentScrl.current?.scrollTo({ top: 100, behavior: 'smooth' });
     };
     const listScrollDown = () => {
-        contentScrl.current?.scrollTo({ top: 90, behavior: 'smooth' });
+        contentScrl.current?.scrollTo({ top: contentScrl.current?.scrollHeight, behavior: 'smooth' });
         console.log(contentScrl.current?.scrollTop);
     };
 
@@ -219,10 +226,18 @@ function ButtonScroll() {
                     Coinnews <ListDay>{now.format('YYYY-MM-DD')}</ListDay>
                 </ListTitle>
                 <BtnBox>
-                    <ListBtn curPosition={curScrollPos} upDownChk={true} onClick={listScrollUp}>
+                    <ListBtn
+                        curPosition={contentScrl.current?.scrollTop}
+                        upDownChk={true}
+                        onClick={listScrollUp}
+                    >
                         <IoIosArrowUp />
                     </ListBtn>
-                    <ListBtn curPosition={curScrollPos} upDownChk={false} onClick={listScrollDown}>
+                    <ListBtn
+                        curPosition={contentScrl.current?.scrollTop}
+                        upDownChk={false}
+                        onClick={listScrollDown}
+                    >
                         <IoIosArrowDown />
                     </ListBtn>
                 </BtnBox>
