@@ -54,7 +54,7 @@ const ListBtn = styled.button<{ curPosition: number | undefined; upDownChk: bool
     border-radius: 2px;
     border: 1px solid #e4e5e8;
     color: ${(props) => {
-        if (props.curPosition === 0) {
+        if (true) {
             return '#000';
         } else {
             return '#aeb3bb';
