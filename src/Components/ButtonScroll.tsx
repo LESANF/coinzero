@@ -54,7 +54,7 @@ const ListBtn = styled.button<{ curPosition: number | undefined; upDownChk: bool
     border-radius: 2px;
     border: 1px solid #e4e5e8;
     color: ${(props) => {
-        if (true) {
+        if (props.curPosition === 0 && props.upDownChk === true) {
             return '#000';
         } else {
             return '#aeb3bb';
@@ -169,27 +169,6 @@ function ButtonScroll() {
 
     //get news data
     const resultData = verNoticeDummyData();
-    // useEffect(() => {
-    //     setNewsData(resultData);
-    // }, []);
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             setNewsData(null);
-    //             const result = await fetch('https://jsonplaceholder.typicode.com/users').then((res: any) =>
-    //                 res.json()
-    //             );
-    //             setNewsData(result);
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     };
-    //     fetchData();
-    //     // const data = fetchData();
-    //     // console.log(data);
-    //     // setNewsData(result)
-    // }, []);
 
     //get Date
     const now = dayjs();
@@ -197,9 +176,12 @@ function ButtonScroll() {
     //scroll event
     const contentScrl = useRef<HTMLDivElement | null>(null);
     const ulScrl = useRef<HTMLUListElement | null>(null);
-    // const scrollDiv = _.throttle((e: React.UIEvent<HTMLDivElement>) => {
-    //     console.log(contentScrl.current?.scrollTop);
-    // }, 0);
+    const scrollDiv = _.throttle((e: React.UIEvent<HTMLDivElement>) => {
+        if (contentScrl.current) {
+            console.log(contentScrl.current.scrollTop);
+            setCurScrollPos(contentScrl.current.scrollTop);
+        }
+    }, 500);
 
     const listScrollUp = () => {
         // if(contentScrl.current?.scrollTop > 0);
@@ -207,7 +189,7 @@ function ButtonScroll() {
         //console.log('div scr height', contentScrl.current?.scrollHeight);
         //console.log('ul scr height', ulScrl.current?.scrollHeight);
         //console.log('ul scr top', ulScrl.current?.scrollTop);
-        contentScrl.current?.scrollTo({ top: 100, behavior: 'smooth' });
+        //contentScrl.current?.scrollTo({ top: 100, behavior: 'smooth' });
     };
     const listScrollDown = () => {
         contentScrl.current?.scrollTo({ top: contentScrl.current?.scrollHeight, behavior: 'smooth' });
@@ -217,7 +199,16 @@ function ButtonScroll() {
     //folding state
     const changeFolding = () => {
         setFoldingState((prev) => !prev);
+        if (contentScrl.current) {
+            console.log(contentScrl.current.scrollTop);
+            setCurScrollPos(contentScrl.current.scrollTop);
+        }
     };
+
+    // useEffect(() => {
+    //     console.log('ul scr height', ulScrl.current?.scrollHeight);
+    //     console.log(contentScrl.current?.scrollHeight);
+    // }, []);
 
     return (
         <Frame>
@@ -226,23 +217,15 @@ function ButtonScroll() {
                     Coinnews <ListDay>{now.format('YYYY-MM-DD')}</ListDay>
                 </ListTitle>
                 <BtnBox>
-                    <ListBtn
-                        curPosition={contentScrl.current?.scrollTop}
-                        upDownChk={true}
-                        onClick={listScrollUp}
-                    >
+                    <ListBtn curPosition={curScrollPos} upDownChk={true} onClick={listScrollUp}>
                         <IoIosArrowUp />
                     </ListBtn>
-                    <ListBtn
-                        curPosition={contentScrl.current?.scrollTop}
-                        upDownChk={false}
-                        onClick={listScrollDown}
-                    >
+                    <ListBtn curPosition={curScrollPos} upDownChk={false} onClick={listScrollDown}>
                         <IoIosArrowDown />
                     </ListBtn>
                 </BtnBox>
             </Header>
-            <Content ref={contentScrl}>
+            <Content ref={contentScrl} onScroll={scrollDiv}>
                 {resultData && resultData.result.length > 0 ? (
                     <>
                         <Items ref={ulScrl}>
