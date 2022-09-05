@@ -43,7 +43,7 @@ const BtnBox = styled.div`
     }
 `;
 
-const ListBtn = styled.button<{ curPosition: number | undefined; upDownChk: boolean }>`
+const ListBtn = styled.button<{ curPosition: number; curTop: number; upDownChk: boolean }>`
     //upDownChk: true(Up), false(Down)
     background-color: transparent;
     display: flex;
@@ -55,9 +55,11 @@ const ListBtn = styled.button<{ curPosition: number | undefined; upDownChk: bool
     border: 1px solid #e4e5e8;
     color: ${(props) => {
         if (props.curPosition === 0 && props.upDownChk === true) {
-            return '#000';
-        } else {
             return '#aeb3bb';
+        } else if (props.curPosition === props.curTop && props.upDownChk === false) {
+            return '#aeb3bb';
+        } else {
+            return '#000';
         }
     }};
     font-size: 14px;
@@ -122,33 +124,19 @@ const ItemContent = styled.span`
 `;
 
 const AddSummary = styled.p`
-    /* overflow: hidden;
-    height: 0;
-    opacity: 0;
-    transition: opacity 0.2s, height 0.2s, padding 0.2s; */
-    /* 
-    color: #aeb3bb;
-    font-size: 10px;
-    height: auto;
-    padding-top: 4px; */
-    /* animation: myani;
-
-
-    } */
     @keyframes test {
         from {
             max-height: 0px;
         }
         to {
-            max-height: 70px;
+            max-height: 150px;
         }
     }
 
     color: #aeb3bb;
     font-size: 10px;
-    /* height: auto; */
-    padding-top: 4px;
-
+    padding-top: 7px;
+    line-height: 1.5;
     overflow: hidden;
     animation: test 0.3s;
 `;
@@ -165,6 +153,7 @@ const FooterSign = styled.p`
 
 function ButtonScroll() {
     const [curScrollPos, setCurScrollPos] = useState<number>(0);
+    const [curScrollH, setCurScrollH] = useState<number>(0);
     const [foldingState, setFoldingState] = useState<boolean>(false);
 
     //get news data
@@ -178,8 +167,8 @@ function ButtonScroll() {
     const ulScrl = useRef<HTMLUListElement | null>(null);
     const scrollDiv = _.throttle((e: React.UIEvent<HTMLDivElement>) => {
         if (contentScrl.current) {
-            console.log(contentScrl.current.scrollTop);
             setCurScrollPos(contentScrl.current.scrollTop);
+            setCurScrollH(contentScrl.current.scrollHeight);
         }
     }, 500);
 
@@ -217,10 +206,20 @@ function ButtonScroll() {
                     Coinnews <ListDay>{now.format('YYYY-MM-DD')}</ListDay>
                 </ListTitle>
                 <BtnBox>
-                    <ListBtn curPosition={curScrollPos} upDownChk={true} onClick={listScrollUp}>
+                    <ListBtn
+                        curPosition={curScrollPos}
+                        curTop={curScrollH}
+                        upDownChk={true}
+                        onClick={listScrollUp}
+                    >
                         <IoIosArrowUp />
                     </ListBtn>
-                    <ListBtn curPosition={curScrollPos} upDownChk={false} onClick={listScrollDown}>
+                    <ListBtn
+                        curPosition={curScrollPos}
+                        curTop={curScrollH}
+                        upDownChk={false}
+                        onClick={listScrollDown}
+                    >
                         <IoIosArrowDown />
                     </ListBtn>
                 </BtnBox>
