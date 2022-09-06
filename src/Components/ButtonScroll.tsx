@@ -43,8 +43,7 @@ const BtnBox = styled.div`
     }
 `;
 
-const ListBtn = styled.button<{ curPosition: number; curTop: number; upDownChk: boolean }>`
-    //upDownChk: true(Up), false(Down)
+const ListBtnUp = styled.button<{ curPosition: number; curTop: number }>`
     background-color: transparent;
     display: flex;
     justify-content: center;
@@ -54,9 +53,27 @@ const ListBtn = styled.button<{ curPosition: number; curTop: number; upDownChk: 
     border-radius: 2px;
     border: 1px solid #e4e5e8;
     color: ${(props) => {
-        if (props.curPosition === 0 && props.upDownChk === true) {
+        if (props.curPosition === 0) {
             return '#aeb3bb';
-        } else if (props.curPosition === props.curTop && props.upDownChk === false) {
+        } else {
+            return '#000';
+        }
+    }};
+    font-size: 14px;
+`;
+
+const ListBtnDown = styled.button<{ curPosition: number; curTop: number; testp: number }>`
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 2px;
+    border: 1px solid #e4e5e8;
+    color: ${(props) => {
+        console.log(props.curTop, props.testp);
+        if (props.curTop > 0) {
             return '#aeb3bb';
         } else {
             return '#000';
@@ -165,6 +182,10 @@ function ButtonScroll() {
     //scroll event
     const contentScrl = useRef<HTMLDivElement | null>(null);
     const ulScrl = useRef<HTMLUListElement | null>(null);
+    const [testH, setTestH] = useState<any>(() => {
+        if (ulScrl.current) return ulScrl.current.scrollHeight;
+    });
+
     const scrollDiv = _.throttle((e: React.UIEvent<HTMLDivElement>) => {
         if (contentScrl.current) {
             setCurScrollPos(contentScrl.current.scrollTop);
@@ -181,15 +202,18 @@ function ButtonScroll() {
         //contentScrl.current?.scrollTo({ top: 100, behavior: 'smooth' });
     };
     const listScrollDown = () => {
-        contentScrl.current?.scrollTo({ top: contentScrl.current?.scrollHeight, behavior: 'smooth' });
-        console.log(contentScrl.current?.scrollTop);
+        //contentScrl.current?.scrollTo({ top: contentScrl.current?.scrollHeight, behavior: 'smooth' });
+        console.log('div scr top', contentScrl.current?.scrollTop);
+        console.log('div scr height', contentScrl.current?.scrollHeight);
+        console.log('ul scr height', ulScrl.current?.scrollHeight);
+        console.log('ul scr top', ulScrl.current?.scrollTop);
     };
 
     //folding state
     const changeFolding = () => {
         setFoldingState((prev) => !prev);
         if (contentScrl.current) {
-            console.log(contentScrl.current.scrollTop);
+            setTestH(contentScrl.current.scrollTop);
             setCurScrollPos(contentScrl.current.scrollTop);
         }
     };
@@ -206,22 +230,17 @@ function ButtonScroll() {
                     Coinnews <ListDay>{now.format('YYYY-MM-DD')}</ListDay>
                 </ListTitle>
                 <BtnBox>
-                    <ListBtn
-                        curPosition={curScrollPos}
-                        curTop={curScrollH}
-                        upDownChk={true}
-                        onClick={listScrollUp}
-                    >
+                    <ListBtnUp curPosition={curScrollPos} curTop={curScrollH} onClick={listScrollUp}>
                         <IoIosArrowUp />
-                    </ListBtn>
-                    <ListBtn
+                    </ListBtnUp>
+                    <ListBtnDown
                         curPosition={curScrollPos}
                         curTop={curScrollH}
-                        upDownChk={false}
+                        testp={testH}
                         onClick={listScrollDown}
                     >
                         <IoIosArrowDown />
-                    </ListBtn>
+                    </ListBtnDown>
                 </BtnBox>
             </Header>
             <Content ref={contentScrl} onScroll={scrollDiv}>
