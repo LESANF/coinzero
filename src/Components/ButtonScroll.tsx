@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import _ from 'lodash';
 import dayjs from 'dayjs';
@@ -62,7 +62,7 @@ const ListBtnUp = styled.button<{ curPosition: number; curTop: number }>`
     font-size: 14px;
 `;
 
-const ListBtnDown = styled.button<{ curPosition: number; curTop: number; testp: number }>`
+const ListBtnDown = styled.button<{ curPosition: number; curTop: number }>`
     background-color: transparent;
     display: flex;
     justify-content: center;
@@ -72,8 +72,7 @@ const ListBtnDown = styled.button<{ curPosition: number; curTop: number; testp: 
     border-radius: 2px;
     border: 1px solid #e4e5e8;
     color: ${(props) => {
-        console.log(props.curTop, props.testp);
-        if (props.curTop > 0) {
+        if (props.curTop - props.curPosition - 215 === 0) {
             return '#aeb3bb';
         } else {
             return '#000';
@@ -115,7 +114,7 @@ const Items = styled.ul`
     align-items: center;
 `;
 
-const Item = styled.li`
+const Item = styled.li<{ id: any }>`
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -182,46 +181,39 @@ function ButtonScroll() {
     //scroll event
     const contentScrl = useRef<HTMLDivElement | null>(null);
     const ulScrl = useRef<HTMLUListElement | null>(null);
-    const [testH, setTestH] = useState<any>(() => {
-        if (ulScrl.current) return ulScrl.current.scrollHeight;
-    });
 
     const scrollDiv = _.throttle((e: React.UIEvent<HTMLDivElement>) => {
-        if (contentScrl.current) {
-            setCurScrollPos(contentScrl.current.scrollTop);
+        if (contentScrl.current && ulScrl.current) {
             setCurScrollH(contentScrl.current.scrollHeight);
+            setCurScrollPos(contentScrl.current.scrollTop);
         }
     }, 500);
 
     const listScrollUp = () => {
-        // if(contentScrl.current?.scrollTop > 0);
-        console.log('div scr top', contentScrl.current?.scrollTop);
-        //console.log('div scr height', contentScrl.current?.scrollHeight);
-        //console.log('ul scr height', ulScrl.current?.scrollHeight);
-        //console.log('ul scr top', ulScrl.current?.scrollTop);
-        //contentScrl.current?.scrollTo({ top: 100, behavior: 'smooth' });
+        let moveUpPos;
+        const curVal = contentScrl.current;
+        if (curVal) {
+            moveUpPos = curVal.scrollTop - Math.floor(curVal.scrollHeight / 3);
+            curVal.scrollTo({ top: moveUpPos, behavior: 'smooth' });
+        }
     };
     const listScrollDown = () => {
-        //contentScrl.current?.scrollTo({ top: contentScrl.current?.scrollHeight, behavior: 'smooth' });
-        console.log('div scr top', contentScrl.current?.scrollTop);
-        console.log('div scr height', contentScrl.current?.scrollHeight);
-        console.log('ul scr height', ulScrl.current?.scrollHeight);
-        console.log('ul scr top', ulScrl.current?.scrollTop);
-    };
-
-    //folding state
-    const changeFolding = () => {
-        setFoldingState((prev) => !prev);
-        if (contentScrl.current) {
-            setTestH(contentScrl.current.scrollTop);
-            setCurScrollPos(contentScrl.current.scrollTop);
+        let moveDownPos;
+        const curVal = contentScrl.current;
+        if (curVal) {
+            moveDownPos = curVal.scrollTop + Math.floor(curVal.scrollHeight / 3);
+            curVal.scrollTo({ top: moveDownPos, behavior: 'smooth' });
         }
     };
 
-    // useEffect(() => {
-    //     console.log('ul scr height', ulScrl.current?.scrollHeight);
-    //     console.log(contentScrl.current?.scrollHeight);
-    // }, []);
+    //folding state
+    const changeFolding = (e: React.MouseEvent<HTMLLIElement>) => {
+        console.log(e.currentTarget.id);
+        setFoldingState((prev) => !prev);
+        if (contentScrl.current) {
+            setCurScrollPos(contentScrl.current.scrollTop);
+        }
+    };
 
     return (
         <Frame>
@@ -230,13 +222,18 @@ function ButtonScroll() {
                     Coinnews <ListDay>{now.format('YYYY-MM-DD')}</ListDay>
                 </ListTitle>
                 <BtnBox>
-                    <ListBtnUp curPosition={curScrollPos} curTop={curScrollH} onClick={listScrollUp}>
+                    <ListBtnUp
+                        disabled={curScrollPos === 0}
+                        curPosition={curScrollPos}
+                        curTop={curScrollH}
+                        onClick={listScrollUp}
+                    >
                         <IoIosArrowUp />
                     </ListBtnUp>
                     <ListBtnDown
+                        disabled={curScrollH - curScrollPos - 215 === 0}
                         curPosition={curScrollPos}
                         curTop={curScrollH}
-                        testp={testH}
                         onClick={listScrollDown}
                     >
                         <IoIosArrowDown />
@@ -247,8 +244,8 @@ function ButtonScroll() {
                 {resultData && resultData.result.length > 0 ? (
                     <>
                         <Items ref={ulScrl}>
-                            {resultData.result.map((v: any, i: any) => (
-                                <Item key={i} onClick={changeFolding}>
+                            {resultData.result.map((v: any, i: number) => (
+                                <Item key={i} onClick={changeFolding} id={i}>
                                     <ItemTitle>
                                         {v.time > 59 ? `${Math.floor(v.time / 60)}시간전` : `${v.time}분전`}
                                     </ItemTitle>

@@ -82,6 +82,7 @@ const AutoSearch = styled.div`
     border-radius: 3px;
     box-shadow: 0 3px 10px 0 rgb(66 66 66 / 5%);
     width: 400px;
+    z-index: 100;
     background-color: #fff;
 `;
 const CoinList = styled.ul`
