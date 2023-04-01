@@ -6,6 +6,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 const Frame = styled.div`
     height: 60px;
     grid-area: item1;
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
 `;
 
 const Notice = styled.a`

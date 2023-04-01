@@ -9,11 +9,10 @@ import { getDetailCoin, getMarketCoins, IAssignCoin, ICoin, ICoinDetail } from '
 import { getCombineRank } from '../Utils/CombineCoinData';
 
 const MainRightFrame = styled.div`
-    /* box-sizing: border-box;
-    background-color: #fff;
-    min-width: 663px;
-    width: 663px; */
     grid-area: item2;
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
 `;
 
 const Test = styled.div`

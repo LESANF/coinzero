@@ -21,8 +21,9 @@ const MainLeftFrame = styled.div`
     flex-direction: column;
     background-color: #fff;
     grid-area: item3;
-    /* width: 361px;
-    min-width: 361px; */
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
 `;
 
 //Header

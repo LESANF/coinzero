@@ -6,12 +6,13 @@ import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { IVerNotice, verNoticeDummyData } from '../DummyData';
 
 const Frame = styled.div`
-    /* height: 232px;
-    margin-top: 10px; */
     box-shadow: 0 3px 10px 0 rgba(66, 66, 66, 0.05);
     border: 1px solid #e4e5e8;
     grid-area: item4;
     overflow: hidden;
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
 `;
 
 //Title, Button

@@ -5,12 +5,10 @@ import QuickSearch from './QuickSearch';
 import VerticalNotice from './VerticalNotice';
 
 const MainFrame = styled.div`
-    @media screen and (min-width: 640px) {
+    @media screen and (min-width: 601px) {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        /* margin-top: 30px; */
-        //margin-top: 30px;
         box-sizing: border-box;
         margin: 30px auto 0;
         width: 1024px;
@@ -22,7 +20,7 @@ const MainFrame = styled.div`
 const Frame = styled.div`
     //min-height: 600px;
     //height: 600px;
-    @media screen and (min-width: 640px) {
+    @media screen and (min-width: 601px) {
         display: grid;
         grid-column-gap: 58px;
         grid-template-rows: 204px 73px 257px;
@@ -35,11 +33,6 @@ const Frame = styled.div`
     }
     /* display: grid;
     grid-template-columns: 4fr 6fr; */
-
-    //웹뷰 형식 나중에 640으로 통일
-    /* @media screen and (max-width: 640px) {
-        display: none;
-    } */
 `;
 
 function Main() {

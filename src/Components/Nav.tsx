@@ -15,8 +15,7 @@ const Navbar = styled.nav`
     background-color: #fff;
     min-width: 500px;
     z-index: 1000;
-
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 600px) {
         display: none;
     }
 `;
