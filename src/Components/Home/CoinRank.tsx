@@ -5,8 +5,8 @@ import { BsQuestionCircle } from 'react-icons/bs';
 import { VscArrowSwap } from 'react-icons/vsc';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { getDetailCoin, getMarketCoins, IAssignCoin, ICoin, ICoinDetail } from '../Api/coinInfo';
-import { getCombineRank } from '../Utils/CombineCoinData';
+import { getDetailCoin, getMarketCoins, IAssignCoin, ICoin, ICoinDetail } from '../../Api/coinInfo';
+import { getCombineRank } from '../../Utils/CombineCoinData';
 
 const MainRightFrame = styled.div`
     grid-area: item2;

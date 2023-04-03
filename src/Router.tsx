@@ -1,3 +1,4 @@
+import CoinLists from './Pages/CoinLists';
 import Home from './Pages/Home';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -6,6 +7,7 @@ function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={Home} />
+                <Route path="/coins" element={CoinLists} />
             </Routes>
         </BrowserRouter>
     );

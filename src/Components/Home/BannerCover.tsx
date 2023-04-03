@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 import SwiperCore, { Navigation, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import '../../node_modules/swiper/swiper.scss'; // core Swiper
-import '../../node_modules/swiper/modules/navigation/navigation.scss'; // Navigation module
-import '../../node_modules/swiper/modules/pagination/pagination.scss'; // Pagination module
+import '../../../node_modules/swiper/swiper.scss'; // core Swiper
+import '../../../node_modules/swiper/modules/navigation/navigation.scss'; // Navigation module
+import '../../../node_modules/swiper/modules/pagination/pagination.scss'; // Pagination module
 import { motion } from 'framer-motion';
 import { MdArrowBackIos, MdArrowForwardIos } from 'react-icons/md';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
 import React, { useEffect, useRef, useState } from 'react';
 import { SwiperModule } from 'swiper/types';
-import { BannerDummyContents } from '../DummyData';
+import { BannerDummyContents } from '../../DummyData';
 
 //BannerFrame
 const MainBanner = styled.div`
-    margin-top: 68px;
+    margin-bottom: 68px;
     background-color: black;
     //width: 100vw;
     //min-width: 1800px;

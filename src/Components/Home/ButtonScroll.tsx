@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import _ from 'lodash';
 import dayjs from 'dayjs';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
-import { IVerNotice, verNoticeDummyData } from '../DummyData';
+import { IVerNotice, verNoticeDummyData } from '../../DummyData';
 
 const Frame = styled.div`
     box-shadow: 0 3px 10px 0 rgba(66, 66, 66, 0.05);

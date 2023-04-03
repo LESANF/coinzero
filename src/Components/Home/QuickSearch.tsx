@@ -9,9 +9,9 @@ import {
     ICoinDetail,
     IAssignCoin,
     getBtcAccPrice,
-} from '../Api/coinInfo';
+} from '../../Api/coinInfo';
 import { useQuery } from 'react-query';
-import { getCombine } from '../Utils/CombineCoinData';
+import { getCombine } from '../../Utils/CombineCoinData';
 import VerticalNotice from './VerticalNotice';
 import GoReadme from './GoReadme';
 import ButtonScroll from './ButtonScroll';
