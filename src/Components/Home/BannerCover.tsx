@@ -13,7 +13,7 @@ import { BannerDummyContents } from '../../DummyData';
 
 //BannerFrame
 const MainBanner = styled.div`
-    margin-bottom: 68px;
+    margin: 68px 0;
     background-color: black;
     //width: 100vw;
     //min-width: 1800px;

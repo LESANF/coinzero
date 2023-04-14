@@ -3,6 +3,7 @@ import Nav from '../Components/Home/Nav';
 import styled from 'styled-components';
 import BannerCover from '../Components/Home/BannerCover';
 import Main from '../Components/Home/Main';
+import * as C from '../Components/Caution/SizeCaution';
 
 const NavTitle = styled.span`
     background: linear-gradient(to right bottom, #4147ff, #91c4ff);
@@ -18,36 +19,23 @@ const Banner = styled.div`
     top: 68px;
 `;
 
-const HomeFrame = styled.div`
-    @media screen and (max-width: 600px) {
-        white-space: nowrap;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #799aff;
-        z-index: 2000;
-    }
-`;
-
 const ScreenMsg = styled.span`
     font-size: 18px;
     color: white;
+    @media screen and (min-width: 600px) {
+        display: none;
+    }
 `;
 
 function Home() {
     return (
-        <HomeFrame>
+        <C.SizeCautionFrame>
             <ScreenMsg>모바일 환경은 지원하지 않아요 더 큰 화면에서 이용해주세요 😮‍💨</ScreenMsg>
             <Nav />
             <BannerCover />
             <Main />
             <Footer />
-        </HomeFrame>
+        </C.SizeCautionFrame>
     );
 }
 
