@@ -1,14 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
-import SpoqaRegular from './Styles/fonts/spoqa/SpoqaHanSansNeo-Regular.otf';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
+import SpoqaRegular from "./Styles/fonts/spoqa/SpoqaHanSansNeo-Regular.otf";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { RecoilRoot } from "recoil";
+import { useLocation } from "react-router-dom";
 
 const queryClient = new QueryClient();
-
 const GlobalStyles = createGlobalStyle`
   /*css-reset을 위한 GlobalStyle설정 */
   ${reset}
@@ -22,7 +23,7 @@ const GlobalStyles = createGlobalStyle`
 
   body{
     font-family: 'Spoqa Han Sans';
-    background-color: #fff;
+    background-color: ${window.location.href.includes("coins") ? "#fafafa" : "#fff"};
     min-width: 1124px;
     /* overflow: scroll; */
   }
@@ -37,13 +38,15 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
-    <>
-        <QueryClientProvider client={queryClient}>
-            <GlobalStyles />
-            <App />
-            <ReactQueryDevtools />
-        </QueryClientProvider>
-    </>
+  <>
+    <QueryClientProvider client={queryClient}>
+      <GlobalStyles />
+      <RecoilRoot>
+        <App />
+      </RecoilRoot>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
+  </>
 );
