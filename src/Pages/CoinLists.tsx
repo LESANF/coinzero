@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "../Components/Home/Nav";
 import styled from "styled-components";
 import CoinSummary from "../Components/CoinLists/CoinSummary/CoinSummary";
@@ -6,6 +6,11 @@ import CoinChart from "../Components/CoinLists/CoinChart/CoinChart";
 import SimpleSearch from "../Components/CoinLists/SimpleSearch/SimpleSearch";
 import TradingVolume from "../Components/CoinLists/TradingVolume/TradingVolume";
 import * as C from "../Components/Caution/SizeCaution";
+import { useGetLiveData } from "../hooks/useGetLiveData";
+import { getMarketCoins } from "../Api/coinInfo";
+import Loading from "../Components/CoinLists/Utils/LoadingSpinner";
+import Skeleton from "../Components/CoinLists/Utils/skeleton/Skeleton";
+import { getSmallChartData } from "../Components/CoinLists/CoinSummary/Utils/getSmallChartData";
 
 const CoinListsFrame = styled.div`
   box-sizing: border-box;
@@ -37,19 +42,75 @@ const ScreenMsg = styled.span`
   }
 `;
 
+interface ICoinData {
+  market: string;
+  candle_date_time_utc: string | null;
+  candle_date_time_kst: string | null;
+  opening_price: number | null;
+  high_price: number | null;
+  low_price: number | null;
+  trade_price: number | null;
+  timestamp: number | null;
+  candle_acc_trade_price: number | null;
+  candle_acc_trade_volume: number | null;
+  prev_closing_price: number | null;
+  change_price: number | null;
+  change_rate: number | null;
+}
+
 function CoinLists() {
+  const [liveData, setLiveData] = useState<any>();
+  const [coinNames, setCoinNames] = useState<any>([]);
+  const wsCoin = "KRW-HIFI";
+  const getLiveData: any = JSON.stringify(useGetLiveData(wsCoin));
+  const [lineData, setLineData] = useState<ICoinData[] | null | undefined>([]);
+
+  useEffect(() => {
+    if (getLiveData) {
+      setLiveData({ ...JSON.parse(getLiveData) });
+    }
+  }, [getLiveData]);
+
+  useEffect(() => {
+    const fetchCoinNames = async () => {
+      const result = await getMarketCoins();
+      setCoinNames(result);
+    };
+
+    fetchCoinNames();
+  }, []);
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        const chartData = await getSmallChartData(wsCoin);
+        setLineData(chartData);
+      } catch (error) {
+        console.log(`SmallChart Data Error: ${error}`);
+      }
+    };
+
+    fetchChartData();
+  }, []);
+
   return (
     <C.SizeCautionFrame>
       <ScreenMsg>모바일 환경은 지원하지 않아요 더 큰 화면에서 이용해주세요 😮‍💨</ScreenMsg>
       <Nav coinDetail={true} />
       <CoinListsFrame>
-        <CoinSummary></CoinSummary>
-        <CoinChart></CoinChart>
-        <TradingVolume></TradingVolume>
-        <SimpleSearch></SimpleSearch>
+        {liveData && coinNames && lineData ? (
+          <>
+            <CoinSummary liveData={liveData} coinNames={coinNames} lineData={lineData}></CoinSummary>
+            <CoinChart liveData={liveData} wsCoin={wsCoin}></CoinChart>
+            <TradingVolume></TradingVolume>
+            <SimpleSearch></SimpleSearch>
+          </>
+        ) : (
+          <Skeleton />
+        )}
       </CoinListsFrame>
     </C.SizeCautionFrame>
   );
 }
 
-export default CoinLists();
+export default CoinLists;

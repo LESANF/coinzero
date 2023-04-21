@@ -30,10 +30,9 @@ export const useGetLiveData = (wsCoin: any) => {
     ws.current.onmessage = async (e: any) => {
       const text = await new Response(e.data).text();
       const message = JSON.parse(text);
-      const { code, high_price, low_price, change, prev_closing_price, opening_price, trade_price, acc_trade_volume_24h, acc_trade_price_24h, timestamp } = message;
+      const { code, high_price, low_price, change, prev_closing_price, opening_price, trade_price, acc_trade_volume_24h, acc_trade_price_24h, timestamp, trade_volume } = message;
 
       setResult({
-        timestamp,
         change,
         trade_price,
         opening_price,
@@ -43,6 +42,8 @@ export const useGetLiveData = (wsCoin: any) => {
         prev_closing_price,
         acc_trade_volume_24h,
         acc_trade_price_24h,
+        timestamp: Math.floor(timestamp / 24 / 60 / 60 / 1000) * 24 * 60 * 60 * 1000,
+        turnover: ((opening_price + low_price + high_price + trade_price) / 4) * trade_volume,
       });
     };
 

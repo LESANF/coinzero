@@ -1,12 +1,7 @@
-import React, { useEffect, useState, lazy } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useGetLiveData } from "../../../hooks/useGetLiveData";
-import Loading from "../Utils/LoadingSpinner";
 import * as C from "./styled";
-import { getMarketCoins } from "../../../Api/coinInfo";
-// import SmallChart from "./Utils/SmallChart";
-
-const SmallChart = lazy(() => import("./Utils/SmallChart"));
+import SmallChart from "./Utils/SmallChart";
 
 const SummaryFrame = styled.div`
   position: relative;
@@ -18,35 +13,10 @@ const SummaryFrame = styled.div`
   }
 `;
 
-function CoinSummary() {
-  const [liveData, setLiveData] = useState<any>();
-  const [coinNames, setCoinNames] = useState<any>([]);
-
-  const wsCoin = "KRW-ANKR";
-
-  // const coinNameBox = useRecoilValue(coinNameInfo);
-  const getLiveData: any = JSON.stringify(useGetLiveData(wsCoin));
-
-  useEffect(() => {
-    if (getLiveData) {
-      setLiveData({ ...JSON.parse(getLiveData) });
-    }
-  }, [getLiveData]);
-
-  useEffect(() => {
-    const fetchCoinNames = async () => {
-      const result = await getMarketCoins();
-      setCoinNames(result);
-    };
-
-    fetchCoinNames();
-  }, []);
-
-  console.log(liveData);
-
+function CoinSummary({ liveData, coinNames, lineData }: any) {
   return (
     <SummaryFrame>
-      {liveData && getLiveData && coinNames && (
+      {liveData && coinNames && lineData && (
         <C.CurCoinFrame>
           <C.CoinHead>
             <C.CoinSymbol>
@@ -111,13 +81,11 @@ function CoinSummary() {
               </C.CoinPriceInfo>
             </C.CoinHLBST>
           </C.CoinHLBSTFrame>
-
           <C.SmallChartFrame>
-            <SmallChart changeValue={liveData.change} />
+            <SmallChart changeValue={liveData.change} lineData={lineData.slice(0, 49)} />
           </C.SmallChartFrame>
         </C.CurCoinFrame>
       )}
-      <Loading loading={!liveData} size={80} />
     </SummaryFrame>
   );
 }
