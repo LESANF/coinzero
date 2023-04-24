@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { init, dispose, Chart } from "klinecharts";
-import Loading from "../Utils/LoadingSpinner";
-import generatedDataList from "./testData";
 import { getSmallChartData } from "../CoinSummary/Utils/getSmallChartData";
 
 const ChartFrame = styled.div`

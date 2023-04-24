@@ -8,7 +8,6 @@ import TradingVolume from "../Components/CoinLists/TradingVolume/TradingVolume";
 import * as C from "../Components/Caution/SizeCaution";
 import { useGetLiveData } from "../hooks/useGetLiveData";
 import { getMarketCoins } from "../Api/coinInfo";
-import Loading from "../Components/CoinLists/Utils/LoadingSpinner";
 import Skeleton from "../Components/CoinLists/Utils/skeleton/Skeleton";
 import { getSmallChartData } from "../Components/CoinLists/CoinSummary/Utils/getSmallChartData";
 
@@ -59,15 +58,19 @@ interface ICoinData {
 }
 
 function CoinLists() {
-  const [liveData, setLiveData] = useState<any>();
+  const [liveDataTrade, setLiveDataTrade] = useState<any>();
+  const [liveDataTicker, setLiveDataTicker] = useState<any>();
   const [coinNames, setCoinNames] = useState<any>([]);
-  const wsCoin = "KRW-HIFI";
+  const wsCoin = "KRW-BTC";
   const getLiveData: any = JSON.stringify(useGetLiveData(wsCoin));
   const [lineData, setLineData] = useState<ICoinData[] | null | undefined>([]);
 
   useEffect(() => {
     if (getLiveData) {
-      setLiveData({ ...JSON.parse(getLiveData) });
+      const parseLiveData = JSON.parse(getLiveData);
+      const dataType = parseLiveData.type;
+      if (dataType === "trade") setLiveDataTrade({ ...parseLiveData });
+      if (dataType === "ticker") setLiveDataTicker({ ...parseLiveData });
     }
   }, [getLiveData]);
 
@@ -98,11 +101,11 @@ function CoinLists() {
       <ScreenMsg>모바일 환경은 지원하지 않아요 더 큰 화면에서 이용해주세요 😮‍💨</ScreenMsg>
       <Nav coinDetail={true} />
       <CoinListsFrame>
-        {liveData && coinNames && lineData ? (
+        {(liveDataTrade || liveDataTicker) && coinNames && lineData ? (
           <>
-            <CoinSummary liveData={liveData} coinNames={coinNames} lineData={lineData}></CoinSummary>
-            <CoinChart liveData={liveData} wsCoin={wsCoin}></CoinChart>
-            <TradingVolume></TradingVolume>
+            <CoinSummary liveData={liveDataTicker} coinNames={coinNames} lineData={lineData}></CoinSummary>
+            <CoinChart liveData={liveDataTicker} wsCoin={wsCoin}></CoinChart>
+            <TradingVolume liveData={liveDataTrade} daysData={lineData.slice(0, 49)} coinName={wsCoin}></TradingVolume>
             <SimpleSearch></SimpleSearch>
           </>
         ) : (

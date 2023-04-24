@@ -13,10 +13,12 @@ export const getSmallChartData = async (coinNmae: string): Promise<any> => {
       .then((res) => res.data)
       .then((data) => {
         return data.map((item: any) => {
-          const { opening_price, low_price, high_price, trade_price, timestamp, candle_acc_trade_volume, candle_date_time_kst } = item;
+          const { opening_price, low_price, high_price, trade_price, timestamp, candle_acc_trade_volume, candle_date_time_kst, change_price, change_rate } = item;
 
           return {
             candle_date_time_kst,
+            change_price,
+            change_rate,
             open: opening_price,
             low: low_price,
             high: high_price,
