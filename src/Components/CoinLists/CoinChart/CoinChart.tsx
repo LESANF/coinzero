@@ -68,4 +68,4 @@ function CoinChart({ liveData, wsCoin }: any) {
   );
 }
 
-export default CoinChart;
+export default React.memo(CoinChart);

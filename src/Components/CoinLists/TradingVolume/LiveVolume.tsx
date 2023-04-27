@@ -1,45 +1,120 @@
-import React, { useMemo } from "react";
+import { cloneDeep } from "lodash";
+import { memo, useEffect, useRef, useState, useMemo } from "react";
 import { useTable } from "react-table";
-import * as T from "./styled";
+import { useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { useWsTrade } from "use-upbit-api";
+import { selectedCoinState } from "./atom";
+import * as L from "./styled";
 
-export default function LiveVolume({ data: tt, coinName }: any) {
-  const columns = useMemo(
-    (): any => [
-      { accessor: "tradeTime", Header: "체결시간" },
-      { accessor: "tradePrice", Header: "체결가격(KRW)" },
-      { accessor: "tradeVolume", Header: `체결량(${coinName.split("-")[1]})` },
-      { accessor: "tradeVolumePrice", Header: "체결금액(KRW)" },
-    ],
-    []
-  );
+const timestampToTime = (timestamp: number) => {
+  const time = new Date(timestamp);
+  let month: string | number = time.getMonth() + 1;
+  let day: string | number = time.getDate();
+  let hour: string | number = time.getHours();
+  let minute: string | number = time.getMinutes();
 
-  const data = useMemo((): any => [], []);
+  month = month >= 10 ? month : "0" + month;
+  day = day >= 10 ? day : "0" + day;
+  hour = hour >= 10 ? hour : "0" + hour;
+  minute = minute >= 10 ? minute : "0" + minute;
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({ columns, data });
+  const monthDay = `${month}.${day}`;
+  const hourMin = `${hour}:${minute}`;
+
+  return [monthDay, hourMin];
+};
+
+interface ImarketCodes {
+  market: string;
+  korean_name: string;
+  english_name: string;
+}
+
+function LiveVolume({ changeValue }: any) {
+  const selectedCoin: any = useRecoilValue(selectedCoinState);
+  //@ts-ignore
+  const { socketData } = useWsTrade(...selectedCoin);
+  const [fetchedData, setFetchedData] = useState<any>([]);
+  const preFetchedCount = useRef(30);
+  const removedLength = useRef(0);
+
+  // Upbit 체결 내역 fetch 함수
+  const options = { method: "GET", headers: { Accept: "application/json" } };
+  async function fetchTradeHistory(marketCode: string, count: number) {
+    try {
+      const response = await fetch(`https://api.upbit.com/v1/trades/ticks?market=${marketCode}&count=${count}`, options);
+      const result = await response.json();
+
+      setFetchedData(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    if (selectedCoin) {
+      fetchTradeHistory(selectedCoin[0].market, preFetchedCount.current);
+      return () => {
+        setFetchedData(null);
+      };
+    }
+  }, [selectedCoin]);
+
+  useEffect(() => {
+    if (socketData && fetchedData) {
+      if (socketData.length > 0 && fetchedData.length > 0) {
+        const curRemoveLength = socketData.length - removedLength.current;
+        setFetchedData((prev: any) => {
+          const data = cloneDeep(prev);
+          for (let i = 0; i < curRemoveLength; i++) {
+            data.pop();
+          }
+          return data;
+        });
+        removedLength.current = removedLength.current + curRemoveLength;
+      }
+    }
+  }, [socketData]);
 
   return (
-    <T.TableFrame {...getTableProps()}>
-      <T.TableHead>
-        {headerGroups.map((headerGroups) => (
-          <T.TableTr {...headerGroups.getHeaderGroupProps()}>
-            {headerGroups.headers.map((column) => (
-              <T.TableTh {...column.getHeaderProps()}>{column.render("Header")}</T.TableTh>
-            ))}
-          </T.TableTr>
+    <L.LiveVolumeFrame>
+      <L.LiveVolumeHeader>
+        <L.LiveVolumeHeaderItem>체결시간</L.LiveVolumeHeaderItem>
+        <L.LiveVolumeHeaderItem>체결가격(KRW)</L.LiveVolumeHeaderItem>
+        <L.LiveVolumeHeaderItem>{`체결량(${selectedCoin[0].market.split("-")[1]})`}</L.LiveVolumeHeaderItem>
+        <L.LiveVolumeHeaderItem>체결금액(KRW)</L.LiveVolumeHeaderItem>
+      </L.LiveVolumeHeader>
+      {socketData &&
+        [...socketData].reverse().map((data, index) => (
+          <L.LiveVolumeRow key={index}>
+            <L.LiveVolumeTime>
+              <div>
+                {timestampToTime(data.trade_timestamp)[0]}
+                <i style={{ paddingLeft: "4px", fontSize: "11px", color: "#666" }}>{timestampToTime(data.trade_timestamp)[1]}</i>
+              </div>
+            </L.LiveVolumeTime>
+            <L.LiveVolumePrice changeValue={changeValue}>{data.trade_price ? data.trade_price.toLocaleString("ko-KR") : null}</L.LiveVolumePrice>
+            <L.LiveVolumeSize tradeType={data.ask_bid}>{data.trade_volume}</L.LiveVolumeSize>
+            <L.LiveVolumeSize tradeType={data.ask_bid}>{Math.ceil(data.trade_price * data.trade_volume).toLocaleString("ko-KR")}</L.LiveVolumeSize>
+          </L.LiveVolumeRow>
         ))}
-      </T.TableHead>
-      <T.TableBody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <T.TableTr {...row.getRowProps()}>
-              {row.cells.map((cell) => (
-                <T.TableTd {...cell.getCellProps()}>{cell.render("Cell")}</T.TableTd>
-              ))}
-            </T.TableTr>
-          );
-        })}
-      </T.TableBody>
-    </T.TableFrame>
+      {fetchedData &&
+        fetchedData.slice(2).map((data: any, index: number) => (
+          <L.LiveVolumeRow key={index}>
+            <L.LiveVolumeTime>
+              <div>
+                {timestampToTime(data.timestamp)[0]}
+                <i style={{ paddingLeft: "4px", fontSize: "11px", color: "#666" }}>{timestampToTime(data.timestamp)[1]}</i>
+              </div>
+            </L.LiveVolumeTime>
+            <L.LiveVolumePrice changeValue={changeValue}>{data.trade_price ? data.trade_price.toLocaleString("ko-KR") : null}</L.LiveVolumePrice>
+            <L.LiveVolumeSize tradeType={data.ask_bid}>{data.trade_volume}</L.LiveVolumeSize>
+            <L.LiveVolumeSize tradeType={data.ask_bid}>{Math.ceil(data.trade_price * data.trade_volume).toLocaleString("ko-KR")}</L.LiveVolumeSize>
+          </L.LiveVolumeRow>
+        ))}
+    </L.LiveVolumeFrame>
   );
 }
+
+export default memo(LiveVolume);

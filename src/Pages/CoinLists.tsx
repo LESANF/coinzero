@@ -10,6 +10,8 @@ import { useGetLiveData } from "../hooks/useGetLiveData";
 import { getMarketCoins } from "../Api/coinInfo";
 import Skeleton from "../Components/CoinLists/Utils/skeleton/Skeleton";
 import { getSmallChartData } from "../Components/CoinLists/CoinSummary/Utils/getSmallChartData";
+import { useRecoilState } from "recoil";
+import { selectedCoinState } from "../Components/CoinLists/TradingVolume/atom";
 
 const CoinListsFrame = styled.div`
   box-sizing: border-box;
@@ -58,11 +60,13 @@ interface ICoinData {
 }
 
 function CoinLists() {
-  const [liveDataTrade, setLiveDataTrade] = useState<any>();
+  const [renderTimer, setRenderTimer] = useState(false);
+  const [liveDataTrade, setLiveDataTrade] = useState<any>([]);
   const [liveDataTicker, setLiveDataTicker] = useState<any>();
   const [coinNames, setCoinNames] = useState<any>([]);
-  const wsCoin = "KRW-BTC";
-  const getLiveData: any = JSON.stringify(useGetLiveData(wsCoin));
+
+  const [searchCoin, setSearchCoin] = useRecoilState(selectedCoinState);
+  const getLiveData: any = JSON.stringify(useGetLiveData(searchCoin[0].market));
   const [lineData, setLineData] = useState<ICoinData[] | null | undefined>([]);
 
   useEffect(() => {
@@ -73,6 +77,10 @@ function CoinLists() {
       if (dataType === "ticker") setLiveDataTicker({ ...parseLiveData });
     }
   }, [getLiveData]);
+
+  useEffect(() => {
+    setTimeout(() => setRenderTimer((prev: boolean) => !prev), 2000);
+  }, []);
 
   useEffect(() => {
     const fetchCoinNames = async () => {
@@ -86,7 +94,7 @@ function CoinLists() {
   useEffect(() => {
     const fetchChartData = async () => {
       try {
-        const chartData = await getSmallChartData(wsCoin);
+        const chartData = await getSmallChartData(searchCoin[0].market);
         setLineData(chartData);
       } catch (error) {
         console.log(`SmallChart Data Error: ${error}`);
@@ -101,11 +109,11 @@ function CoinLists() {
       <ScreenMsg>모바일 환경은 지원하지 않아요 더 큰 화면에서 이용해주세요 😮‍💨</ScreenMsg>
       <Nav coinDetail={true} />
       <CoinListsFrame>
-        {(liveDataTrade || liveDataTicker) && coinNames && lineData ? (
+        {(liveDataTrade || liveDataTicker) && coinNames && lineData && renderTimer ? (
           <>
             <CoinSummary liveData={liveDataTicker} coinNames={coinNames} lineData={lineData}></CoinSummary>
-            <CoinChart liveData={liveDataTicker} wsCoin={wsCoin}></CoinChart>
-            <TradingVolume liveData={liveDataTrade} daysData={lineData.slice(0, 49)} coinName={wsCoin}></TradingVolume>
+            <CoinChart liveData={liveDataTicker} wsCoin={searchCoin[0].market}></CoinChart>
+            <TradingVolume changeValue={"RISE"} daysData={lineData.slice(0, 49)} coinName={searchCoin[0].market}></TradingVolume>
             <SimpleSearch></SimpleSearch>
           </>
         ) : (

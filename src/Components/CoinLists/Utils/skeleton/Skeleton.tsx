@@ -1,8 +1,6 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-const liFinal = [1, 2, 3];
-
 const loadingKeyframes = keyframes`
     0% {
         transform: translateX(0);
@@ -88,6 +86,15 @@ const loadingKey140 = keyframes`
     50%,
     100% {
         transform: translateX(140px);
+    }
+`;
+const loadingKey900 = keyframes`
+    0% {
+        transform: translateX(0);
+    }
+    50%,
+    100% {
+        transform: translateX(900px);
     }
 `;
 
@@ -371,6 +378,149 @@ const SkeletonMainChart = styled.div`
   }
 `;
 
+const SkeletonTradingVolume = styled.div`
+  background-color: #fff;
+  border-radius: 8px;
+  grid-area: tradingVolume;
+`;
+
+const SkeletonMenuFrame = styled.ul`
+  width: 100%;
+  height: 45px;
+  display: flex;
+  border-bottom: 2px solid #f2f2f2;
+`;
+
+const SkeletonMenuName = styled.li`
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SkeletonMenuItem = styled.div`
+  width: 40px;
+  height: 20px;
+  margin-left: 4px;
+  font-size: 18px;
+  line-height: 1.25;
+  background: #f2f2f2;
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
+    animation: ${loadingKey40} 2s infinite linear;
+  }
+`;
+
+const SkeletonVolumeTable = styled.table`
+  width: 100%;
+`;
+
+const SkeletonThead = styled.thead`
+  border-collapse: collapse;
+  border-spacing: 0;
+  vertical-align: middle;
+`;
+
+const SkeletonTBody = styled.tbody``;
+
+const SkeletonTh = styled.th`
+  position: sticky;
+  top: 0;
+  text-align: center;
+  padding-right: 2px;
+  border-bottom: 1px solid #f1f1f4;
+  height: 30px;
+  color: #666;
+  background-color: #f9fafc;
+  font-size: 12px;
+  vertical-align: middle;
+`;
+
+const SkeletonTr = styled.tr``;
+
+const SkeletonTd = styled.td`
+  font-size: 12px;
+  height: 32px;
+  text-align: center;
+  vertical-align: middle;
+`;
+
+const SkeletonHeadBox = styled.ul`
+  width: 100%;
+  display: flex;
+  border-bottom: 2px solid #f2f2f2;
+`;
+
+const SkeletonHeadItem = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  width: 40px;
+  height: 30px;
+`;
+
+const SkeletonHeadItemName = styled.div`
+  background-color: #f2f2f2;
+  width: 40px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
+    animation: ${loadingKey40} 2s infinite linear;
+  }
+`;
+
+const SkeletonDataBox = styled.ul`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+`;
+
+const SkeletonDataList = styled.li`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+const SkeletonDataItem = styled.div`
+  background-color: #f2f2f2;
+  width: 900px;
+  height: 15px;
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
+    animation: ${loadingKey900} 2s infinite linear;
+  }
+`;
+
 const Skeleton = () => {
   return (
     <>
@@ -414,6 +564,39 @@ const Skeleton = () => {
       <SkeletonChartFrame>
         <SkeletonMainChart />
       </SkeletonChartFrame>
+      <SkeletonTradingVolume>
+        <SkeletonMenuFrame>
+          {[0].map((v) => (
+            <SkeletonMenuName key={v}>
+              <SkeletonMenuItem />
+            </SkeletonMenuName>
+          ))}
+        </SkeletonMenuFrame>
+        <SkeletonVolumeTable>
+          <SkeletonThead>
+            <SkeletonTr>
+              <td style={{ display: "flex", marginBottom: "10px" }}>
+                {[0, 1, 2, 3].map((v) => (
+                  <SkeletonHeadItem key={v}>
+                    <SkeletonHeadItemName />
+                  </SkeletonHeadItem>
+                ))}
+              </td>
+            </SkeletonTr>
+          </SkeletonThead>
+          <SkeletonTBody>
+            <SkeletonTr>
+              <td>
+                {[0, 1, 2, 3, 4, 5, 6, 7].map((v) => (
+                  <SkeletonDataList key={v}>
+                    <SkeletonDataItem />
+                  </SkeletonDataList>
+                ))}
+              </td>
+            </SkeletonTr>
+          </SkeletonTBody>
+        </SkeletonVolumeTable>
+      </SkeletonTradingVolume>
     </>
   );
 };

@@ -20,7 +20,7 @@ export const MenuName = styled.li<{ focus: boolean }>`
   border-bottom: ${(props) => (props.focus ? "3px solid #0062df" : "1px solid #d4d6dc")};
   color: ${(props) => (props.focus ? "#0062df" : "#333")};
   font-weight: 700;
-  cursor: pointer;
+  /* cursor: pointer; */
 `;
 
 export const TableFrame = styled.table`
@@ -84,4 +84,57 @@ export const VolumeDataTable = styled.div`
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: rgba(0, 0, 0, 0.2);
   }
+`;
+
+export const LiveVolumeFrame = styled.div`
+  grid-column: 1 / span 2;
+  background-color: #f9fafc;
+  font-size: 12px;
+  overflow: overlay;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+`;
+
+export const LiveVolumeHeader = styled.div`
+  color: #666;
+  display: grid;
+  grid-template-columns: 0.7fr 2fr 2fr 1fr;
+  padding-bottom: 2px;
+  height: 32.5px;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+export const LiveVolumeHeaderItem = styled.div``;
+
+export const LiveVolumeRow = styled.div`
+  display: grid;
+  height: 32px;
+  grid-template-columns: 0.7fr 2fr 2fr 1fr;
+  background-color: #fff;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+export const LiveVolumeLogBox = styled.div`
+  margin: 2px;
+`;
+
+export const LiveVolumePrice = styled(LiveVolumeLogBox)<{ changeValue: string }>`
+  font-weight: 700;
+  color: ${(props) => (props.changeValue === "RISE" ? "#e12343" : props.changeValue === "FALL" ? "#1763b6" : "#333")};
+`;
+
+export const LiveVolumeTime = styled(LiveVolumeLogBox)`
+  display: flex;
+  width: 100%;
+  align-items: center;
+`;
+export const LiveVolumeSize = styled(LiveVolumeLogBox)<{ tradeType: string }>`
+  color: ${(props) => (props.tradeType === "ASK" ? "#EF1C1C" : "#1261C4")};
 `;

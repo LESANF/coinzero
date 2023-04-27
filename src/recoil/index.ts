@@ -11,7 +11,7 @@ const setDefaultCoinName = async () => {
   return await getMarketCoins();
 };
 
-export const coinNameInfo = atom<coinName[]>({
-  key: "coinName",
-  default: setDefaultCoinName(),
+export const coinNameInfo = atom<any>({
+  key: "liveDataName",
+  default: [],
 });

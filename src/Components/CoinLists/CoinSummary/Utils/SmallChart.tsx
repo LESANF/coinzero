@@ -74,4 +74,4 @@ function SmallChart({ changeValue, lineData }: IChangeValue) {
   );
 }
 
-export default SmallChart;
+export default React.memo(SmallChart);

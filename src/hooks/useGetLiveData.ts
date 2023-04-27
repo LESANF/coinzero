@@ -7,8 +7,8 @@ export const useGetLiveData = (wsCoin: any) => {
   const [timer, setTimer] = useState(false);
 
   const ws = useRef<WebSocket | null>(null);
-  // const data = [{ ticket: "test1" }, { type: "ticker", codes: [wsCoin], isOnlyRealtime: true }];
-  const data = [{ ticket: "test1" }, { type: "ticker", codes: [wsCoin], isOnlyRealtime: true }, { type: "trade", codes: [wsCoin], isOnlyRealtime: true }];
+  const data = [{ ticket: "LESA" }, { type: "ticker", codes: [wsCoin], isOnlyRealtime: true }];
+  // const data = [{ ticket: "test1" }, { type: "ticker", codes: [wsCoin], isOnlyRealtime: true }, { type: "trade", codes: [wsCoin], isOnlyRealtime: true }];
 
   useEffect(() => {
     if (timer) alert("시간이 만료되었습니다.");
@@ -46,7 +46,6 @@ export const useGetLiveData = (wsCoin: any) => {
           type,
         });
       }
-
       if (type === "ticker") {
         const { code, high_price, low_price, change, prev_closing_price, opening_price, trade_price, acc_trade_volume_24h, acc_trade_price_24h, timestamp, trade_volume } = message;
 

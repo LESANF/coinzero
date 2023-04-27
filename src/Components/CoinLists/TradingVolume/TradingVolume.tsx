@@ -5,7 +5,7 @@ import * as V from "./styled";
 import LiveVolume from "./LiveVolume";
 import DaysVolume from "./DaysVolume";
 
-function TradingVolume({ liveData: liveVolumeData, daysData: daysVolumeData, coinName }: any) {
+function TradingVolume({ changeValue, daysData: daysVolumeData, coinName }: any) {
   const [tabIdx0, setTabIdx0] = useState<boolean>(true);
   const [tabIdx1, setTabIdx1] = useState<boolean>(false);
   // console.log("TradingVolume=========");
@@ -23,7 +23,8 @@ function TradingVolume({ liveData: liveVolumeData, daysData: daysVolumeData, coi
        * 체결금액 KRW - tradeprice * trace-volume
        */
       tabName: "체결",
-      content: <LiveVolume data={liveVolumeData} coinName={coinName} />,
+      // content: <LiveVolume coinName={coinName} />,
+      content: <LiveVolume changeValue={changeValue} />,
       defaultFocus: tabIdx0,
     },
     {
@@ -57,4 +58,4 @@ function TradingVolume({ liveData: liveVolumeData, daysData: daysVolumeData, coi
   );
 }
 
-export default TradingVolume;
+export default React.memo(TradingVolume);

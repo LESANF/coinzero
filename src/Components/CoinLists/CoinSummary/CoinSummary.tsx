@@ -1,5 +1,7 @@
 import React from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { selectedCoinState } from "../TradingVolume/atom";
 import * as C from "./styled";
 import SmallChart from "./Utils/SmallChart";
 
@@ -14,6 +16,8 @@ const SummaryFrame = styled.div`
 `;
 
 function CoinSummary({ liveData, coinNames, lineData }: any) {
+  const selectedCoin = useRecoilValue(selectedCoinState);
+
   return (
     <SummaryFrame>
       {liveData && coinNames && lineData && (
@@ -90,4 +94,4 @@ function CoinSummary({ liveData, coinNames, lineData }: any) {
   );
 }
 
-export default CoinSummary;
+export default React.memo(CoinSummary);
