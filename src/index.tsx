@@ -37,8 +37,6 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-console.log(window.location.href.includes("coins"));
-
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <>
@@ -47,7 +45,6 @@ root.render(
       <RecoilRoot>
         <App />
       </RecoilRoot>
-      <ReactQueryDevtools />
     </QueryClientProvider>
   </>
 );
