@@ -278,7 +278,7 @@ const Nav = ({ coinDetail }: INavProps) => {
     <Navbar coinDetail={coinDetail}>
       <NavInner>
         {/* 로고 대체 */}
-        <Link to="/">
+        <Link to={process.env.PUBLIC_URL + "/"}>
           <NavTitle>coinzero</NavTitle>
         </Link>
         {/* 메뉴 */}
