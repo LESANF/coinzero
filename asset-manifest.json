@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/coinzero/static/css/main.0c5567bd.css",
+    "main.js": "/coinzero/static/js/main.29f6b6da.js",
+    "static/media/SpoqaHanSansNeo-Regular.otf": "/coinzero/static/media/SpoqaHanSansNeo-Regular.42d3dd481b467623968a.otf",
+    "index.html": "/coinzero/index.html",
+    "main.0c5567bd.css.map": "/coinzero/static/css/main.0c5567bd.css.map",
+    "main.29f6b6da.js.map": "/coinzero/static/js/main.29f6b6da.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0c5567bd.css",
+    "static/js/main.29f6b6da.js"
+  ]
+}
