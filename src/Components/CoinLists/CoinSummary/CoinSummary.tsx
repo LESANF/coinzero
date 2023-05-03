@@ -1,7 +1,7 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { selectedCoinState } from "../TradingVolume/atom";
+import { selectedCoinInfoState, selectedCoinState } from "../TradingVolume/atom";
 import * as C from "./styled";
 import SmallChart from "./Utils/SmallChart";
 
@@ -15,19 +15,55 @@ const SummaryFrame = styled.div`
   }
 `;
 
-function CoinSummary({ liveData, coinNames, lineData }: any) {
-  const selectedCoin = useRecoilValue(selectedCoinState);
+interface IselectedCoinInfo {
+  type?: string;
+  code?: string;
+  opening_price?: number;
+  high_price?: number;
+  low_price?: number;
+  trade_price?: number;
+  prev_closing_price?: number;
+  acc_trade_price?: number;
+  change?: string;
+  change_price?: number;
+  signed_change_price?: number;
+  change_rate?: number;
+  signed_change_rate?: number;
+  ask_bid?: string;
+  trade_volume?: number;
+  acc_trade_volume?: number;
+  trade_date?: string;
+  trade_time?: string;
+  trade_timestamp?: number;
+  acc_ask_volume?: number;
+  acc_bid_volume?: number;
+  highest_52_week_price?: number;
+  highest_52_week_date?: string;
+  lowest_52_week_price?: number;
+  lowest_52_week_date?: string;
+  market_state?: string;
+  is_trading_suspended?: false;
+  delisting_date?: null;
+  market_warning?: string;
+  timestamp?: number;
+  acc_trade_price_24h?: number;
+  acc_trade_volume_24h?: number;
+  stream_type?: string;
+}
 
+function CoinSummary({ coinNames, lineData }: any) {
+  const selectedCoin: any[] = useRecoilValue(selectedCoinState);
+  const selectedCoinInfo: any = useRecoilValue(selectedCoinInfoState);
   return (
     <SummaryFrame>
-      {liveData && coinNames && lineData && (
+      {selectedCoin && selectedCoinInfo && selectedCoin.length > 0 && selectedCoinInfo !== undefined && (
         <C.CurCoinFrame>
           <C.CoinHead>
             <C.CoinSymbol>
               <img
-                src={`https://static.upbit.com/logos/${liveData.code.split("-")[1].toUpperCase()}.png`}
-                alt={liveData.code.split("-")[1]}
-                title={liveData.code.split("-")[1]}
+                src={`https://static.upbit.com/logos/${selectedCoin[0].market.split("-")[1].toUpperCase()}.png`}
+                alt={selectedCoin[0].market.split("-")[1]}
+                title={selectedCoin[0].market.split("-")[1]}
                 style={{
                   height: "24px",
                   width: "24px",
@@ -35,16 +71,22 @@ function CoinSummary({ liveData, coinNames, lineData }: any) {
                 }}
               />
             </C.CoinSymbol>
-            <C.CoinNameEng>{`${liveData.code.split("-")[1]}`}</C.CoinNameEng>
-            <C.CoinName>{`${coinNames.filter((names: any) => names.market === liveData.code)[0].korean_name}`}</C.CoinName>
+            <C.CoinNameEng>{`${selectedCoinInfo.code?.split("-")[1]}`}</C.CoinNameEng>
+            <C.CoinName>{selectedCoin[0].korean_name}</C.CoinName>
           </C.CoinHead>
-          <C.CurCoinPriceFrame changeValue={liveData.change}>
-            <C.CurCoinPrice>{liveData.trade_price.toLocaleString("ko-KR")}</C.CurCoinPrice>
-            <C.CurCoinPricePercentage>{`${+(((liveData.trade_price - liveData.prev_closing_price) / liveData.prev_closing_price) * 100).toFixed(2)}%`}</C.CurCoinPricePercentage>
+          <C.CurCoinPriceFrame changeValue={selectedCoinInfo.change}>
+            <C.CurCoinPrice>{selectedCoinInfo.trade_price?.toLocaleString("ko-KR")}</C.CurCoinPrice>
+            <C.CurCoinPricePercentage>{`${+(((selectedCoinInfo?.trade_price - selectedCoinInfo?.prev_closing_price) / selectedCoinInfo?.prev_closing_price) * 100).toFixed(
+              2
+            )}%`}</C.CurCoinPricePercentage>
             <C.CurCoinPriceDifference
-              changeValueIcon={liveData.trade_price - liveData.prev_closing_price > 0 ? "RISE" : liveData.trade_price - liveData.prev_closing_price === 0 ? "EVEN" : "FALL"}
+              changeValueIcon={
+                selectedCoinInfo?.trade_price - selectedCoinInfo?.prev_closing_price > 0 ? "RISE" : selectedCoinInfo?.trade_price - selectedCoinInfo?.prev_closing_price === 0 ? "EVEN" : "FALL"
+              }
             >{`(${
-              (liveData.trade_price - liveData.prev_closing_price) % 1 === 0 ? liveData.trade_price - liveData.prev_closing_price : (liveData.trade_price - liveData.prev_closing_price).toFixed(2)
+              (selectedCoinInfo?.trade_price - selectedCoinInfo?.prev_closing_price) % 1 === 0
+                ? selectedCoinInfo?.trade_price - selectedCoinInfo?.prev_closing_price
+                : (selectedCoinInfo?.trade_price - selectedCoinInfo?.prev_closing_price).toFixed(2)
             })`}</C.CurCoinPriceDifference>
           </C.CurCoinPriceFrame>
           <C.CoinHLBSTFrame>
@@ -52,41 +94,41 @@ function CoinSummary({ liveData, coinNames, lineData }: any) {
               <C.CoinPriceInfo>
                 <C.CoinDl>
                   <C.CoinDt>고가</C.CoinDt>
-                  <C.CoinDd priceState="HIGH">{liveData.high_price.toLocaleString("ko-KR")}</C.CoinDd>
+                  <C.CoinDd priceState="HIGH">{selectedCoinInfo.high_price?.toLocaleString("ko-KR")}</C.CoinDd>
                 </C.CoinDl>
               </C.CoinPriceInfo>
               <C.CoinPriceInfo>
                 <C.CoinDl>
                   <C.CoinDt>저가</C.CoinDt>
-                  <C.CoinDd priceState="LOW">{liveData.low_price.toLocaleString("ko-KR")}</C.CoinDd>
+                  <C.CoinDd priceState="LOW">{selectedCoinInfo.low_price?.toLocaleString("ko-KR")}</C.CoinDd>
                 </C.CoinDl>
               </C.CoinPriceInfo>
               <C.CoinPriceInfo>
                 <C.CoinDl>
                   <C.CoinDt>전일가</C.CoinDt>
-                  <C.CoinDd>{liveData.prev_closing_price.toLocaleString("ko-KR")}</C.CoinDd>
+                  <C.CoinDd>{selectedCoinInfo.prev_closing_price?.toLocaleString("ko-KR")}</C.CoinDd>
                 </C.CoinDl>
               </C.CoinPriceInfo>
               <C.CoinPriceInfo>
                 <C.CoinDl>
                   <C.CoinDt>거래량(24h)</C.CoinDt>
                   <C.CoinDd>
-                    <span>{liveData.acc_trade_volume_24h.toLocaleString("ko-KR")}</span>
-                    <C.CoinUnit>{`${liveData.code.split("-")[1]}`}</C.CoinUnit>
+                    <span>{selectedCoinInfo.acc_trade_volume_24h?.toLocaleString("ko-KR")}</span>
+                    <C.CoinUnit>{`${selectedCoinInfo.code?.split("-")[1]}`}</C.CoinUnit>
                   </C.CoinDd>
                 </C.CoinDl>
               </C.CoinPriceInfo>
               <C.CoinPriceInfo>
                 <C.CoinDt>거래대금(24h)</C.CoinDt>
                 <C.CoinDd>
-                  <span>{liveData.acc_trade_price_24h.toLocaleString("ko-KR")}</span>
+                  <span>{selectedCoinInfo.acc_trade_price_24h?.toLocaleString("ko-KR")}</span>
                   <C.CoinUnit>KRW</C.CoinUnit>
                 </C.CoinDd>
               </C.CoinPriceInfo>
             </C.CoinHLBST>
           </C.CoinHLBSTFrame>
           <C.SmallChartFrame>
-            <SmallChart changeValue={liveData.change} lineData={lineData.slice(0, 49)} />
+            <SmallChart changeValue={selectedCoinInfo.change} lineData={lineData.slice(0, 49)} />
           </C.SmallChartFrame>
         </C.CurCoinFrame>
       )}

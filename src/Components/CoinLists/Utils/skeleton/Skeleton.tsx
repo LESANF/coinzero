@@ -106,16 +106,6 @@ const SkeletonSummary = styled.div`
   @media screen and (max-width: 600px) {
     display: none;
   }
-  /* &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 10px;
-    height: 100%;
-    background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
-    animation: ${loadingKeyframes} 2s infinite linear;
-  } */
 `;
 
 const SkeletonCoinFrame = styled.div`
@@ -325,7 +315,7 @@ const SkeletonPriceDd130 = styled.dd`
 const SkeletonSmallChart = styled.div`
   position: absolute;
   top: 20px;
-  right: 50px;
+  right: 25px;
   width: 140px;
   height: 68px;
   background: #f2f2f2;
@@ -521,6 +511,86 @@ const SkeletonDataItem = styled.div`
   }
 `;
 
+const SkeletonSearchFrame = styled.div`
+  overflow: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  grid-area: tickerSearch;
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
+`;
+
+const SkeletonSearchTable = styled.table`
+  width: 100%;
+`;
+
+const SkeletonTableCol = styled.col<{ width: string }>`
+  width: ${(props) => props.width};
+`;
+
+const SkeletonTableHeadTh = styled.th`
+  position: sticky;
+  top: 0;
+  cursor: pointer;
+  vertical-align: middle;
+  text-align: center;
+  background: #dfe6e9;
+  color: #666;
+  font-size: 11px;
+  height: 40px;
+`;
+
+const SkeletonTableHeadText = styled.div`
+  background-color: #f2f2f2;
+  width: 40px;
+  height: 15px;
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
+    animation: ${loadingKey40} 2s infinite linear;
+  }
+`;
+
+const SkeletonTbodyTr = styled.tr`
+  height: 45px;
+  border-bottom: 1px solid #f1f1f4;
+`;
+
+const SkeletonTbodyTdBox = styled.div`
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const SkeletonTbodyTdBoxItem = styled.div`
+  background-color: #f2f2f2;
+  width: 40px;
+  height: 15px;
+  overflow: hidden;
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
+    animation: ${loadingKey40} 2s infinite linear;
+  }
+`;
+
 const Skeleton = () => {
   return (
     <>
@@ -597,6 +667,60 @@ const Skeleton = () => {
           </SkeletonTBody>
         </SkeletonVolumeTable>
       </SkeletonTradingVolume>
+      <SkeletonSearchFrame>
+        <SkeletonSearchTable>
+          <colgroup>
+            <SkeletonTableCol width="150px" />
+            <SkeletonTableCol width="100px" />
+            <SkeletonTableCol width="68px" />
+            <SkeletonTableCol width="*" />
+          </colgroup>
+          <thead>
+            <tr>
+              <SkeletonTableHeadTh style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <SkeletonTableHeadText />
+              </SkeletonTableHeadTh>
+              <SkeletonTableHeadTh>
+                <SkeletonTableHeadText />
+              </SkeletonTableHeadTh>
+              <SkeletonTableHeadTh>
+                <SkeletonTableHeadText />
+              </SkeletonTableHeadTh>
+              <SkeletonTableHeadTh>
+                <SkeletonTableHeadText />
+              </SkeletonTableHeadTh>
+            </tr>
+          </thead>
+          <tbody>
+            {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((v, i) => {
+              return (
+                <SkeletonTbodyTr key={i}>
+                  <td>
+                    <SkeletonTbodyTdBox>
+                      <SkeletonTbodyTdBoxItem />
+                    </SkeletonTbodyTdBox>
+                  </td>
+                  <td>
+                    <SkeletonTbodyTdBox>
+                      <SkeletonTbodyTdBoxItem />
+                    </SkeletonTbodyTdBox>
+                  </td>
+                  <td>
+                    <SkeletonTbodyTdBox>
+                      <SkeletonTbodyTdBoxItem />
+                    </SkeletonTbodyTdBox>
+                  </td>
+                  <td>
+                    <SkeletonTbodyTdBox>
+                      <SkeletonTbodyTdBoxItem />
+                    </SkeletonTbodyTdBox>
+                  </td>
+                </SkeletonTbodyTr>
+              );
+            })}
+          </tbody>
+        </SkeletonSearchTable>
+      </SkeletonSearchFrame>
     </>
   );
 };

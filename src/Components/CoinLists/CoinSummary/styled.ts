@@ -86,5 +86,5 @@ export const CoinUnit = styled.span`
 export const SmallChartFrame = styled.div`
   position: absolute;
   top: 20px;
-  right: 50px;
+  right: 25px;
 `;

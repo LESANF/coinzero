@@ -25,7 +25,6 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Spoqa Han Sans';
     background-color: ${window.location.href.includes("coins") ? "#fafafa" : "#fff"};
     min-width: 1124px;
-    /* overflow: scroll; */
   }
 
   a{
@@ -37,6 +36,8 @@ const GlobalStyles = createGlobalStyle`
     box-sizing:border-box;
   }
 `;
+
+console.log(window.location.href.includes("coins"));
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(

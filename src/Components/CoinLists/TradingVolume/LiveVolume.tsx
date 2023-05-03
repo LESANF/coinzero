@@ -4,7 +4,7 @@ import { useTable } from "react-table";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { useWsTrade } from "use-upbit-api";
-import { selectedCoinState } from "./atom";
+import { selectedCoinInfoState, selectedCoinState } from "./atom";
 import * as L from "./styled";
 
 const timestampToTime = (timestamp: number) => {
@@ -31,8 +31,9 @@ interface ImarketCodes {
   english_name: string;
 }
 
-function LiveVolume({ changeValue }: any) {
+function LiveVolume() {
   const selectedCoin: any = useRecoilValue(selectedCoinState);
+  const selectedCoinInfo: any = useRecoilValue(selectedCoinInfoState);
   //@ts-ignore
   const { socketData } = useWsTrade(...selectedCoin);
   const [fetchedData, setFetchedData] = useState<any>([]);
@@ -85,34 +86,36 @@ function LiveVolume({ changeValue }: any) {
         <L.LiveVolumeHeaderItem>{`체결량(${selectedCoin[0].market.split("-")[1]})`}</L.LiveVolumeHeaderItem>
         <L.LiveVolumeHeaderItem>체결금액(KRW)</L.LiveVolumeHeaderItem>
       </L.LiveVolumeHeader>
-      {socketData &&
-        [...socketData].reverse().map((data, index) => (
-          <L.LiveVolumeRow key={index}>
-            <L.LiveVolumeTime>
-              <div>
-                {timestampToTime(data.trade_timestamp)[0]}
-                <i style={{ paddingLeft: "4px", fontSize: "11px", color: "#666" }}>{timestampToTime(data.trade_timestamp)[1]}</i>
-              </div>
-            </L.LiveVolumeTime>
-            <L.LiveVolumePrice changeValue={changeValue}>{data.trade_price ? data.trade_price.toLocaleString("ko-KR") : null}</L.LiveVolumePrice>
-            <L.LiveVolumeSize tradeType={data.ask_bid}>{data.trade_volume}</L.LiveVolumeSize>
-            <L.LiveVolumeSize tradeType={data.ask_bid}>{Math.ceil(data.trade_price * data.trade_volume).toLocaleString("ko-KR")}</L.LiveVolumeSize>
-          </L.LiveVolumeRow>
-        ))}
-      {fetchedData &&
-        fetchedData.slice(2).map((data: any, index: number) => (
-          <L.LiveVolumeRow key={index}>
-            <L.LiveVolumeTime>
-              <div>
-                {timestampToTime(data.timestamp)[0]}
-                <i style={{ paddingLeft: "4px", fontSize: "11px", color: "#666" }}>{timestampToTime(data.timestamp)[1]}</i>
-              </div>
-            </L.LiveVolumeTime>
-            <L.LiveVolumePrice changeValue={changeValue}>{data.trade_price ? data.trade_price.toLocaleString("ko-KR") : null}</L.LiveVolumePrice>
-            <L.LiveVolumeSize tradeType={data.ask_bid}>{data.trade_volume}</L.LiveVolumeSize>
-            <L.LiveVolumeSize tradeType={data.ask_bid}>{Math.ceil(data.trade_price * data.trade_volume).toLocaleString("ko-KR")}</L.LiveVolumeSize>
-          </L.LiveVolumeRow>
-        ))}
+      <L.LiveVolumeDataBox>
+        {socketData &&
+          [...socketData].reverse().map((data, index) => (
+            <L.LiveVolumeRow key={index}>
+              <L.LiveVolumeTime>
+                <div>
+                  {timestampToTime(data.trade_timestamp)[0]}
+                  <i style={{ paddingLeft: "4px", fontSize: "11px", color: "#666" }}>{timestampToTime(data.trade_timestamp)[1]}</i>
+                </div>
+              </L.LiveVolumeTime>
+              <L.LiveVolumePrice changeValue={data.change}>{data.trade_price ? data.trade_price.toLocaleString("ko-KR") : null}</L.LiveVolumePrice>
+              <L.LiveVolumeSize tradeType={data.ask_bid}>{data.trade_volume}</L.LiveVolumeSize>
+              <L.LiveVolumeSize tradeType={data.ask_bid}>{Math.ceil(data.trade_price * data.trade_volume).toLocaleString("ko-KR")}</L.LiveVolumeSize>
+            </L.LiveVolumeRow>
+          ))}
+        {fetchedData &&
+          fetchedData.slice(2).map((data: any, index: number) => (
+            <L.LiveVolumeRow key={index}>
+              <L.LiveVolumeTime>
+                <div>
+                  {timestampToTime(data.timestamp)[0]}
+                  <i style={{ paddingLeft: "4px", fontSize: "11px", color: "#666" }}>{timestampToTime(data.timestamp)[1]}</i>
+                </div>
+              </L.LiveVolumeTime>
+              <L.LiveVolumePrice changeValue={selectedCoinInfo.change}>{data.trade_price ? data.trade_price.toLocaleString("ko-KR") : null}</L.LiveVolumePrice>
+              <L.LiveVolumeSize tradeType={data.ask_bid}>{data.trade_volume}</L.LiveVolumeSize>
+              <L.LiveVolumeSize tradeType={data.ask_bid}>{Math.ceil(data.trade_price * data.trade_volume).toLocaleString("ko-KR")}</L.LiveVolumeSize>
+            </L.LiveVolumeRow>
+          ))}
+      </L.LiveVolumeDataBox>
     </L.LiveVolumeFrame>
   );
 }

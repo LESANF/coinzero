@@ -90,11 +90,13 @@ export const LiveVolumeFrame = styled.div`
   grid-column: 1 / span 2;
   background-color: #f9fafc;
   font-size: 12px;
-  overflow: overlay;
+  overflow-y: auto;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
 export const LiveVolumeHeader = styled.div`
+  width: 1000px;
+  position: absolute;
   color: #666;
   display: grid;
   grid-template-columns: 0.7fr 2fr 2fr 1fr;
@@ -107,7 +109,13 @@ export const LiveVolumeHeader = styled.div`
   }
 `;
 
-export const LiveVolumeHeaderItem = styled.div``;
+export const LiveVolumeHeaderItem = styled.div`
+  background-color: #f9fafc;
+`;
+
+export const LiveVolumeDataBox = styled.div`
+  margin-top: 32.5px;
+`;
 
 export const LiveVolumeRow = styled.div`
   display: grid;

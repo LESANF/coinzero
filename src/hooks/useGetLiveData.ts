@@ -7,8 +7,6 @@ export const useGetLiveData = (wsCoin: any) => {
   const [timer, setTimer] = useState(false);
 
   const ws = useRef<WebSocket | null>(null);
-  const data = [{ ticket: "LESA" }, { type: "ticker", codes: [wsCoin], isOnlyRealtime: true }];
-  // const data = [{ ticket: "test1" }, { type: "ticker", codes: [wsCoin], isOnlyRealtime: true }, { type: "trade", codes: [wsCoin], isOnlyRealtime: true }];
 
   useEffect(() => {
     if (timer) alert("시간이 만료되었습니다.");
@@ -22,6 +20,7 @@ export const useGetLiveData = (wsCoin: any) => {
 
     ws.current = new WebSocket(UPBIT_WS_API);
     ws.current.onopen = () => {
+      const data = [{ ticket: "LESA" }, { type: "ticker", codes: [wsCoin], isOnlyRealtime: true }];
       ws.current?.send(JSON.stringify(data));
     };
     ws.current.onclose = () => {
@@ -74,6 +73,7 @@ export const useGetLiveData = (wsCoin: any) => {
     return () => {
       ws.current?.close();
     };
-  }, []);
+  }, [wsCoin]);
+
   return result;
 };

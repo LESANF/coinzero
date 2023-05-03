@@ -12,6 +12,7 @@ export default function DaysVolume({ data: daysData, coinName }: any) {
     ],
     []
   );
+
   const data = useMemo((): any => {
     return daysData.map((v: any) => {
       return {

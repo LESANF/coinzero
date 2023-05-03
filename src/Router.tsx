@@ -6,8 +6,8 @@ function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={Home} />
-        <Route path="/coins" element={CoinLists()} />
+        <Route path="/" element={<Home />} />
+        <Route path="/coins" element={<CoinLists />} />
       </Routes>
     </BrowserRouter>
   );
