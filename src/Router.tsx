@@ -4,10 +4,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function Router() {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/coins" element={<CoinLists />} />
+        <Route path={process.env.PUBLIC_URL + "/"} element={<Home />} />
+        <Route path={process.env.PUBLIC_URL + "/coins"} element={<CoinLists />} />
       </Routes>
     </BrowserRouter>
   );

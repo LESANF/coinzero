@@ -278,14 +278,14 @@ const Nav = ({ coinDetail }: INavProps) => {
     <Navbar coinDetail={coinDetail}>
       <NavInner>
         {/* 로고 대체 */}
-        <Link to="/">
+        <Link to={process.env.PUBLIC_URL + "/"}>
           <NavTitle>coinzero</NavTitle>
         </Link>
         {/* 메뉴 */}
         <NavMenu>
           <AnimatePresence>
             <NavItem variants={coinDetail ? NavItemCoinVari : NavItemVari} initial="start" whileHover="end" coindetail={coinDetail.toString()}>
-              <Link to="/coins">코인</Link>
+              <Link to={process.env.PUBLIC_URL + "/coins"}>코인</Link>
             </NavItem>
             {/* <NavItem>
                             <Link to="/">거래소</Link>
