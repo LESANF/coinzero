@@ -27,6 +27,23 @@ const KlineIndicatorChart = styled.div`
   flex: 1;
 `;
 
+const option = {
+  styles: {
+    type: "candle_solid",
+    bar: {
+      upColor: "blue",
+      downColor: "#F92855",
+      noChangeColor: "#888888",
+      upBorderColor: "blue",
+      downBorderColor: "#F92855",
+      noChangeBorderColor: "#888888",
+      upWickColor: "blue",
+      downWickColor: "#F92855",
+      noChangeWickColor: "#888888",
+    },
+  },
+};
+
 function CoinChart({ wsCoin }: any) {
   const selectedCoin: any[] = useRecoilValue(selectedCoinState);
   const selectedCoinInfo: any = useRecoilValue(selectedCoinInfoState);
@@ -36,6 +53,47 @@ function CoinChart({ wsCoin }: any) {
   useEffect(() => {
     if (!chart.current) {
       chart.current = init("indicator-k-line");
+      chart.current?.setStyles({
+        candle: {
+          bar: {
+            upColor: "#c84a31",
+            downColor: "#1261c4",
+            noChangeColor: "#888888",
+          },
+
+          priceMark: {
+            show: true,
+            last: {
+              show: true,
+              upColor: "#c84a31",
+              downColor: "#1261c4",
+              noChangeColor: "#888888",
+              line: {
+                show: true,
+                // 'solid' | 'dashed'
+                dashedValue: [4, 4],
+                size: 1,
+              },
+            },
+          },
+        },
+        indicator: {
+          ohlc: {
+            upColor: "#c84a31",
+            downColor: "#1261c4",
+            noChangeColor: "#888888",
+          },
+          bars: [
+            {
+              borderSize: 1,
+              borderDashedValue: [2, 2],
+              upColor: "rgba(200, 74, 49, 0.5)",
+              downColor: "rgba(18, 97, 196, 0.5)",
+              noChangeColor: "#888888",
+            },
+          ],
+        },
+      });
     }
     if (!paneId.current) {
       paneId.current = chart.current?.createIndicator("VOL", false) as string;

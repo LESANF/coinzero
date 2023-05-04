@@ -4,15 +4,13 @@ import styled from "styled-components";
 import CoinSummary from "../Components/CoinLists/CoinSummary/CoinSummary";
 import CoinChart from "../Components/CoinLists/CoinChart/CoinChart";
 import SimpleSearch from "../Components/CoinLists/SimpleSearch/SimpleSearch";
-import SimpleSearch2 from "../Components/CoinLists/SimpleSearch/SimpleSearch2";
 import TradingVolume from "../Components/CoinLists/TradingVolume/TradingVolume";
 import * as C from "../Components/Caution/SizeCaution";
-import { useGetLiveData } from "../hooks/useGetLiveData";
 import { getMarketCoins } from "../Api/coinInfo";
 import Skeleton from "../Components/CoinLists/Utils/skeleton/Skeleton";
 import { getSmallChartData } from "../Components/CoinLists/CoinSummary/Utils/getSmallChartData";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { marketCodesState, selectedCoinInfoState, selectedCoinState } from "../Components/CoinLists/TradingVolume/atom";
+import { useRecoilState } from "recoil";
+import { marketCodesState, selectedCoinState } from "../Components/CoinLists/TradingVolume/atom";
 import { useFetchMarketCode } from "use-upbit-api";
 import useGetWsData from "../hooks/useGetWsData/useGetWsData";
 

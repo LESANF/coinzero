@@ -1,8 +1,6 @@
 import { cloneDeep } from "lodash";
-import { memo, useEffect, useRef, useState, useMemo } from "react";
-import { useTable } from "react-table";
+import { memo, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 import { useWsTrade } from "use-upbit-api";
 import { selectedCoinInfoState, selectedCoinState } from "./atom";
 import * as L from "./styled";
@@ -24,12 +22,6 @@ const timestampToTime = (timestamp: number) => {
 
   return [monthDay, hourMin];
 };
-
-interface ImarketCodes {
-  market: string;
-  korean_name: string;
-  english_name: string;
-}
 
 function LiveVolume() {
   const selectedCoin: any = useRecoilValue(selectedCoinState);
@@ -102,6 +94,7 @@ function LiveVolume() {
             </L.LiveVolumeRow>
           ))}
         {fetchedData &&
+          selectedCoinInfo &&
           fetchedData.slice(2).map((data: any, index: number) => (
             <L.LiveVolumeRow key={index}>
               <L.LiveVolumeTime>
