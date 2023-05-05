@@ -135,29 +135,30 @@ const ItemTitle = styled.span`
   color: #7f8794;
 `;
 const ItemContent = styled.span`
+  line-height: 1.5;
   margin-top: 12px;
   font-size: 12px;
   color: #484d55;
   word-break: keep-all;
 `;
 
-const AddSummary = styled.p`
-  @keyframes test {
-    from {
-      max-height: 0px;
-    }
-    to {
-      max-height: 150px;
-    }
-  }
+// const AddSummary = styled.p`
+//   @keyframes test {
+//     from {
+//       max-height: 0px;
+//     }
+//     to {
+//       max-height: 150px;
+//     }
+//   }
 
-  color: #aeb3bb;
-  font-size: 10px;
-  padding-top: 7px;
-  line-height: 1.5;
-  overflow: hidden;
-  animation: test 0.3s;
-`;
+//   color: #aeb3bb;
+//   font-size: 10px;
+//   padding-top: 7px;
+//   line-height: 1.5;
+//   overflow: hidden;
+//   animation: test 0.3s;
+// `;
 
 //Footer Sign
 const FooterSign = styled.p`
@@ -177,8 +178,10 @@ function ButtonScroll() {
 
   useEffect(() => {
     const getFetchNewsData = async () => {
-      const result = await axios.get(`https://cryptopanic.com/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`);
-      console.log(result);
+      const {
+        data: { results },
+      } = await axios.get(`/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`);
+      setCoinNews(results);
     };
 
     getFetchNewsData();
@@ -243,21 +246,22 @@ function ButtonScroll() {
         </BtnBox>
       </Header>
       <Content ref={contentScrl} onScroll={scrollDiv}>
-        {resultData && resultData.result.length > 0 ? (
+        {coinNews && (
           <>
             <Items ref={ulScrl}>
-              {resultData.result.map((v: any, i: number) => (
-                <Item key={i} onClick={changeFolding} id={i}>
-                  <ItemTitle>{v.time > 59 ? `${Math.floor(v.time / 60)}시간전` : `${v.time}분전`}</ItemTitle>
-                  <ItemContent>{v.title}</ItemContent>
-                  {foldingState && <AddSummary>{v.summary}</AddSummary>}
+              {coinNews.map((v: any, i: number) => (
+                <Item key={i} id={i}>
+                  <ItemTitle>{v.created_at.split("T")[0]}</ItemTitle>
+                  <ItemContent>
+                    <a href={v.url} target="_blank" rel="noopener noreferrer">
+                      {v.slug}
+                    </a>
+                  </ItemContent>
                 </Item>
               ))}
             </Items>
             <FooterSign>MADE BY LESA</FooterSign>
           </>
-        ) : (
-          <h1>Loading</h1>
         )}
       </Content>
     </Frame>
