@@ -1,7 +1,9 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Autoplay } from "swiper";
 import { SwiperModule } from "swiper/types";
 import { Swiper, SwiperSlide } from "swiper/react";
+import axios from "axios";
 
 const Frame = styled.div`
   height: 60px;
@@ -70,19 +72,36 @@ const swiperStyle = {
 };
 
 function VerticalNotice() {
+  const [coinNews, setCoinNews] = useState([]);
+
+  useEffect(() => {
+    const getFetchNewsData = async () => {
+      const {
+        data: { results },
+      } = await axios.get(`/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`);
+      setCoinNews(results);
+    };
+
+    getFetchNewsData();
+  }, []);
+
   return (
     <Frame>
-      {swiperSetting && (
+      {swiperSetting && coinNews && (
         <Swiper {...swiperSetting} style={swiperStyle}>
-          <SwiperSlide>
-            <Notice target="blank" href="https://www.naver.com">
-              <NoticeTag>신규</NoticeTag>
-              <NoticeSummary>
-                <NoticeText>클레이튼(KLAY) 네트워크 업그레이드를 위한 입출금 일시 중단 안내</NoticeText>
-                <NoticeDate>2022.08.19</NoticeDate>
-              </NoticeSummary>
-            </Notice>
-          </SwiperSlide>
+          {coinNews.map((v: any, i: number) => {
+            return (
+              <SwiperSlide>
+                <Notice target="_blank" href={v.url} rel="noopener noreferrer" key={i}>
+                  <NoticeTag>신규</NoticeTag>
+                  <NoticeSummary>
+                    <NoticeText>{v.slug}</NoticeText>
+                    <NoticeDate>{v.created_at.split("T")[0]}</NoticeDate>
+                  </NoticeSummary>
+                </Notice>
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       )}
     </Frame>
