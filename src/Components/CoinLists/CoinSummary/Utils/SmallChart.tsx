@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Chart from "chart.js/auto";
-import { ChartData, ChartOptions, LineElement } from "chart.js";
+import { ChartOptions, LineElement } from "chart.js";
 import { Line } from "react-chartjs-2";
 
 interface IChangeValue {

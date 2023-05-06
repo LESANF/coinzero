@@ -1,5 +1,5 @@
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { selectedCoinInfoState, selectedCoinState } from "../TradingVolume/atom";
 import * as C from "./styled";

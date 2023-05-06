@@ -63,9 +63,7 @@ function CoinLists() {
   const [searchCoin, setSearchCoin] = useRecoilState(selectedCoinState);
 
   //@ts-ignore
-  const { wsData } = useGetWsData(searchCoin);
   const [renderTimer, setRenderTimer] = useState(false);
-  const [liveDataTicker, setLiveDataTicker] = useState<any>();
   const [coinNames, setCoinNames] = useState<any>([]);
   const [lineData, setLineData] = useState<ICoinData[] | null | undefined>([]);
   const { marketCodes: fetchedMarketCode } = useFetchMarketCode();

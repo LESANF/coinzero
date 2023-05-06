@@ -1,10 +1,8 @@
-import { memo, useEffect, useState, useRef } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import styled from "styled-components";
+import { useEffect, useState, useRef } from "react";
+import { useRecoilState } from "recoil";
 import * as S from "./styled";
-import { useWsTicker } from "use-upbit-api";
 import useGetWsData from "../../../hooks/useGetWsData/useGetWsData";
-import { marketCodesState, selectedCoinInfoState, selectedCoinState } from "../TradingVolume/atom";
+import { selectedCoinInfoState, selectedCoinState } from "../TradingVolume/atom";
 
 const headerImgUrl = {
   coinNameChangeIcon: "https://cdn.upbit.com/upbit-web/images/ico_change.70956ce.png",
@@ -13,14 +11,14 @@ const headerImgUrl = {
   upDownUpIcon: "https://cdn.upbit.com/upbit-web/images/ico_up_down_1.af5ac5a.png",
 };
 
-function SimpleSearch2({ marketCodes }: any) {
+function SimpleSearch({ marketCodes }: any) {
   const [selectedCoin, setSelectedCoin] = useRecoilState(selectedCoinState);
   const [selectedCoinInfo, setSelectedCoinInfo] = useRecoilState(selectedCoinInfoState);
   const { wsData } = useGetWsData(marketCodes);
 
   useEffect(() => {
     if (wsData) {
-      const targetData = wsData.filter((data: any) => data.code == selectedCoin[0].market);
+      const targetData = wsData.filter((data: any) => data.code === selectedCoin[0].market);
       //@ts-ignore
       setSelectedCoinInfo(...targetData);
       setWsCoinList(wsData);
@@ -218,4 +216,4 @@ function SimpleSearch2({ marketCodes }: any) {
   );
 }
 
-export default SimpleSearch2;
+export default SimpleSearch;

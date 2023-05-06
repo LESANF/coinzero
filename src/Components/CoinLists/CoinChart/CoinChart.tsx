@@ -27,23 +27,6 @@ const KlineIndicatorChart = styled.div`
   flex: 1;
 `;
 
-const option = {
-  styles: {
-    type: "candle_solid",
-    bar: {
-      upColor: "blue",
-      downColor: "#F92855",
-      noChangeColor: "#888888",
-      upBorderColor: "blue",
-      downBorderColor: "#F92855",
-      noChangeBorderColor: "#888888",
-      upWickColor: "blue",
-      downWickColor: "#F92855",
-      noChangeWickColor: "#888888",
-    },
-  },
-};
-
 function CoinChart({ wsCoin }: any) {
   const selectedCoin: any[] = useRecoilValue(selectedCoinState);
   const selectedCoinInfo: any = useRecoilValue(selectedCoinInfoState);

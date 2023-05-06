@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 export const SizeCautionFrame = styled.div<{ bgColor: boolean }>`

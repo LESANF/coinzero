@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import _ from "lodash";
 import dayjs from "dayjs";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { IVerNotice, verNoticeDummyData } from "../../DummyData";
 import axios from "axios";
 
 const Frame = styled.div`
@@ -190,9 +189,6 @@ function ButtonScroll() {
 
     getFetchNewsData();
   }, []);
-
-  //get news data
-  const resultData = verNoticeDummyData();
 
   //get Date
   const now = dayjs();
