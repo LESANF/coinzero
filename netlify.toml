@@ -1,7 +1,6 @@
+
 [[redirects]]
   from = "/proxy/*"
-  to = "https://cryptopanic.com"
+  to = "https://cryptopanic.com/:splat"
   status = 200
   force = true
-
-

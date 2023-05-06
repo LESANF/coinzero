@@ -76,7 +76,7 @@ function VerticalNotice() {
 
   const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
   const URL = `${PROXY}/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`;
-
+  console.log(URL);
   useEffect(() => {
     const getFetchNewsData = async () => {
       const {
