@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 export const SizeCautionFrame = styled.div<{ bgColor: boolean }>`
-  background-color: ${(props) => (props.bgColor ? "#fafafa" : "#fff")};
+  /* background-color: ${(props) => (props.bgColor ? "#fafafa" : "#fff")}; */
+  background-color: #fafafa;
+  height: 100%;
   @media screen and (max-width: 600px) {
     white-space: nowrap;
     display: flex;

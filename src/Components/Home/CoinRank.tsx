@@ -18,9 +18,8 @@ const MainRightFrame = styled.div`
   }
 `;
 
-const Test = styled.div`
+const RankingBox = styled.div`
   height: 493px;
-  /* margin-left: -58px; */
 `;
 
 //Header
@@ -41,13 +40,13 @@ const HeaderTitle = styled.h2`
     width: 20px;
     height: 23px;
     margin-right: 8px;
-    //background-image: url('https://coinone.co.kr/landing/assets/images/main/coin-ranking.svg');
-    background-image: url("image/rankSvg.svg");
+    background-image: url(${process.env.REACT_APP_COINONE_RANK_LOGO});
   }
 `;
 
 //Header 더 보러가기 Link
 const MoreLink = styled.a`
+  cursor: pointer;
   display: flex;
   align-items: center;
   color: #79818f;
@@ -57,11 +56,13 @@ const LinkText = styled.span`
   font-size: 12px;
 `;
 const LinkLogo = styled.span`
+  padding-top: 2.1px;
   font-size: 15px;
 `;
 
 //Rank Box
 const RankBox = styled.div`
+  background-color: #fff;
   margin-top: 19px;
   padding: 20px;
   height: 100%;
@@ -474,10 +475,10 @@ function CoinRank() {
   };
   return (
     <MainRightFrame>
-      <Test>
+      <RankingBox>
         <HeaderSection>
           <HeaderTitle>가상자산 랭킹 Top 7</HeaderTitle>
-          <MoreLink>
+          <MoreLink onClick={() => navigate(process.env.PUBLIC_URL + "/coins")}>
             <LinkText>더 보러가기</LinkText>
             <LinkLogo>
               <IoIosArrowForward />
@@ -575,7 +576,7 @@ function CoinRank() {
             )}
           </ItemList>
         </RankBox>
-      </Test>
+      </RankingBox>
     </MainRightFrame>
   );
 }

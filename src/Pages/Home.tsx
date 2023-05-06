@@ -22,7 +22,6 @@ function Home() {
       <Nav coinDetail={false} />
       <BannerCover />
       <Main />
-      <Footer />
     </C.SizeCautionFrame>
   );
 }

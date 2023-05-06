@@ -17,10 +17,9 @@ import useGetWsData from "../hooks/useGetWsData/useGetWsData";
 const CoinListsFrame = styled.div`
   box-sizing: border-box;
   margin-top: 68px;
-  background-color: #fafafa;
   width: 1440px;
   margin: 70px auto 50px;
-  height: 100vh;
+  height: 100%;
   padding: 20px;
   display: grid;
   grid-template-areas:

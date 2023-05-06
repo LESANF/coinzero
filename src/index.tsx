@@ -21,15 +21,10 @@ const GlobalStyles = createGlobalStyle`
     url(${SpoqaRegular}) format('otf');
   }
 
-
-  html{
-    background-color: ${window.location.href.includes("coins") ? "#fafafa" : "#fff"}; 
-  }
-
   body{
     font-family: 'Spoqa Han Sans';
-    background-color: ${window.location.href.includes("coins") ? "#fafafa" : "#fff"};
     min-width: 1124px;
+    background-color: #fafafa;
   }
 
   a{

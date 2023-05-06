@@ -7,6 +7,7 @@ import { IVerNotice, verNoticeDummyData } from "../../DummyData";
 import axios from "axios";
 
 const Frame = styled.div`
+  background-color: #fff;
   box-shadow: 0 3px 10px 0 rgba(66, 66, 66, 0.05);
   border: 1px solid #e4e5e8;
   grid-area: item4;

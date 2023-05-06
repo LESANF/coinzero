@@ -91,8 +91,8 @@ function VerticalNotice() {
         <Swiper {...swiperSetting} style={swiperStyle}>
           {coinNews.map((v: any, i: number) => {
             return (
-              <SwiperSlide>
-                <Notice target="_blank" href={v.url} rel="noopener noreferrer" key={i}>
+              <SwiperSlide key={i}>
+                <Notice target="_blank" href={v.url} rel="noopener noreferrer">
                   <NoticeTag>신규</NoticeTag>
                   <NoticeSummary>
                     <NoticeText>{v.slug}</NoticeText>

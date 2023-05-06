@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 const MainLeftFrame = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #fff;
+  background-color: #fafafa;
   grid-area: item3;
   @media screen and (max-width: 600px) {
     display: none;

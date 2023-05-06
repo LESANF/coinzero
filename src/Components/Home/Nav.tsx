@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaRegPaperPlane, FaAlignJustify } from "react-icons/fa";
 import { MdOutlineFiberNew } from "react-icons/md";
 import { useState, useRef } from "react";
+import CIcon from "@coreui/icons-react";
+import * as icon from "@coreui/icons";
 
 const Navbar = styled.nav<INavProps>`
   position: fixed;
@@ -93,10 +95,9 @@ const NavAd = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
-  width: 240px;
-  min-width: 240px;
-  background-color: #72b4ff;
+  height: 35px;
+  width: 140px;
+  min-width: 140px;
   border-radius: 16px;
 `;
 
@@ -177,6 +178,25 @@ const NavNoticeDownMenu = styled(motion.div)`
   z-index: -1000;
   box-shadow: 0 2px 12px 0 rgba(37, 42, 49, 0.08), 0 2px 5px 0 rgba(37, 42, 49, 0.15);
   overflow: auto;
+
+  /* 스크롤 스타일 변경 */
+  ::-webkit-scrollbar {
+    width: 3px; /* 세로축 스크롤바 길이 */
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: lightblue;
+  }
+
+  ::-webkit-scrollbar-track-piece {
+    background-color: #eee;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+
+    background-color: #ccc;
+  }
 `;
 
 const NavNoticeDropMenuVari = {
@@ -230,7 +250,7 @@ const DropMenuNoticeLink = styled.a``;
 const NoticeTagDateBox = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 `;
 const NoticeTag = styled.div`
   display: flex;
@@ -250,6 +270,7 @@ const NoticeDate = styled.div`
   color: #aeb3bb;
 `;
 const NoticeTitle = styled(motion.p)`
+  display: flex;
   position: relative;
   font-size: 15px;
   color: #18191c;
@@ -259,6 +280,7 @@ const NoticeTitle = styled(motion.p)`
 const NoticeNew = styled.span`
   position: absolute;
   top: -6px;
+  right: 75px;
   color: #1772f8;
   font-size: 21px;
 `;
@@ -300,7 +322,11 @@ const Nav = ({ coinDetail }: INavProps) => {
           {/* 광고 부분(Github로 대체) */}
           <NavAd>
             <NavAdLink target="blank" href={process.env.REACT_APP_MYGITHUBADDR}>
-              github 바로가기
+              <CIcon icon={icon.cibGithub} style={{ width: "22px", height: "22px", paddingRight: "10px" }} />
+              <span style={{ fontWeight: 700 }}>Github</span>
+              {/* <CIcon icon={icon.cibNotion} style={{ width: "24px", height: "24px" }} />
+              <CIcon icon={icon.cibLinkedin} style={{ width: "24px", height: "24px" }} />
+              <CIcon icon={icon.cibReact} style={{ width: "24px", height: "24px" }} /> */}
             </NavAdLink>
           </NavAd>
           {/* 공지사항 */}
@@ -309,15 +335,14 @@ const Nav = ({ coinDetail }: INavProps) => {
               <NavNoticeIcon>
                 <FaRegPaperPlane />
               </NavNoticeIcon>
-              <NavNoticeTitle>공지사항</NavNoticeTitle>
+              <NavNoticeTitle>RESUME</NavNoticeTitle>
             </NavNoticeBox>
             {/* 공지사항 Hover DropDown Menu */}
             {dropMenuFlag && (
               <NavNoticeDownMenu variants={NavNoticeDropMenuVari} initial="initial" animate="animate">
                 <DropMenuHeader ref={testRef}>
-                  <DropMenuTitle>공지사항</DropMenuTitle>
-                  <DropMenuLink href="/notice">
-                    더보기
+                  <DropMenuTitle>RESUME</DropMenuTitle>
+                  <DropMenuLink href="#">
                     <DropMenuLinkIcon>
                       <FaAlignJustify />
                     </DropMenuLinkIcon>
@@ -325,48 +350,66 @@ const Nav = ({ coinDetail }: INavProps) => {
                 </DropMenuHeader>
                 <DropMenuScrollable headerHeight={Number(dropMenuHeaderH)}>
                   <DropMenuList>
-                    <DropMenuItem>
-                      <DropMenuNoticeLink href="/notice/content1">
+                    <a href={process.env.REACT_APP_NOTION_RESUME} target="_blank" rel="noopener noreferrer">
+                      <DropMenuItem>
                         <NoticeTagDateBox>
                           <NoticeTag>상장</NoticeTag>
                           <NoticeDate>2022.06.29</NoticeDate>
                         </NoticeTagDateBox>
                         <NoticeTitle whileHover={{ opacity: 0.5 }}>
-                          거래지원 종료 안내: BIOT
+                          <CIcon icon={icon.cibNotion} style={{ width: "24px", height: "24px", paddingRight: "10px" }} />
+                          자기소개서 및 인적사항
                           <NoticeNew>
                             <MdOutlineFiberNew />
                           </NoticeNew>
                         </NoticeTitle>
-                      </DropMenuNoticeLink>
-                    </DropMenuItem>
-                    <DropMenuItem>
-                      <NoticeTagDateBox>
-                        <NoticeTag>상장</NoticeTag>
-                        <NoticeDate>2022.06.29</NoticeDate>
-                      </NoticeTagDateBox>
-                      <NoticeTitle>거래지원 종료 안내: BIOT</NoticeTitle>
-                    </DropMenuItem>
-                    <DropMenuItem>
-                      <NoticeTagDateBox>
-                        <NoticeTag>상장</NoticeTag>
-                        <NoticeDate>2022.06.29</NoticeDate>
-                      </NoticeTagDateBox>
-                      <NoticeTitle>거래지원 종료 안내: BIOT</NoticeTitle>
-                    </DropMenuItem>
-                    <DropMenuItem>
-                      <NoticeTagDateBox>
-                        <NoticeTag>상장</NoticeTag>
-                        <NoticeDate>2022.06.29</NoticeDate>
-                      </NoticeTagDateBox>
-                      <NoticeTitle>거래지원 종료 안내: BIOT</NoticeTitle>
-                    </DropMenuItem>
-                    <DropMenuItem>
-                      <NoticeTagDateBox>
-                        <NoticeTag>상장</NoticeTag>
-                        <NoticeDate>2022.06.29</NoticeDate>
-                      </NoticeTagDateBox>
-                      <NoticeTitle>거래지원 종료 안내: BIOT</NoticeTitle>
-                    </DropMenuItem>
+                      </DropMenuItem>
+                    </a>
+                    <a href={process.env.REACT_APP_LINKEDIN_PROFILE} target="_blank" rel="noopener noreferrer">
+                      <DropMenuItem>
+                        <NoticeTagDateBox>
+                          <NoticeTag>상장</NoticeTag>
+                          <NoticeDate>2022.06.29</NoticeDate>
+                        </NoticeTagDateBox>
+                        <NoticeTitle whileHover={{ opacity: 0.5 }}>
+                          <CIcon icon={icon.cibLinkedin} style={{ width: "24px", height: "24px", paddingRight: "10px" }} />
+                          Linkedin Profile
+                          <NoticeNew style={{ right: 130 }}>
+                            <MdOutlineFiberNew />
+                          </NoticeNew>
+                        </NoticeTitle>
+                      </DropMenuItem>
+                    </a>
+                    <a href={process.env.REACT_APP_PORTFOLIO_WEBPAGE} target="_blank" rel="noopener noreferrer">
+                      <DropMenuItem>
+                        <NoticeTagDateBox>
+                          <NoticeTag>상장</NoticeTag>
+                          <NoticeDate>2022.06.29</NoticeDate>
+                        </NoticeTagDateBox>
+                        <NoticeTitle whileHover={{ opacity: 0.5 }}>
+                          <CIcon icon={icon.cibReact} style={{ width: "24px", height: "24px", paddingRight: "10px" }} />
+                          포트폴리오 웹 페이지
+                          <NoticeNew style={{ right: 90 }}>
+                            <MdOutlineFiberNew />
+                          </NoticeNew>
+                        </NoticeTitle>
+                      </DropMenuItem>
+                    </a>
+                    <a href={process.env.REACT_APP_VELOG} target="_blank" rel="noopener noreferrer">
+                      <DropMenuItem>
+                        <NoticeTagDateBox>
+                          <NoticeTag>상장</NoticeTag>
+                          <NoticeDate>2022.06.29</NoticeDate>
+                        </NoticeTagDateBox>
+                        <NoticeTitle whileHover={{ opacity: 0.5 }}>
+                          <CIcon icon={icon.cibBlogger} style={{ width: "24px", height: "24px", paddingRight: "10px" }} />
+                          Velog 기술 블로그
+                          <NoticeNew style={{ right: 113 }}>
+                            <MdOutlineFiberNew />
+                          </NoticeNew>
+                        </NoticeTitle>
+                      </DropMenuItem>
+                    </a>
                   </DropMenuList>
                 </DropMenuScrollable>
               </NavNoticeDownMenu>
