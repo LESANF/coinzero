@@ -5,9 +5,9 @@ import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import SpoqaRegular from "./Styles/fonts/spoqa/SpoqaHanSansNeo-Regular.otf";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { RecoilRoot } from "recoil";
-import { useLocation } from "react-router-dom";
+// import { ReactQueryDevtools } from "react-query/devtools";
+// import { useLocation } from "react-router-dom";
 
 const queryClient = new QueryClient();
 const GlobalStyles = createGlobalStyle`
