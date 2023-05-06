@@ -177,11 +177,14 @@ function ButtonScroll() {
   const [foldingState, setFoldingState] = useState<boolean>(false);
   const [coinNews, setCoinNews] = useState([]);
 
+  const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+  const URL = `${PROXY}/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`;
+
   useEffect(() => {
     const getFetchNewsData = async () => {
       const {
         data: { results },
-      } = await axios.get(`/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`);
+      } = await axios.get(URL);
       setCoinNews(results);
     };
 
