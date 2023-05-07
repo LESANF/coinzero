@@ -4,7 +4,6 @@ import _ from "lodash";
 import dayjs from "dayjs";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import axios from "axios";
-import { useQuery } from "react-query";
 
 const Frame = styled.div`
   background-color: #fff;
@@ -180,20 +179,16 @@ function ButtonScroll() {
   const PROXY = window.location.hostname === "localhost" ? "https://newsdata.io" : "/proxy";
   const URL = `/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business`;
 
-  const { data, isLoading } = useQuery("buttonScroll", () => {
-    return axios.get(`${PROXY}${URL}`);
-  });
+  useEffect(() => {
+    const getFetchNewsData = async () => {
+      const {
+        data: { results },
+      } = await axios.get(`${PROXY}${URL}`);
+      setCoinNews(results);
+    };
 
-  // useEffect(() => {
-  //   const getFetchNewsData = async () => {
-  //     const {
-  //       data: { results },
-  //     } = await axios.get(`${PROXY}${URL}`);
-  //     setCoinNews(results);
-  //   };
-
-  //   getFetchNewsData();
-  // }, []);
+    getFetchNewsData();
+  }, []);
 
   //get Date
   const now = dayjs();
@@ -251,10 +246,10 @@ function ButtonScroll() {
         </BtnBox>
       </Header>
       <Content ref={contentScrl} onScroll={scrollDiv}>
-        {data && !isLoading && (
+        {coinNews && (
           <>
             <Items ref={ulScrl}>
-              {data.data.results.map((v: any, i: number) => (
+              {coinNews.map((v: any, i: number) => (
                 <Item key={i} id={i}>
                   <ItemTitle>{v.pubDate.split(" ")[0]}</ItemTitle>
                   <ItemContent>

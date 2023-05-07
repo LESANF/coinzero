@@ -4,7 +4,6 @@ import { Autoplay } from "swiper";
 import { SwiperModule } from "swiper/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import axios from "axios";
-import { useQuery } from "react-query";
 
 const Frame = styled.div`
   height: 60px;
@@ -78,26 +77,22 @@ function VerticalNotice() {
   const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
   const URL = `/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business`;
 
-  const { data, isLoading } = useQuery("vertical", () => {
-    return axios.get(`${PROXY}${URL}`);
-  });
+  useEffect(() => {
+    const getFetchNewsData = async () => {
+      const {
+        data: { results },
+      } = await axios.get(`${PROXY}${URL}`);
+      setCoinNews(results);
+    };
 
-  // useEffect(() => {
-  //   const getFetchNewsData = async () => {
-  //     const {
-  //       data: { results },
-  //     } = await axios.get(`${PROXY}${URL}`);
-  //     setCoinNews(results);
-  //   };
-
-  //   getFetchNewsData();
-  // }, []);
+    getFetchNewsData();
+  }, []);
 
   return (
     <Frame>
-      {swiperSetting && data && !isLoading && (
+      {swiperSetting && coinNews && (
         <Swiper {...swiperSetting} style={swiperStyle}>
-          {data.data.results.map((v: any, i: number) => {
+          {coinNews.map((v: any, i: number) => {
             return (
               <SwiperSlide key={i}>
                 <Notice target="_blank" href={v.link} rel="noopener noreferrer">
