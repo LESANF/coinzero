@@ -176,9 +176,9 @@ function ButtonScroll() {
   const [foldingState, setFoldingState] = useState<boolean>(false);
   const [coinNews, setCoinNews] = useState([]);
 
-  // const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+  const PROXY = window.location.hostname === "localhost" ? "https://newsdata.io" : "/proxy";
   // const URL = `${PROXY}/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`;
-  const URL = `https://newsdata.io/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business `;
+  const URL = `${PROXY}/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business `;
 
   useEffect(() => {
     const getFetchNewsData = async () => {
@@ -235,7 +235,7 @@ function ButtonScroll() {
     <Frame>
       <Header>
         <ListTitle>
-          Coinnews <ListDay>{now.format("YYYY-MM-DD")}</ListDay>
+          TopNews <ListDay>{now.format("YYYY-MM-DD")}</ListDay>
         </ListTitle>
         <BtnBox>
           <ListBtnUp disabled={curScrollPos === 0} curPosition={curScrollPos} curTop={curScrollH} onClick={listScrollUp}>
