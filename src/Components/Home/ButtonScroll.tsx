@@ -176,15 +176,16 @@ function ButtonScroll() {
   const [foldingState, setFoldingState] = useState<boolean>(false);
   const [coinNews, setCoinNews] = useState([]);
 
-  const PROXY = window.location.hostname === "localhost" ? "https://newsdata.io" : "/proxy";
+  const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
   const URL = `/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business`;
-  const options = { method: "GET", headers: { Accept: "application/json" } };
 
   useEffect(() => {
     const getFetchNewsData = async () => {
-      const response = await fetch(`${PROXY}${URL}`, options);
-      const data = await response.json();
-      setCoinNews(data.results);
+      const {
+        data: { results },
+      } = await axios.get(`${PROXY}/korean/mostread.json`);
+      console.log(results);
+      setCoinNews(results);
     };
 
     getFetchNewsData();

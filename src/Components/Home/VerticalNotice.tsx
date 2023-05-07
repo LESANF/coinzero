@@ -76,21 +76,21 @@ function VerticalNotice() {
 
   const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
   const URL = `/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business`;
-  const options = { method: "GET", headers: { Accept: "application/json" } };
 
-  useEffect(() => {
-    const getFetchNewsData = async () => {
-      const response = await fetch(`${PROXY}${URL}`, options);
-      const data = await response.json();
-      setCoinNews(data.results);
-    };
+  // useEffect(() => {
+  //   const getFetchNewsData = async () => {
+  //     const {
+  //       data: { results },
+  //     } = await axios.get(`https://jsonplaceholder.typicode.com/users`);
+  //     setCoinNews(results);
+  //   };
 
-    getFetchNewsData();
-  }, []);
+  //   getFetchNewsData();
+  // }, []);
 
   return (
     <Frame>
-      {swiperSetting && coinNews && (
+      {/* {swiperSetting && coinNews && (
         <Swiper {...swiperSetting} style={swiperStyle}>
           {coinNews.map((v: any, i: number) => {
             return (
@@ -106,7 +106,7 @@ function VerticalNotice() {
             );
           })}
         </Swiper>
-      )}
+      )} */}
     </Frame>
   );
 }
