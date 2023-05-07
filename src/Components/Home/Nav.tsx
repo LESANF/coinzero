@@ -353,8 +353,8 @@ const Nav = ({ coinDetail }: INavProps) => {
                     <a href={process.env.REACT_APP_NOTION_RESUME} target="_blank" rel="noopener noreferrer">
                       <DropMenuItem>
                         <NoticeTagDateBox>
-                          <NoticeTag>상장</NoticeTag>
-                          <NoticeDate>2022.06.29</NoticeDate>
+                          <NoticeTag>신규</NoticeTag>
+                          <NoticeDate>Notion</NoticeDate>
                         </NoticeTagDateBox>
                         <NoticeTitle whileHover={{ opacity: 0.5 }}>
                           <CIcon icon={icon.cibNotion} style={{ width: "24px", height: "24px", paddingRight: "10px" }} />
@@ -368,8 +368,8 @@ const Nav = ({ coinDetail }: INavProps) => {
                     <a href={process.env.REACT_APP_LINKEDIN_PROFILE} target="_blank" rel="noopener noreferrer">
                       <DropMenuItem>
                         <NoticeTagDateBox>
-                          <NoticeTag>상장</NoticeTag>
-                          <NoticeDate>2022.06.29</NoticeDate>
+                          <NoticeTag>신규</NoticeTag>
+                          <NoticeDate>LinkedIn</NoticeDate>
                         </NoticeTagDateBox>
                         <NoticeTitle whileHover={{ opacity: 0.5 }}>
                           <CIcon icon={icon.cibLinkedin} style={{ width: "24px", height: "24px", paddingRight: "10px" }} />
@@ -383,8 +383,8 @@ const Nav = ({ coinDetail }: INavProps) => {
                     <a href={process.env.REACT_APP_PORTFOLIO_WEBPAGE} target="_blank" rel="noopener noreferrer">
                       <DropMenuItem>
                         <NoticeTagDateBox>
-                          <NoticeTag>상장</NoticeTag>
-                          <NoticeDate>2022.06.29</NoticeDate>
+                          <NoticeTag>신규</NoticeTag>
+                          <NoticeDate>Portfolio</NoticeDate>
                         </NoticeTagDateBox>
                         <NoticeTitle whileHover={{ opacity: 0.5 }}>
                           <CIcon icon={icon.cibReact} style={{ width: "24px", height: "24px", paddingRight: "10px" }} />
@@ -398,8 +398,8 @@ const Nav = ({ coinDetail }: INavProps) => {
                     <a href={process.env.REACT_APP_VELOG} target="_blank" rel="noopener noreferrer">
                       <DropMenuItem>
                         <NoticeTagDateBox>
-                          <NoticeTag>상장</NoticeTag>
-                          <NoticeDate>2022.06.29</NoticeDate>
+                          <NoticeTag>신규</NoticeTag>
+                          <NoticeDate>Velog</NoticeDate>
                         </NoticeTagDateBox>
                         <NoticeTitle whileHover={{ opacity: 0.5 }}>
                           <CIcon icon={icon.cibBlogger} style={{ width: "24px", height: "24px", paddingRight: "10px" }} />
