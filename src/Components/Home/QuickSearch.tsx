@@ -207,7 +207,7 @@ function QuickSearch() {
   return (
     <MainLeftFrame>
       <HeaderTitle>
-        Coinzero (코인원 클론코딩 작품)
+        Coinzero (코인원 클론코딩)
         <br />
         <strong style={{ fontWeight: "700" }}>개인 포트폴리오</strong>
       </HeaderTitle>

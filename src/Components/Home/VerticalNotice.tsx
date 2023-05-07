@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { Autoplay } from "swiper";
 import { SwiperModule } from "swiper/types";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { getNews, IGetNews } from "../../DummyData";
 import axios from "axios";
+import dayjs from "dayjs";
 
 const Frame = styled.div`
   height: 60px;
@@ -72,25 +74,33 @@ const swiperStyle = {
 };
 
 function VerticalNotice() {
-  const [coinNews, setCoinNews] = useState([]);
+  const [coinNews, setCoinNews] = useState<any>([]);
 
-  const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
-  const URL = `/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business`;
+  // const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+  // const URL = `/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business`;
 
   // useEffect(() => {
   //   const getFetchNewsData = async () => {
   //     const {
   //       data: { results },
-  //     } = await axios.get(`https://jsonplaceholder.typicode.com/users`);
+  //     } = await axios.get(`${PROXY}${URL}`);
   //     setCoinNews(results);
+  //     console.log(results);
   //   };
 
   //   getFetchNewsData();
   // }, []);
 
+  useEffect(() => {
+    const { result } = getNews();
+    setCoinNews(result);
+  }, []);
+
+  const now = dayjs();
+
   return (
     <Frame>
-      {/* {swiperSetting && coinNews && (
+      {swiperSetting && coinNews && (
         <Swiper {...swiperSetting} style={swiperStyle}>
           {coinNews.map((v: any, i: number) => {
             return (
@@ -99,14 +109,14 @@ function VerticalNotice() {
                   <NoticeTag>신규</NoticeTag>
                   <NoticeSummary>
                     <NoticeText>{v.description}</NoticeText>
-                    <NoticeDate>{v.pubDate.split(" ")[0]}</NoticeDate>
+                    <NoticeDate>{now.format("YYYY-MM-DD")}</NoticeDate>
                   </NoticeSummary>
                 </Notice>
               </SwiperSlide>
             );
           })}
         </Swiper>
-      )} */}
+      )}
     </Frame>
   );
 }

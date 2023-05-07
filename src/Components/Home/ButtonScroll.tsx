@@ -4,6 +4,7 @@ import _ from "lodash";
 import dayjs from "dayjs";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import axios from "axios";
+import { getNews } from "../../DummyData";
 
 const Frame = styled.div`
   background-color: #fff;
@@ -117,7 +118,6 @@ const Items = styled.ul`
 `;
 
 const Item = styled.li<{ id: any }>`
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -142,24 +142,6 @@ const ItemContent = styled.span`
   word-break: keep-all;
 `;
 
-// const AddSummary = styled.p`
-//   @keyframes test {
-//     from {
-//       max-height: 0px;
-//     }
-//     to {
-//       max-height: 150px;
-//     }
-//   }
-
-//   color: #aeb3bb;
-//   font-size: 10px;
-//   padding-top: 7px;
-//   line-height: 1.5;
-//   overflow: hidden;
-//   animation: test 0.3s;
-// `;
-
 //Footer Sign
 const FooterSign = styled.p`
   margin-bottom: 10px;
@@ -174,21 +156,25 @@ function ButtonScroll() {
   const [curScrollPos, setCurScrollPos] = useState<number>(0);
   const [curScrollH, setCurScrollH] = useState<number>(0);
   const [foldingState, setFoldingState] = useState<boolean>(false);
-  const [coinNews, setCoinNews] = useState([]);
+  const [coinNews, setCoinNews] = useState<any>([]);
 
-  const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
-  const URL = `/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business`;
+  // const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+  // const URL = `/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business`;
+
+  // useEffect(() => {
+  //   const getFetchNewsData = async () => {
+  //     const {
+  //       data: { results },
+  //     } = await axios.get(`${PROXY}${URL}`);
+  //     setCoinNews(results);
+  //   };
+
+  //   getFetchNewsData();
+  // }, []);
 
   useEffect(() => {
-    const getFetchNewsData = async () => {
-      const {
-        data: { results },
-      } = await axios.get(`${PROXY}/korean/mostread.json`);
-      console.log(results);
-      setCoinNews(results);
-    };
-
-    getFetchNewsData();
+    const { result } = getNews();
+    setCoinNews(result);
   }, []);
 
   //get Date
@@ -252,9 +238,9 @@ function ButtonScroll() {
             <Items ref={ulScrl}>
               {coinNews.map((v: any, i: number) => (
                 <Item key={i} id={i}>
-                  <ItemTitle>{v.pubDate.split(" ")[0]}</ItemTitle>
+                  <ItemTitle>{now.format("YYYY-MM-DD")}</ItemTitle>
                   <ItemContent>
-                    <a href={v.link} target="_blank" rel="noopener noreferrer">
+                    <a style={{ cursor: "pointer" }} href={v.link} target="_blank" rel="noopener noreferrer">
                       {v.title}
                     </a>
                   </ItemContent>
