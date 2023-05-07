@@ -74,8 +74,9 @@ const swiperStyle = {
 function VerticalNotice() {
   const [coinNews, setCoinNews] = useState([]);
 
-  const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
-  const URL = `${PROXY}/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`;
+  // const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+  // const URL = `${PROXY}/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`;
+  const URL = `https://newsdata.io/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business `;
 
   useEffect(() => {
     const getFetchNewsData = async () => {
@@ -95,11 +96,11 @@ function VerticalNotice() {
           {coinNews.map((v: any, i: number) => {
             return (
               <SwiperSlide key={i}>
-                <Notice target="_blank" href={v.url} rel="noopener noreferrer">
+                <Notice target="_blank" href={v.link} rel="noopener noreferrer">
                   <NoticeTag>신규</NoticeTag>
                   <NoticeSummary>
-                    <NoticeText>{v.slug}</NoticeText>
-                    <NoticeDate>{v.created_at.split("T")[0]}</NoticeDate>
+                    <NoticeText>{v.description}</NoticeText>
+                    <NoticeDate>{v.pubDate.split(" ")[0]}</NoticeDate>
                   </NoticeSummary>
                 </Notice>
               </SwiperSlide>

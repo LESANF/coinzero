@@ -176,8 +176,9 @@ function ButtonScroll() {
   const [foldingState, setFoldingState] = useState<boolean>(false);
   const [coinNews, setCoinNews] = useState([]);
 
-  const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
-  const URL = `${PROXY}/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`;
+  // const PROXY = window.location.hostname === "localhost" ? "" : "/proxy";
+  // const URL = `${PROXY}/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`;
+  const URL = `https://newsdata.io/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business `;
 
   useEffect(() => {
     const getFetchNewsData = async () => {
@@ -251,10 +252,10 @@ function ButtonScroll() {
             <Items ref={ulScrl}>
               {coinNews.map((v: any, i: number) => (
                 <Item key={i} id={i}>
-                  <ItemTitle>{v.created_at.split("T")[0]}</ItemTitle>
+                  <ItemTitle>{v.pubDate.split(" ")[0]}</ItemTitle>
                   <ItemContent>
-                    <a href={v.url} target="_blank" rel="noopener noreferrer">
-                      {v.slug}
+                    <a href={v.link} target="_blank" rel="noopener noreferrer">
+                      {v.title}
                     </a>
                   </ItemContent>
                 </Item>
