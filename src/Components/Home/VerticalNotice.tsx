@@ -75,7 +75,6 @@ function VerticalNotice() {
   const [coinNews, setCoinNews] = useState([]);
 
   const PROXY = window.location.hostname === "localhost" ? "https://newsdata.io" : "/proxy";
-  // const URL = `${PROXY}/api/v1/posts/?auth_token=${process.env.REACT_APP_COINNEWS_API_KEY}&kind=news`;
   const URL = `${PROXY}/api/1/news?apikey=${process.env.REACT_APP_NEWSDATA_API_KEY}&country=kr&language=ko&category=business `;
 
   useEffect(() => {
