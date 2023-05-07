@@ -35,6 +35,7 @@ const NavInner = styled.div`
 //Nav Logo
 const NavTitle = styled.div`
   background: linear-gradient(to right bottom, #020bff, #9ccaff);
+  padding-bottom: 10px;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
