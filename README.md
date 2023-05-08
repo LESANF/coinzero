@@ -30,7 +30,7 @@ Coinzero
   <a href="#architecture">아키텍처</a> •
   <a href="#skills">기술스택</a> •
   <a href="https://preeminent-cobbler-b5b779.netlify.app/" target="_blank">사이트 둘러보기</a> •
-  <a href="https://velog.io/@lesacat94" target="_blank">프로젝트 후기</a>
+  <a href="https://velog.io/@lesacat94/%ED%86%A0%EC%9D%B4-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%BD%94%EC%9D%B8%EC%9B%90-%ED%81%B4%EB%A1%A0%EC%BD%94%EB%94%A9-%ED%9B%84%EA%B8%B0" target="_blank">프로젝트 후기</a>
 </p>
 
 ![screenshot](https://velog.velcdn.com/images/lesacat94/post/74f5ee55-4bae-4580-aba6-7ea5a6e9c217/image.gif)
