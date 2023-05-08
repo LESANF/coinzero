@@ -1,4 +1,4 @@
-a<h1 align="center">
+<h1 align="center">
 <br>
 <img src="https://user-images.githubusercontent.com/54767632/236696221-9f772534-dba8-4d2c-b734-543a958015e2.png" alt="coinzero" width="200">
 <br>
