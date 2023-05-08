@@ -1,33 +1,62 @@
-### [구현 화면]
+<h1 align="center">
+  <br>
+  <img src="https://user-images.githubusercontent.com/54767632/236696221-9f772534-dba8-4d2c-b734-543a958015e2.png" alt="coinzero" width="200">
+  <br>
+  Coinzero
+  <br>
+</h1>
 
-##### [Home]
+<h4 align="center">실시간 코인 시세, 체결량 조회가 가능한 <a href="https://coinone.co.kr/" target="_blank">Coinone</a> 클론 사이트</h4>
 
--   [ ] Nav
+<p align="center">
+  <a href="#">
+    <img src="https://api.netlify.com/api/v1/badges/d8039db3-d52e-48f5-a809-b36987b8e7b7/deploy-status"
+         alt="Gitter"/>
+ 
+  <a href="#">
+    <img src="https://img.shields.io/badge/react-v18-blue"
+         alt="react-router-dom">
+  </a>
+  <a href="#">
+    <img src="https://img.shields.io/badge/react--router--dom-v6-blue"
+         alt="react-router-dom">
+  </a>
 
-    -   [x] 로고
-    -   [x] 메뉴 리스트 추가
-    -   [x] 공지사항 추가
-    -   [x] 공지사항 리스트 불러오기 모달 생성
-    -   [x] AD 영역 추가
-    -   [x] AD 애니메이션 추가
-    -   [ ] 오른쪽 마지막부분 공백 뭘로 채울지 고민
+</p>
 
--   [ ] Body
-    -   [x] Slider Content
-    -   [x] Coin Simple Search(Left)
-    -   [x] Simple Search의 경우 자동완성 키워드로 검색하여 개발진행
-    -   [x] Coin List(Right)
-    -   [x] 현재가, 등락률, 거래대금 최대, 최소 정렬 (6가지)
-    -   [x] 코인원에서 따온 svg를 내장으로 바꾸기x
-    -   [ ] Service Introduce
-    -   [ ] Github Link Banner
--   [ ] Footer
+<p align="center">
+  <a href="#how-to-use">사용 방법</a> •
+  <a href="#architecture">아키텍처</a> •
+  <a href="#skills">기술스택</a> •
+  <a href="https://velog.io/@lesacat94" target="_blank">프로젝트 후기</a>
+</p>
 
-##### [Coin List Detail]
+![screenshot](https://velog.velcdn.com/images/lesacat94/post/74f5ee55-4bae-4580-aba6-7ea5a6e9c217/image.gif)
 
-`코인 Symbol의 경우 아래의 싸이트이용`
-https://coinicons-api.vercel.app/api/icon/(소문자)
+## Skills
 
--   [ ] Coin Summary
--   [ ] Coin Chart
--   [ ] Coin List and Search
+| 분야         | 사용 기술                                                                   |
+| ------------ | --------------------------------------------------------------------------- |
+| FrontEnd     | React, Typescript                                                           |
+| Main Library | styled-components, react-query, recoil, framer-motion, chart.js, klinechart |
+| Tool         | VsCode                                                                      |
+
+## How To Use
+
+```bash
+# Clone this repository
+$ git clone https://github.com/LESANF/coinzero
+
+# Go into the repository
+$ cd coinzero
+
+# Install dependencies
+$ npm install
+
+# Run the app
+$ npm start
+```
+
+## Architecture
+
+![architecture](https://velog.velcdn.com/images/lesacat94/post/0b4080d0-7560-48fa-846b-08bcee40407f/image.png)
