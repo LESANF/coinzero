@@ -42,8 +42,13 @@ function CoinChart({ wsCoin }: any) {
             upColor: "#c84a31",
             downColor: "#1261c4",
             noChangeColor: "#888888",
+            upBorderColor: "#c84a31",
+            downBorderColor: "#1261c4",
+            noChangeBorderColor: "#888888",
+            upWickColor: "#c84a31",
+            downWickColor: "#1261c4",
+            noChangeWickColor: "#888888",
           },
-
           priceMark: {
             show: true,
             last: {
