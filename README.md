@@ -4,9 +4,9 @@
 <br>
 Coinzero
 <br>
-
 </h1>
 
+<h4 align="center">오래전에 만든 토이프로젝트라 API, 이미지관련 유지보수를 하지않아 사이트가 많이 불안정해요 🥲</h4>
 <h4 align="center">실시간 코인 시세, 체결량 조회가 가능한 <a href="https://coinone.co.kr/" target="_blank">Coinone</a> 클론 사이트</h4>
 
 <p align="center">
